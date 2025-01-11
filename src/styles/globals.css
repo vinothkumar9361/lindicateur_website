@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "flowbite";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --backgroundGreen: rgb(76, 252, 15, 1);
+  --backgroundBlack: rgb(0, 0, 0, 1);
+  --backgroundLightBlack: rgb(37, 37, 37);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+h4 {
+  font-size: 1.25em;
+}
+
+h5 {
+  font-size: 1.25em;
+}
+
+p {
+  font-size: 16px;
+}
+
+.bg_green {
+  background: var(--backgroundGreen);
+}
+
+.bg_black {
+  background: var(--backgroundBlack);
+}
+
+.bg_light_black {
+  background: var(--backgroundLightBlack);
+}
+
+.txt_green {
+  color: var(--backgroundGreen);
+}
+
+.border_green {
+  border: 2px solid;
+  border-color: var(--backgroundGreen);
+}
+
+.fs_14 {
+  font-size: 14px;
+}
+
+.box_shadow_light {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+@media (max-width:550px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+}
+
+
+/* Home Page */
+.home_banner {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../Images/Home/banner_background.webp);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #fff;
+  position: relative;
+}
+
+.slick-prev {
+  left: 10px !important;
+  z-index: 1;
+}
+
+.slick-next {
+  right: 20px !important;
+  z-index: 1;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #000000 !important;
+  font-size: 30px !important;
+  z-index: 1;
+}
+
+@media (min-width:1000px) {
+
+  .visitor-left-content {
+    background-color: #ffffff;
+    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; */
+    position: relative;
+    width: 650px;
+    left: 100px;
+    top: 10%;
+    padding: 30px 50px;
+  }
+
+}
+
+.react-tel-input .form-control {
+  width: 390px !important;
+  height: 45px !important;
+  font-size: 18px !important;
+  padding-left: 40px;
+  color: #000 !important;
+}
+
+.react-tel-input .country-list .country-name {
+  color: #000 !important;
+}
+
+.search-btn:hover {
+  background-color: var(--backgroundGreen);
+  color: #ffffff;
+}
+@media (max-width:550px) {
+  .react-tel-input .form-control{
+    width: 100% !important;
+    height: 35px !important;
+    font-size: 14px !important;
+  }
+}
+
+.dropdown-heading-value{
+  color: #000 !important;
+}
+.dropdown-container{
+  border: none !important;
+}
+.dropdown-content {
+  color: #000 !important;
+}

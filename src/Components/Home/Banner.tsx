@@ -42,7 +42,7 @@ const Banner = () => {
                     <div className="pt-4 rounded-lg md:px-20 lg:px-20">
                         <div className="px-4 rounded-lg bg-white lg:bg-transparent lg:px-6">
                             <div className="flex flex-col px-4 pt-6 lg:flex-row lg:px-0">
-                                <p className="bg_green rounded-t-lg lg:rounded-none lg:rounded-tl-lg lg:bg-white py-2 flex lg:h-16"> {show == false && <FaSearch className="mt-3 ml-4" />} <span className="bg_green py-2 pr-6 pl-2 w-64">{show ? "À qui appartient ce numéro ?" : "Vous recherchez ?"}</span></p>
+                                <div className="bg_green rounded-t-lg lg:rounded-none lg:rounded-tl-lg lg:bg-white py-2 flex lg:flex-row lg:h-16"> <p className="bg_green py-2 pr-6 pl-2 w-64 flex lg:flex-row lg:gap-3">{show == false && <FaSearch className="mt-1 ml-2" />} <span>{show ? "À qui appartient ce numéro ?" : "Vous recherchez ?"}</span></p></div>
                                 <p className="bg_black rounded-b-lg lg:rounded-none lg:rounded-tr-lg py-4 px-6 cursor-pointer flex" onClick={changeShow}> {show && <FaSearch className="mt-1 mr-2" />} {show ? "Vous recherchez ?" : "À qui appartient ce numéro ?"}</p>
                             </div>
                             {

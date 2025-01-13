@@ -14,7 +14,7 @@ function Header() {
 
     return (
         <>
-            <nav className="fixed w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10">
+            <nav className="w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10">
                 <div className="flex flex-wrap items-center justify-between mx-auto">
                     <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse p-4">
                         {/* <p className="flex gap-3 place-items-center font-bold text-xl">

@@ -116,7 +116,7 @@ const NewsSlider = () => {
                     </div>
                 </div>
             </div>
-            <Slider {...settings} className="px-4 mt-4">
+            <Slider {...settings} className="px-4 mt-4 mb-10">
                 {
                     data?.map((item: any, i: number) => {
                         return (

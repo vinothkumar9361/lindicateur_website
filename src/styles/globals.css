@@ -166,3 +166,7 @@ p {
 .dropdown-content {
   color: #000 !important;
 }
+
+.sevice-underline{
+  background-color: var(--backgroundGreen);
+}

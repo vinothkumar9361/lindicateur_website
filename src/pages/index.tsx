@@ -28,7 +28,7 @@ import NewsSlider from "@/Components/Home/NewsSlider";
 export default function Home() {
   return (
     <>
-      <div className="pt-16 lg:pt-20">
+      <div className="">
         <Banner />
         <Service />
         <Visitors />

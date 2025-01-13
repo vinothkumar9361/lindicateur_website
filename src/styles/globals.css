@@ -22,27 +22,33 @@ body {
 
 h1 {
   font-size: 3.2em;
+  font-family: "Poppins", serif;
 }
 
 h2 {
   font-size: 2.8em;
   line-height: 1.1em !important;
+  font-family: "Poppins", serif;
 }
 
 h4 {
   font-size: 1.25em;
+  font-family: "Poppins", serif;
 }
 
 h5 {
   font-size: 1.25em;
+  font-family: "Poppins", serif;
 }
 
 p {
   font-size: 16px;
+  font-family: "Poppins", serif;
 }
 
 li {
   font-size: 18px;
+  font-family: "Poppins", serif;
 }
 
 .bg_green {

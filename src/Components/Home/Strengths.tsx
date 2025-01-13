@@ -19,7 +19,7 @@ const Strengths = () => {
                 <div className="container mx-auto mb-3">
                     <div className="text-center">
                         <h5 className="txt_green font-bold">Nos points forts</h5>
-                        <h2 className="text-black font-bold px-2 lg:px-0">Quelles sont les raisons de préférer Mag Entreprise ?</h2>
+                        <h2 className="text-black font-bold px-2 lg:px-0">Quelles sont les raisons de préférer L'indicateur ?</h2>
                     </div>
                 </div>
                 <div className="py-10 px-4 sm:px-20">

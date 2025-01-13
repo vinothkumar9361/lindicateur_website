@@ -135,7 +135,7 @@ function Footer() {
                         <p className="mt-2 px-4">53 Rue Carnot - Boulogne-Billancourt 92100 </p>
                     </div>
                     <div className="hidden lg:inline lg:flex">
-                        <div className="bg_black text-white pt-2 pb-3 lg:px-4 xl:px-6 text-center">
+                        <div className="bg_black text-white pt-2 pb-3 lg:px-4 xl:px-10 text-center">
                             <p className="font-bold">Nous contacter</p>
                             <p className="">Du lundi au vendredi</p>
                             <p className="">De 9h à 18h</p>

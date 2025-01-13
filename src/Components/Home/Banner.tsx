@@ -68,7 +68,7 @@ const Banner = () => {
                             </div>
                             {
                                 show ?
-                                    <div className="lg:bg-white">
+                                    <div className="lg:bg-white lg:h-32">
                                         <div className="px-10 py-8 sm:flex sm:flex-col justify-center lg:flex-row lg:gap-10  lg:px-4">
                                             <label htmlFor="" className="text-black lg:w-1/2 content-center font-bold">À qui appartient ce numéro ?</label>
                                             <div className="lg:w-1/2 flex ">
@@ -84,7 +84,7 @@ const Banner = () => {
                                         </div>
                                     </div>
                                     :
-                                    <div className="lg:bg-white">
+                                    <div className="lg:bg-white lg:h-32">
                                         <div className="px-10 pt-3">
                                             <label htmlFor="">À qui appartient ce numéro ?</label>
                                         </div>

@@ -7,7 +7,7 @@ import BannerBackground from '@/Images/Home/banner_background.jpg';
 
 import { FaSearch } from "react-icons/fa";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Tabs } from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
@@ -25,12 +25,24 @@ const Banner = () => {
     const [show, setShow] = useState<boolean | null>(false);
     const [select, setSelect] = useState<any | null>([]);
 
-    const changeShow = () => {
-        setShow(!show);
-    }
+     const [scrollPositionY, setScrollPositionY] = useState(0);
+    
+        useEffect(() => {
+            const handleScroll = () => {
+                setScrollPositionY(window.scrollY);
+            };
+        
+            window.addEventListener("scroll", handleScroll);
+        
+            return () => {
+              window.removeEventListener("scroll", handleScroll);
+            };
+          }, []);
+          
+   
     return (
         <>
-            <div className="home_banner px-6 flex flex-col content-center items-center justify-center h-full lg:h-screen">
+            <div className="home_banner px-6 flex flex-col content-center items-center justify-center h-full">
                 <div className="container mx-auto banner-text">
                     <div className="flex flex-col content-center items-center text-center">
                         <h1 className="font-bold pt-4">Tous les experts à proximité de chez vous !</h1>
@@ -96,9 +108,9 @@ const Banner = () => {
                         </div>
                     </div>
                 </div>
-                {/* <div className="banner-background">
-                    <Image src={BannerBackground} alt="banner" />
-                </div> */}
+            </div>
+            <div className={`${scrollPositionY >= 800 ? "absolute" : "fixed" } banner-background`}>
+                <Image src={BannerBackground} alt="banner" />
             </div>
 
         </>

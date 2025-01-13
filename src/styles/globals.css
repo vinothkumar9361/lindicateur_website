@@ -110,24 +110,34 @@ li {
 
 /* Home Page */
 .home_banner {
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../Images/Home/banner_background.jpg);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
   background-repeat: no-repeat;
   background-size: cover;
   color: #fff;
   position: relative;
-  /* z-index: 1000; */
+  z-index: 1000;
+  height: 100vh;
+  overflow-y: scroll;
+
+}
+
+.home_banner::-webkit-scrollbar {
+  display: none;
 }
 
 .banner-text{
-  
+  z-index: 1000;
+  padding-top: 400px;
+  padding-bottom: 200px;  
 }
 
 .banner-background {
-   position: absolute;
+   /* position: fixed; */
    top: 0;
    width: 100%;
-   height: 700px;
-   overflow: hidden;
+   height: 1000px;
+   z-index: -1;
+
 }
 
 .banner-background img {
@@ -140,8 +150,17 @@ li {
     padding-top: 120px;
     padding-bottom: 60px;
   }
+  .banner-text{
+    padding-top: 200px;
+  }
 }
 
+@media (max-width:550px) {
+  .banner-text{
+    padding-top: 100px;
+    padding-bottom: 50px;
+  }
+}
 .banner-btn:hover {
   background-color: var(--backgroundGreen);
 }

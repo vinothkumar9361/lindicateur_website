@@ -14,7 +14,7 @@ const Visitors = () => {
 
     return (
         <>
-            <div className="mt-14">
+            <div className="bg-white pt-14">
                 <div className="container mx-auto lg:flex">
                     <div className="text-center px-4 lg:w-1/3">
                         <div className="visitor-left-content">

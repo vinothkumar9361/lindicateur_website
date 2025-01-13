@@ -19,7 +19,7 @@ const Service = () => {
 
     return (
         <>
-            <div className="mt-14">
+            <div className="bg-white pt-14">
                 <div className="container mx-auto">
                     <div className="text-center">
                         <h5 className="txt_green font-bold">Réputé</h5>

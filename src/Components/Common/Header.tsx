@@ -29,9 +29,7 @@ function Header() {
           window.removeEventListener("scroll", handleScroll);
         };
       }, []);
-      
-      console.log(scrollPositionY);
-      
+            
     return (
         <>
             <nav className={`${scrollPositionY >= 600 ? "hidden" : "fixed"} navbar w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10`}>

@@ -46,24 +46,24 @@ const data: any = [
     },
 ]
 
-const SamplePrevArrow = (props:any) => {
+const SamplePrevArrow = (props: any) => {
     const { className, style, onClick } = props;
-    return(
-      <div onClick={onClick} className={`arrow ${className}`} >
-        <FaChevronCircleRight className="arrows" style={{color:"white"}}/>
-      </div>
+    return (
+        <div onClick={onClick} className={`arrow ${className}`} >
+            <FaChevronCircleRight className="arrows" style={{ color: "white" }} />
+        </div>
     )
-    }
+}
 
-function SampleNextArrow(props:any) {
+function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
-    return(
-      <div onClick={onClick} className={`arrow ${className}`} >
-        <FaChevronCircleRight className="arrows" style={{color:"white"}}/>
-      </div>
+    return (
+        <div onClick={onClick} className={`arrow ${className}`} >
+            <FaChevronCircleRight className="arrows" style={{ color: "white" }} />
+        </div>
     )
-  }
-  
+}
+
 const NewsSlider = () => {
     const [show, setShow] = useState<boolean | null>(true);
 
@@ -74,7 +74,7 @@ const NewsSlider = () => {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
-        nextArrow: <SampleNextArrow to="next"/>,
+        nextArrow: <SampleNextArrow to="next" />,
         prevArrow: <SamplePrevArrow to="prev" />,
         responsive: [
             {
@@ -108,35 +108,36 @@ const NewsSlider = () => {
 
     return (
         <>
-            <div className="mt-10">
+            <div className="mt-14">
                 <div className="container mx-auto">
                     <div className="text-center">
                         <h5 className="txt_green font-bold">News</h5>
                         <h2 className="text-black font-bold">In the news!</h2>
                     </div>
+                    <Slider {...settings} className="px-4 mt-4 mb-14">
+                        {
+                            data?.map((item: any, i: number) => {
+                                return (
+                                    <>
+                                        <div className="px-8">
+                                            <div className="bg-gray-100 text-center justify-items-center">
+                                                <Image src={item?.image} alt="img" className="w-48 h-48" />
+                                            </div>
+                                            <div className="pt-3">
+                                                <h5 className="text-black font-bold pb-2">{item?.title}</h5>
+                                                <p className="pb-2">{item?.time}</p>
+                                                <p className="pb-2">{item?.description}</p>
+                                                <a href=""><p className="text-right font-bold underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            })
+                        }
+                    </Slider>
                 </div>
             </div>
-            <Slider {...settings} className="px-4 mt-4 mb-10">
-                {
-                    data?.map((item: any, i: number) => {
-                        return (
-                            <>
-                                <div className="px-8">
-                                    <div className="bg-gray-100 text-center justify-items-center">
-                                        <Image src={item?.image} alt="img" className="w-48 h-48" />
-                                    </div>
-                                    <div className="pt-3">
-                                        <h5 className="text-black font-bold pb-2">{item?.title}</h5>
-                                        <p className="pb-2">{item?.time}</p>
-                                        <p className="pb-2">{item?.description}</p>
-                                        <a href=""><p className="text-right font-bold underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
-                                    </div>
-                                </div>
-                            </>
-                        )
-                    })
-                }
-            </Slider>
+
         </>
     )
 }

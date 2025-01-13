@@ -4,7 +4,7 @@
 
 @import "flowbite";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Wix+Madefor+Text:ital,wght@0,400..800;1,400..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
   --background: #ffffff;
@@ -14,25 +14,18 @@
   --backgroundLightBlack: rgb(37, 37, 37);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: 'Inter', sans-serif;
+  /* background: var(--background); */
+  font-family: "Poppins", serif;
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 3.2em;
 }
 
 h2 {
-  font-size: 2.5em;
+  font-size: 2.8em;
   line-height: 1.1em !important;
 }
 
@@ -46,6 +39,10 @@ h5 {
 
 p {
   font-size: 16px;
+}
+
+li {
+  font-size: 18px;
 }
 
 .bg_green {
@@ -67,6 +64,11 @@ p {
 .border_green {
   border: 2px solid;
   border-color: var(--backgroundGreen);
+}
+
+.border_black {
+  border: 2px solid;
+  border-color: var(--backgroundBlack);
 }
 
 .fs_14 {
@@ -92,6 +94,19 @@ p {
 
 }
 
+/* Header */
+.navbar{
+  transition: transform 0.3s ease-in-out;
+  z-index: 1001;
+}
+.navbar.hidden {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+.header-ul li:hover a,
+.header-ul .active a {
+  color: #8BB603 !important;
+}
 
 /* Home Page */
 .home_banner {
@@ -100,6 +115,39 @@ p {
   background-size: cover;
   color: #fff;
   position: relative;
+  /* z-index: 1000; */
+}
+
+.banner-text{
+  
+}
+
+.banner-background {
+   position: absolute;
+   top: 0;
+   width: 100%;
+   height: 700px;
+   overflow: hidden;
+}
+
+.banner-background img {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width:1000px) {
+  .home_banner {
+    padding-top: 120px;
+    padding-bottom: 60px;
+  }
+}
+
+.banner-btn:hover {
+  background-color: var(--backgroundGreen);
+}
+
+.banner-btn:hover p {
+  color: #000000;
 }
 
 .slick-prev {
@@ -126,19 +174,23 @@ p {
     /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; */
     position: relative;
     width: 650px;
-    left: 80px;
-    top: 6%;
+    left: 50px;
+    top: 12%;
     padding: 30px 50px;
   }
 
 }
 
+.react-tel-input {
+  width: 390px !important;
+}
 .react-tel-input .form-control {
   width: 390px !important;
   height: 45px !important;
   font-size: 18px !important;
   padding-left: 40px;
   color: #000 !important;
+  border-radius: 0 !important;
 }
 
 .react-tel-input .country-list .country-name {
@@ -147,26 +199,28 @@ p {
 
 .search-btn:hover {
   background-color: var(--backgroundGreen);
-  color: #ffffff;
 }
+
 @media (max-width:550px) {
-  .react-tel-input .form-control{
+  .react-tel-input .form-control {
     width: 100% !important;
     height: 35px !important;
     font-size: 14px !important;
   }
 }
 
-.dropdown-heading-value{
+.dropdown-heading-value {
   color: #000 !important;
 }
-.dropdown-container{
+
+.dropdown-container {
   border: none !important;
 }
+
 .dropdown-content {
   color: #000 !important;
 }
 
-.sevice-underline{
-  background-color: var(--backgroundGreen);
+.sevice-underline {
+  border: 2px solid var(--backgroundGreen);
 }

@@ -22,7 +22,7 @@ const Strengths = () => {
                         <h2 className="text-black font-bold">Quelles sont les raisons de préférer Mag Entreprise ?</h2>
                     </div>
                 </div>
-                <div className="bg-gray-100 py-10 px-4 sm:px-20">
+                <div className="py-10 px-4 sm:px-20">
                     <div className="container mx-auto grid grid-cols-1 gap-3 md:grid-cols-2">
                         <div className="bg-white box_shadow_light rounded-lg p-4 text-center justify-items-center">
                             <Image src={Icon1} alt='icon' width={100} height={100} className="mb-5" />

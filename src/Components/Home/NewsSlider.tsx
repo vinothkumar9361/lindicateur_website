@@ -126,7 +126,7 @@ const NewsSlider = () => {
                                         <Image src={item?.image} alt="img" className="w-48 h-48" />
                                     </div>
                                     <div className="pt-3">
-                                        <h5 className="txt_green font-bold pb-2">{item?.title}</h5>
+                                        <h5 className="text-black font-bold pb-2">{item?.title}</h5>
                                         <p className="pb-2">{item?.time}</p>
                                         <p className="pb-2">{item?.description}</p>
                                         <a href=""><p className="text-right font-bold underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>

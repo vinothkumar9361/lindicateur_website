@@ -21,7 +21,7 @@ const Service = () => {
                         <h2 className="text-black font-bold">Les spécialistes à votre service</h2>
                     </div>
                 </div>
-                <div className="bg-gray-100 py-10 px-4 sm:px-20">
+                <div className="py-10 px-4 sm:px-20">
                     <div className="container mx-auto grid grid-cols-1 md:gap-3 lg:grid-cols-3">
                         <div className="flex flex-col box_shadow_light rounded-lg sm:flex-row">
                            <div className="w-full sm:w-2/3 lg:rounded-l-lg">

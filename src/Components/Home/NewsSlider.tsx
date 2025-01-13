@@ -111,8 +111,8 @@ const NewsSlider = () => {
             <div className="mt-14">
                 <div className="container mx-auto">
                     <div className="text-center">
-                        <h5 className="txt_green font-bold">News</h5>
-                        <h2 className="text-black font-bold">In the news!</h2>
+                        <h5 className="txt_green font-bold">Actualités</h5>
+                        <h2 className="text-black font-bold">A la une !</h2>
                     </div>
                     <Slider {...settings} className="px-4 mt-4 mb-14">
                         {

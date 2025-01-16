@@ -34,7 +34,7 @@ function Header() {
         <>
             <nav className={`${scrollPositionY >= 600 ? "hidden" : "fixed"} navbar w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10`}>
                 <div className="flex flex-wrap lg:flex-row items-center justify-between mx-auto">
-                    <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse p-4">
+                    <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse py-4">
                       <Image src={Logo} alt="logo" width={300} height={100} className="w-56" />
                     </a>
                     <div className="md:inline lg:hidden flex items-center lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-5 ">
@@ -86,7 +86,7 @@ function Header() {
                             </svg>
                         </button>
                     </div>
-                    <div className={`${show && "hidden"} items-center justify-between w-full lg:flex lg:w-auto p-4`} id="navbar-user">
+                    <div className={`${show && "hidden"} items-center justify-between w-full lg:flex lg:w-auto py-4`} id="navbar-user">
                         <ul className="header-ul flex flex-col font-medium p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-gray-100 dark:bg-gray-800 lg:dark:bg-gray-900 dark:border-gray-700">
                             <li className="active" >
                                 <a href="#" className="block py-2 px-3 font-bold text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Accueil</a>
@@ -95,7 +95,7 @@ function Header() {
                                 <a href="#" className="block py-2 px-3 font-bold text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Rechercher</a>
                             </li>
                             <li>
-                                <a href="#" className="block py-2 px-3 font-bold text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Actualités</a>
+                                <a href="#" className="block py-2 px-3 font-bold text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Référencer un établissement</a>
                             </li>
                             <li>
                                 <a href="#" className="block py-2 px-3 font-bold text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
@@ -108,7 +108,7 @@ function Header() {
                             <p className="">Du lundi au vendredi</p>
                             <p className="">De 9h à 18h</p>
                         </div>
-                        <div className="bg_green text-white py-4 lg:pl-4 xl:pl-6 lg:pr-4 xl:pr-12 ">
+                        <div className="bg_green py-4 lg:pl-4 xl:pl-6 lg:pr-4 xl:pr-12 ">
                             <div className="flex gap-1 items-center content-center">
                                 <FaPhoneAlt />
                                 <p>06 03 84 08 12</p>

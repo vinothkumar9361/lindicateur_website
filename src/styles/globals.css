@@ -5,7 +5,7 @@
 @import "flowbite";
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -65,6 +65,10 @@ li {
 
 .txt_green {
   color: var(--backgroundGreen);
+}
+
+.txt_light_green {
+  color: #8BB603 !important;
 }
 
 .border_green {
@@ -192,6 +196,14 @@ li {
   z-index: 1;
 }
 
+.news-slider .slick-list .slick-track {
+  display: flex;
+  gap: 15px;
+}
+.news-slider .slick-slide {
+  /* margin-right: 20px !important; */
+  height: 400px !important;
+}
 @media (min-width:1000px) {
 
   .visitor-left-content {
@@ -248,4 +260,97 @@ li {
 
 .sevice-underline {
   border: 2px solid var(--backgroundGreen);
+}
+
+.ad-slider .slick-dots {
+  bottom: 10px;
+  width: 95% !important;
+}
+.ad-slider .slick-dots li button:before{
+   color: #ffffff !important;
+   opacity: 1 !important;
+}
+
+
+.ad-slider .slick-dots .slick-active button:before{
+  color: transparent !important;
+  border: 4px solid #ffffff !important;
+  border-radius: 50% !important;
+  width: 13px;
+  height: 12px;
+  margin: 3px;
+}
+
+.ad-slider .slick-prev{
+  left: 20px !important;
+}
+
+.ad-slider .slick-next{
+  right: 30px !important;
+}
+
+.ad-slider .slick-prev:before,
+.ad-slider .slick-next:before{
+   color: #ffffff !important;
+}
+/* .ad-slider .slick-prev:before {
+  content: '';
+  background-image: url(../Images/Home/Chevron_left.png);
+} */
+
+/* @media (max-width:550px) {
+.ad-slider .slick-dots {
+   width: 350px !important;
+}
+} */
+
+
+.custom-prev-arrow {
+  background: url("../Images/Home/Chevron_left.png") no-repeat center;
+  background-size: contain;
+  width: 40px;
+  height: 40px;
+  opacity: 0.5;
+  position: absolute;
+  top: 45%;
+  left: 20px;
+  filter: invert(1);
+  z-index: 1;
+}
+
+.custom-next-arrow {
+  background: url("../Images/Home/Chevron_right.png") no-repeat center;
+  background-size: contain;
+  width: 40px;
+  height: 40px;
+  opacity: 0.5;
+  position: absolute;
+  top: 45%;
+  right: 20px;
+  filter: invert(1);
+  z-index: 1;
+}
+
+.custom-next-arrow:hover,
+.custom-prev-arrow:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+@media (max-width:550px) {
+  .custom-next-arrow,
+.custom-prev-arrow {
+  width: 25px;
+  height: 25px;
+}
+}
+
+.ad-slider .overlay-content {
+  position: absolute;
+  top: 20%;
+  font-family: playfair display, serif;
+  /* left: 0; */
+}
+.ad-slider .overlay-content h3 {
+  font-family: playfair display, serif;
 }

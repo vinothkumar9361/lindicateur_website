@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "flowbite";
+/* @import "flowbite"; */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,12 +23,18 @@ body {
 
 h1 {
   font-size: 3.2em;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 h2 {
   font-size: 2.8em;
   line-height: 1.1em !important;
+  font-family: "Poppins", serif;
+}
+
+h3 {
+  font-size: 2em;
+  line-height: 1.2em !important;
   font-family: "Poppins", serif;
 }
 
@@ -47,7 +54,7 @@ p {
 }
 
 li {
-  font-size: 18px;
+  font-size: 16px;
   font-family: "Poppins", serif;
 }
 
@@ -89,6 +96,12 @@ li {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 
+@media(min-width:1024px) and (max-width:1300px) {
+  .mar-left {
+    margin-left: 15px !important;
+  }
+}
+
 @media (max-width:550px) {
   h1 {
     font-size: 2em;
@@ -98,24 +111,40 @@ li {
     font-size: 1.5em;
   }
 
+  h3 {
+    font-size: 1.25em;
+  }
+
   h4 {
     font-size: 1em;
+  }
+
+  p {
+    font-size: 14px;
   }
 
 }
 
 /* Header */
-.navbar{
+.navbar {
   transition: transform 0.3s ease-in-out;
   z-index: 1001;
 }
+
 .navbar.hidden {
   transform: translateY(-100%);
   transition: transform 0.3s ease-in-out;
 }
+
 .header-ul li:hover a,
 .header-ul .active a {
   color: #8BB603 !important;
+}
+
+@media (max-width:1250px) {
+  .header-card {
+    display: none !important;
+  }
 }
 
 /* Home Page */
@@ -135,18 +164,18 @@ li {
   display: none;
 }
 
-.banner-text{
+.banner-text {
   z-index: 1000;
   padding-top: 400px;
-  padding-bottom: 200px;  
+  padding-bottom: 200px;
 }
 
 .banner-background {
-   /* position: fixed; */
-   top: 0;
-   width: 100%;
-   height: 1000px;
-   z-index: -1;
+  /* position: fixed; */
+  top: 0;
+  width: 100%;
+  height: 1000px;
+  z-index: -1;
 
 }
 
@@ -160,17 +189,19 @@ li {
     padding-top: 120px;
     padding-bottom: 60px;
   }
-  .banner-text{
+
+  .banner-text {
     padding-top: 200px;
   }
 }
 
 @media (max-width:550px) {
-  .banner-text{
+  .banner-text {
     padding-top: 100px;
     padding-bottom: 50px;
   }
 }
+
 .banner-btn:hover {
   background-color: var(--backgroundGreen);
 }
@@ -200,10 +231,12 @@ li {
   display: flex;
   gap: 15px;
 }
+
 .news-slider .slick-slide {
   /* margin-right: 20px !important; */
   height: 400px !important;
 }
+
 @media (min-width:1000px) {
 
   .visitor-left-content {
@@ -221,6 +254,7 @@ li {
 .react-tel-input {
   width: 390px !important;
 }
+
 .react-tel-input .form-control {
   width: 390px !important;
   height: 45px !important;
@@ -266,13 +300,14 @@ li {
   bottom: 10px;
   width: 95% !important;
 }
-.ad-slider .slick-dots li button:before{
-   color: #ffffff !important;
-   opacity: 1 !important;
+
+.ad-slider .slick-dots li button:before {
+  color: #ffffff !important;
+  opacity: 1 !important;
 }
 
 
-.ad-slider .slick-dots .slick-active button:before{
+.ad-slider .slick-dots .slick-active button:before {
   color: transparent !important;
   border: 4px solid #ffffff !important;
   border-radius: 50% !important;
@@ -281,18 +316,19 @@ li {
   margin: 3px;
 }
 
-.ad-slider .slick-prev{
+.ad-slider .slick-prev {
   left: 20px !important;
 }
 
-.ad-slider .slick-next{
+.ad-slider .slick-next {
   right: 30px !important;
 }
 
 .ad-slider .slick-prev:before,
-.ad-slider .slick-next:before{
-   color: #ffffff !important;
+.ad-slider .slick-next:before {
+  color: #ffffff !important;
 }
+
 /* .ad-slider .slick-prev:before {
   content: '';
   background-image: url(../Images/Home/Chevron_left.png);
@@ -338,11 +374,12 @@ li {
 }
 
 @media (max-width:550px) {
+
   .custom-next-arrow,
-.custom-prev-arrow {
-  width: 25px;
-  height: 25px;
-}
+  .custom-prev-arrow {
+    width: 25px;
+    height: 25px;
+  }
 }
 
 .ad-slider .overlay-content {
@@ -351,6 +388,34 @@ li {
   font-family: playfair display, serif;
   /* left: 0; */
 }
+
 .ad-slider .overlay-content h3 {
   font-family: playfair display, serif;
 }
+
+/* Research */
+.search-box {
+  height: 100vh !important;
+  overflow-y: auto;
+}
+
+.search-box::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width:1024px) {
+  .search-box {
+    height: 55vh !important;
+  }
+}
+
+/* @media (min-width:1024px) {
+  .result-data {
+    height: 50vh !important;
+    overflow-y: auto;
+  }
+
+  .result-data::-webkit-scrollbar {
+    display: none;
+  }
+} */

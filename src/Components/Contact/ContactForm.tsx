@@ -90,7 +90,7 @@ const ContactForm = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                         ) : null}
                                     </div>
-                                    <button type="submit" className="text-black font-bold border_black p-3 w-full mt-6 sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Submit</button>
+                                    <button type="submit" className="text-black font-bold border_black p-3 w-full mt-6 sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Envoyer</button>
                                 </Form>
                             )}
                         </Formik>

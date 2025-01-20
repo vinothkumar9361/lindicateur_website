@@ -111,8 +111,8 @@ const NewsSlider = () => {
             <div className="mt-14 news-slider">
                 <div className="container mx-auto">
                     <div className="text-center">
-                        <h5 className="txt_green font-bold">Actualités</h5>
-                        <h2 className="text-black font-bold">A la une !</h2>
+                        <h5 className="txt_green font-medium">Actualités</h5>
+                        <h2 className="text-black font-normal">A la une !</h2>
                     </div>
                     <Slider {...settings} className="px-10 mt-4 mb-14">
                         {
@@ -124,10 +124,10 @@ const NewsSlider = () => {
                                                 <Image src={item?.image} alt="img" className="w-full h-48" />
                                             </div>
                                             <div className="pt-3 p-4">
-                                                <p className="font-bold pb-2 txt_light_green">{item?.title}</p>
+                                                <p className="font-medium pb-2 txt_light_green">{item?.title}</p>
                                                 <p className="pb-2">{item?.time}</p>
                                                 <p className="pb-2">{item?.description}</p>
-                                                <a href=""><p className="text-right font-bold underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
+                                                <a href=""><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
                                             </div>
                                         </div>
                                     </>

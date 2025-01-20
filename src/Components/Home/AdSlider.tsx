@@ -55,10 +55,10 @@ const AdSlider = () => {
     };
     return (
         <>
-            <div className="bg-white pt-14 ad-slider">
+            <div className="bg-white pt-14 pb-14 ad-slider">
                 <div className="container mx-auto">
 
-                    <Slider {...settings} className="px-4">
+                    <Slider {...settings} className="">
                         {
                             data?.map((item: any, i: number) => {
                                 return (

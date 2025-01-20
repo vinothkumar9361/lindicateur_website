@@ -18,44 +18,50 @@
 body {
   color: var(--foreground);
   /* background: var(--background); */
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 3em;
   font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 h2 {
   font-size: 2.8em;
   line-height: 1.1em !important;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 h3 {
   font-size: 2em;
   line-height: 1.2em !important;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 h4 {
   font-size: 1.25em;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 h5 {
   font-size: 1.25em;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 p {
   font-size: 16px;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
 }
 
 li {
   font-size: 16px;
-  font-family: "Poppins", serif;
+  font-family: "Poppins-extralight", "Poppins", serif;
+}
+
+@media (min-width: 1280px) and (max-width:1536px) {
+  .container {
+    max-width: 1100px;
+  }
 }
 
 .bg_green {
@@ -68,6 +74,10 @@ li {
 
 .bg_light_black {
   background: var(--backgroundLightBlack);
+}
+
+.text-black{
+  color: #000000 !important;
 }
 
 .txt_green {
@@ -90,6 +100,10 @@ li {
 
 .fs_14 {
   font-size: 14px;
+}
+
+.fs_20 {
+  font-size: 20px;
 }
 
 .box_shadow_light {
@@ -149,7 +163,7 @@ li {
 
 /* Home Page */
 .home_banner {
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5));
   background-repeat: no-repeat;
   background-size: cover;
   color: #fff;
@@ -244,9 +258,10 @@ li {
     /* box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; */
     position: relative;
     width: 650px;
-    left: 50px;
+    left: 0;
     top: 12%;
     padding: 30px 50px;
+    padding-left: 0 !important;
   }
 
 }

@@ -45,9 +45,9 @@ const Banner = () => {
             <div className="home_banner px-6 flex flex-col content-center items-center justify-center h-full">
                 <div className="container mx-auto banner-text">
                     <div className="flex flex-col content-center items-center text-center">
-                        <h1 className="font-bold pt-4">Tous les experts à proximité de chez vous !</h1>
+                        <h1 className="pt-4">Tous les experts à proximité de chez vous !</h1>
                     </div>
-                    <div className="pt-4">
+                    <div className="pt-8">
                         <div className="bg-white lg:bg-transparent">
                             <div className="flex flex-col pt-6 lg:flex-row px-6 lg:px-0 ">
                                 <div

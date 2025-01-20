@@ -11,7 +11,7 @@ const Banner = () => {
                 <Image src={BannerImg} alt="banner" className="w-full h-full" />
             </div>
             <div className="container mx-auto text-center py-4 px-4">
-                <h1 className="font-bold">Nous contacter</h1>
+                <h1 className="font-normal">Nous contacter</h1>
             </div>
         </>
     )

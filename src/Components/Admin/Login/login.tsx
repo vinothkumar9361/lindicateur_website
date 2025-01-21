@@ -21,7 +21,7 @@ const LoginSchema = Yup.object().shape({
 
 const LoginForm = () => {
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
-    const [showVerfication, setShowVerfication] = useState<boolean | null>(true);
+    const [showVerfication, setShowVerfication] = useState<boolean | null>(false);
 
     return (
         <>

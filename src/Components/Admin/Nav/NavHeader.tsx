@@ -21,7 +21,7 @@ const NavHeader = ({showsidebar, changesidebar}:any) => {
         <>
             <nav className="fixed navbar w-full bg-gray-200 border-gray-200 dark:bg-gray-900 z-10">
                 <div className="flex flex-wrap lg:flex-row items-center justify-between mx-auto">
-                    <a href="#" className="hidden lg:flex items-center space-x-3 rtl:space-x-reverse pt-4">
+                    <a href="#" className="hidden lg:flex items-center space-x-3 rtl:space-x-reverse py-4">
                         <Image src={Logo} alt="logo" width={300} height={100} className="w-40 lg:w-80" />
                     </a>
                     <div className="lg:hidden" onClick={() => { changesidebar()}}>

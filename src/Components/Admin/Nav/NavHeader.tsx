@@ -58,7 +58,7 @@ const NavHeader = ({showsidebar, changesidebar}:any) => {
                             </div>
                             <ul className="py-2" aria-labelledby="user-menu-button">
                                 <li>
-                                    <a href="/dashboard/profile/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                                    <a href="/admin/profile/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
                                 </li>
                                 <li>
                                     <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">se déconnecter</a>

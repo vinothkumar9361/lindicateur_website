@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const currentUrl = new URL(window.location.href);
+      const currentUrl = new URL(window.location.href);      
       setCurrentPathname(currentUrl.pathname);
     }
   }, []);
@@ -21,13 +21,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       {
-        currentPathname === '/dashboard/' ?
+        currentPathname.includes("/dashboard/") || currentPathname.includes("/admin/") ?
           null
           : <Header />
       }
       <Component {...pageProps} />
       {
-        currentPathname === '/dashboard/' ?
+        currentPathname.includes("/dashboard/") || currentPathname.includes("/admin/") ?
           null
           : <Footer />
       }

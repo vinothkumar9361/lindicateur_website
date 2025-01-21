@@ -12,11 +12,11 @@ const EstablishmentList = () => {
         <>
             <div className="w-full lg:w-auto">
                 <div>
-                    <h3 className="pb-4" >Mes établissements</h3>
+                    <h3 className="pb-4" >Liste des établissements</h3>
                     <hr className="" />
                 </div>
                 <div className="flex flex-col lg:flex-row gap-5 w-full lg:justify-between py-4">
-                    <div className="flex justify-between  lg:gap-8 py-2 px-2">
+                    <div className="flex justify-between  lg:gap-14 py-2 px-2">
                         <div className="flex gap-2 items-center">
                             <IoSearchOutline className="w-6 h-6" />
                             <p>Recherche</p>
@@ -30,9 +30,9 @@ const EstablishmentList = () => {
                             <p>Trier</p>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">

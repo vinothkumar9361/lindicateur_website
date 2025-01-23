@@ -19,6 +19,8 @@ import { LoginForCustomer } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
+import Spinner from "@/Components/Common/Loading";
+
 import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
@@ -56,7 +58,10 @@ const LoginForm = () => {
             }).then(() => {
                 if (success?.token) {
                     localStorage.setItem('user-auth-token', success?.token);
+                    localStorage.setItem('user-auth-id', success?.existingUser?.id);
+                    dispatch(successMessage(""));
                     router.push(`/dashboard/`);
+
                 }
             })
         }
@@ -69,6 +74,7 @@ const LoginForm = () => {
                 confirmButtonText: "Okay",
                 timer: 5000,
             }).then(() => {
+                dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);
@@ -123,7 +129,7 @@ const LoginForm = () => {
                                         <div className="relative">
                                             <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />
                                             <span
-                                                className='login-eye-icon'
+                                                className='login-eye-icon cursor-pointer'
                                                 onClick={() => setShowPassword(!showPassword)}
                                             >
                                                 {showPassword ? <FaEyeSlash className='icon' /> : <FaEye className='icon' />}
@@ -134,10 +140,16 @@ const LoginForm = () => {
                                         ) : null}
                                     </div>
                                     <div className="flex gap-2 pt-4">
-                                        <input type="checkbox" className="shadow txt_green" />
+                                        <input type="checkbox" className="shadow txt_green cursor-pointer" />
                                         <p>Souvenez-vous de moi</p>
                                     </div>
-                                    <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">Connexion</button>
+                                    <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">
+                                        {
+                                            Loading ?
+                                                <Spinner />
+                                                : "Connexion"
+                                        }
+                                    </button>
                                     <div className="text-center">
                                         <p className="font-bold text-xl">OU</p>
                                     </div>

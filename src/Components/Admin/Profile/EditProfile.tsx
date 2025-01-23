@@ -101,10 +101,11 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                         </div>
                         <div className="p-4 md:p-5 space-y-4">
                             <Formik
+                                enableReinitialize
                                 initialValues={{
-                                    name: Admin?.data?.existingUser?.adminName,
-                                    email: Admin?.data?.existingUser?.email,
-                                    phone: Admin?.data?.existingUser?.phone
+                                    name: Admin?.data?.existingUser?.adminName || '',
+                                    email: Admin?.data?.existingUser?.email || '',
+                                    phone: Admin?.data?.existingUser?.phone || '',
                                 }}
                                 validationSchema={AdminSchema}
                                 onSubmit={values => {

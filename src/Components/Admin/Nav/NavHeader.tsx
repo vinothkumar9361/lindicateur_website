@@ -1,7 +1,7 @@
 `use client`;
 
 import Image from "next/image";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import Logo from '@/Images/Home/Logo.png';
@@ -26,7 +26,7 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
-            if(!tokenString){
+            if (!tokenString) {
                 router.push('/admin/login/')
             }
             setToken(tokenString);
@@ -42,7 +42,12 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
     const handlechange = () => {
         changesidebar(!showsidebar)
     }
-    
+
+    const LogOut = () => {
+        localStorage.removeItem('admin-auth-token');
+        router.push('/admin/login/')
+    }
+
     return (
         <>
             <nav className="fixed navbar w-full bg-gray-200 border-gray-200 dark:bg-gray-900 z-10">
@@ -87,7 +92,7 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
                                     <a href="/admin/profile/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
                                 </li>
                                 <li>
-                                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">se déconnecter</a>
+                                    <a onClick={ () => LogOut()} className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">se déconnecter</a>
                                 </li>
                             </ul>
                         </div>

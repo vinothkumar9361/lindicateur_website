@@ -8,9 +8,11 @@ import {
 } from '@/store/slices/adminAction';
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
+import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, UpdateBannersForAdmin, DeleteBannersForAdmin, PublishBannersForAdmin } from '@/store/slices/adminAction';
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllBannerList, GetAllCategoryList } from '@/store/slices/customerAction';
 
 interface Headers extends AxiosHeaders {
     authorization?: string;
@@ -29,8 +31,14 @@ interface InitialState {
     AdminCategoryList: any | null;
     AdminPublicitesList: any | null;
     AdminPublicites: any | null;
+    AdminBannersList: any | null;
+    AdminBanners: any | null;
     Customer: any | null,
     CustomerEtabliselist: any | null;
+    CustomerResearchData: any | null;
+    CustomerBannerList: any | null;
+    CustomerPublicitesList: any | null;
+    CustomerCategoryList: any | null;
 
 }
 
@@ -46,8 +54,14 @@ const initialState: InitialState = {
     AdminCategoryList: null,
     AdminPublicitesList: null,
     AdminPublicites: null,
+    AdminBannersList: null,
+    AdminBanners: null,
     Customer: null,
-    CustomerEtabliselist: null
+    CustomerEtabliselist: null,
+    CustomerResearchData : null,
+    CustomerBannerList : null,
+    CustomerPublicitesList : null,
+    CustomerCategoryList : null,
 };
 
 // Create the slice
@@ -353,6 +367,96 @@ const ReduxSlice = createSlice({
                 state.success = null;
             })
 
+            // Add Banners for admin
+            .addCase(AddBannersForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(AddBannersForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(AddBannersForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+             // Get All Banner List for admin
+             .addCase(GetAllBannerListForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllBannerListForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.AdminBannersList = action.payload;
+            })
+            .addCase(GetAllBannerListForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.AdminBanners = null;
+            })
+
+            // Get Banners for admin
+            .addCase(GetBannersForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetBannersForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.AdminBanners = action.payload;
+            })
+            .addCase(GetBannersForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.AdminBanners = null;
+            })
+
+             // Update Banner for admin
+             .addCase(UpdateBannersForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(UpdateBannersForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(UpdateBannersForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Delete Banner for admin
+            .addCase(DeleteBannersForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(DeleteBannersForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(DeleteBannersForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Publish Banner for admin
+            .addCase(PublishBannersForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(PublishBannersForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(PublishBannersForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
             // Customer Module
             // SignUp for Customer
             .addCase(SignUpForCustomer.pending, (state) => {
@@ -427,6 +531,81 @@ const ReduxSlice = createSlice({
                 state.errors = action.payload;
                 state.Loading = false;
                 state.CustomerEtabliselist = null;
+            })
+
+            // Get All Establishment Profile Search
+            .addCase(GetAllEstablishmentProfileSearch.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllEstablishmentProfileSearch.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerResearchData = action.payload;
+            })
+            .addCase(GetAllEstablishmentProfileSearch.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerResearchData = null;
+            })
+
+            // Get All Establishment Phone Number Search
+            .addCase(GetAllEstablishmentPhoneNumberSearch.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllEstablishmentPhoneNumberSearch.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerResearchData = action.payload;
+            })
+            .addCase(GetAllEstablishmentPhoneNumberSearch.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerResearchData = null;
+            })
+
+            // Get All Publicites List
+            .addCase(GetAllPublicitesList.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllPublicitesList.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerPublicitesList = action.payload;
+            })
+            .addCase(GetAllPublicitesList.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerPublicitesList = null;
+            })
+
+            // Get All Banners List
+            .addCase(GetAllBannerList.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllBannerList.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerBannerList = action.payload;
+            })
+            .addCase(GetAllBannerList.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerBannerList = null;
+            })
+
+            // Get All Category List
+            .addCase(GetAllCategoryList.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllCategoryList.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerCategoryList = action.payload;
+            })
+            .addCase(GetAllCategoryList.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerCategoryList = null;
             })
 
     },

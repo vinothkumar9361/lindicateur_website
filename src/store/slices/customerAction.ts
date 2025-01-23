@@ -45,11 +45,11 @@ export const GetCustomerProfile = createAsyncThunk(
     async (val: any, { rejectWithValue }) => {
         const headers = new AxiosHeaders({
             'Content-Type': 'application/json',
-            authorization: 'Bearer ' + val,
+            authorization: 'Bearer ' + val?.token,
         });
         try {
             const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getSingleUser`, { headers });
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getUser/${val?.userId}`, { headers });
             if (response.status === 200 || response.status === 201) {
                 return response;
             }
@@ -169,3 +169,81 @@ export const ContactUs = createAsyncThunk(
 );
 
 // Search & List Module
+
+export const GetAllEstablishmentProfileSearch = createAsyncThunk(
+    'lindicateur/GetAllEstablishmentProfileSearch',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetAllEstablishmentPhoneNumberSearch = createAsyncThunk(
+    'lindicateur/GetAllEstablishmentPhoneNumberSearch',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearchPhoneNumber?phoneNumber=${val?.phoneNumber}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetAllPublicitesList = createAsyncThunk(
+    'lindicateur/GetAllPublicitesList',
+    async (val: any, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.cetegoryName}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetAllBannerList = createAsyncThunk(
+    'lindicateur/GetAllBannerList',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllBannerCustomer`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetAllCategoryList = createAsyncThunk(
+    'lindicateur/GetAllCategoryList',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategoryCustomers?type=${val?.type}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);

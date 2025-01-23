@@ -86,7 +86,7 @@ const ViewOrEditPublicites = () => {
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
-                router.push('/admin/voir-un-publicite/')
+                router.push(`/admin/voir-un-publicite/${AdminPublicites?.data?.existingAds?.id}/`)
             })
         }
         else if (errors) {
@@ -112,8 +112,8 @@ const ViewOrEditPublicites = () => {
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
-                    <button onClick={() => { router.push(`/admin/modifier-un-publicite/${AdminPublicites?.data?.existingAds?.id}`) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
-                    <button onClick={() => { PublishDetails(AdminPublicites?.data?.existingAds?.id)}} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 mt-6 mb-5 lg:mb-3 search-btn">{ AdminPublicites?.data?.existingAds?.isPublished ? "Publier" : "Annuler la publication"}</button>
+                    <button onClick={() => { router.push(`/admin/modifier-un-publicite/${AdminPublicites?.data?.existingAds?.id}`) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
+                    <button onClick={() => { PublishDetails(AdminPublicites?.data?.existingAds?.id)}} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">{ AdminPublicites?.data?.existingAds?.isPublished ? "Publier" : "Annuler la publication"}</button>
 
                 </div>
                 <div className='sm:px-16 md:px-4'>

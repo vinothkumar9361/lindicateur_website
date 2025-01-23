@@ -54,9 +54,13 @@ const LoginForm = () => {
     }, []);
 
     useEffect(() => {
+
         if (success) {
+            if(success?.data?.message === ''){
+
+            }
             Swal.fire({
-                title: success?.message,
+                title: success?.data?.message,
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
@@ -193,7 +197,7 @@ const LoginForm = () => {
                                                 <div className="relative">
                                                     <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />
                                                     <span
-                                                        className='login-eye-icon'
+                                                        className='login-eye-icon cursor-pointer'
                                                         onClick={() => setShowPassword(!showPassword)}
                                                     >
                                                         {showPassword ? <FaEyeSlash className='icon' /> : <FaEye className='icon' />}
@@ -204,7 +208,7 @@ const LoginForm = () => {
                                                 ) : null}
                                             </div>
                                             <div className="flex gap-2 pt-4">
-                                                <input type="checkbox" className="shadow txt_green" />
+                                                <input type="checkbox" className="shadow txt_green cursor-pointer" />
                                                 <p>Souvenez-vous de moi</p>
                                             </div>
                                             <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">

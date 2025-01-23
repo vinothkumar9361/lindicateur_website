@@ -1,4 +1,4 @@
-"use client";
+`use clien`;
 
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -31,9 +31,6 @@ const PublicitesList = () => {
         dispatch(GetAllPublicitesListForAdmin({ token, page: 1, search: value }));
     }
 
-    // const handleSort = (value: any) => {
-    //     dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
-    // }
     useEffect(() => {
         dispatch(GetAllPublicitesListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
 

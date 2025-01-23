@@ -1,3 +1,4 @@
+`use client`;
 
 import Search from "@/Components/Rechercher/Search";
 import ResultData from "@/Components/Rechercher/ResultData";

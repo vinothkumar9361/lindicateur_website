@@ -404,8 +404,8 @@ export const PublishPublicitesForAdmin = createAsyncThunk(
 );
 
 // Admin Banners Module
-export const GetAllBannersListForAdmin = createAsyncThunk(
-    'lindicateur/GetAllBannersListForAdmin',
+export const GetAllBannerListForAdmin = createAsyncThunk(
+    'lindicateur/GetAllBannerListForAdmin',
     async (val: any, { rejectWithValue }) => {
         console.log(val);
 
@@ -415,25 +415,25 @@ export const GetAllBannersListForAdmin = createAsyncThunk(
         })
         try {
             if (val?.search && val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllAds?search=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?search=${val?.search}&alphabetOrder=${val?.sort}&page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.search) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllAds?search=${val?.search}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?search=${val?.search}&page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllAds?alphabetOrder=${val?.sort}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?alphabetOrder=${val?.sort}&page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllAds`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
@@ -454,7 +454,91 @@ export const AddBannersForAdmin = createAsyncThunk(
             'Content-Type': 'application/json',
         })
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/user/my-wallet-transactions/${val?.page}`
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/addBanner`, val?.bannerData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetBannersForAdmin = createAsyncThunk(
+    'lindicateur/GetBannersForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getSingleBanner/${val?.id}`
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const UpdateBannersForAdmin = createAsyncThunk(
+    'lindicateur/UpdateBannersForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/updateBanner`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const DeleteBannersForAdmin = createAsyncThunk(
+    'lindicateur/DeleteBannersForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteBanner/${val?.id}`
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const PublishBannersForAdmin = createAsyncThunk(
+    'lindicateur/PublishBannersForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/publishBanners`, val?.publishData
                 , { headers: headers });
             if (response.status === 200 || response.status === 201) {
                 return response;

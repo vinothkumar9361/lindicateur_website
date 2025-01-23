@@ -20,27 +20,37 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, Customer } = useSelector((state: RootState) => state.lindicateur);
 
+    console.log(Customer);
+    
     const [token, setToken] = useState<string | null>(null);
+    const [userId, setUserId] = useState<number | null>(null);
     const [show, setShow] = useState<boolean | null>(false);
 
     useEffect(() => {
             if (typeof window !== 'undefined') {
-                const tokenString = localStorage.getItem('admin-auth-token');
+                const tokenString = localStorage.getItem('user-auth-token');
+                const userID:any = localStorage.getItem('user-auth-id');
                 if(!tokenString){
                     router.push('/login/')
                 }
                 setToken(tokenString);
+                setUserId(userID)
             }
         }, []);
     
         useEffect(() => {
-            if (token) {
-                dispatch(GetCustomerProfile(token));
+            if (token && userId) {
+                dispatch(GetCustomerProfile({ token, userId}));
             }
-        }, [token])
+        }, [token, userId])
 
     const handlechange = () => {
         changesidebar(!showsidebar)
+    }
+
+    const LogOut = () => {
+        localStorage.removeItem('user-auth-token');
+        router.push('/login/')
     }
     return (
         <>
@@ -57,7 +67,7 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
                         }
 
                     </div>
-                    <div className="flex items-center relative lg:gap-8 lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-2 lg:mr-10">
+                    <div className="flex items-center relative md:gap-5 lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-2 lg:mr-10">
                         <div>
                             <MdOutlineNotificationsActive className="w-6 h-6 sm:w-8 sm:h-8 lg:w-8 lg:h-8" />
                         </div>
@@ -71,22 +81,22 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
                             onClick={() => { setShow(!show) }}
                         >
                             <span className="sr-only">Open user menu</span>
-                            <CgProfile className=" w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
+                            <CgProfile className=" w-8 h-8 sm:w-10 sm:h-10 lg:w-10 lg:h-10" />
                         </button>
                         <div
                             className={`z-50 ${show ? "" : "hidden"} absolute top-10 right-0 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`}
                             id="user-dropdown"
                         >
                             <div className="px-4 py-3">
-                                <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-                                <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">admin@@econergiefrance.fr</span>
+                                <span className="block text-sm text-gray-900 dark:text-white">{Customer?.data?.existingUser?.customerName}</span>
+                                <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{Customer?.data?.existingUser?.email}</span>
                             </div>
                             <ul className="py-2" aria-labelledby="user-menu-button">
                                 <li>
-                                    <a href="/dashboard/profile/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                                    <a href="/dashboard/profile/" className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
                                 </li>
                                 <li>
-                                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">se déconnecter</a>
+                                    <a onClick={ () => LogOut()} className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">se déconnecter</a>
                                 </li>
                             </ul>
                         </div>

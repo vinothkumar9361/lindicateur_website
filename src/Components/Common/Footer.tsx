@@ -26,7 +26,7 @@ function Footer() {
                             data-dropdown-placement="bottom"
                         >
                             <span className="sr-only">Open user menu</span>
-                            <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo" />
+                            <img className="w-8 h-8 rounded-full" src="" alt="user photo" />
                         </button>
                         <div
                             className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"

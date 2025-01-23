@@ -31,9 +31,6 @@ const EstablishmentList = () => {
         dispatch(GetAllEtablissementListForCustomer({ token, page: 1, search: value }));
     }
 
-    // const handleSort = (value: any) => {
-    //     dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
-    // }
     useEffect(() => {
         if (token) {
             dispatch(GetAllEtablissementListForCustomer({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
@@ -106,11 +103,11 @@ const EstablishmentList = () => {
                 <div className="flex flex-col lg:flex-row gap-5 w-full lg:justify-between py-4">
                     <div className="flex gap-10  lg:gap-8 py-2 px-2">
                         <div className="flex items-center cursor-pointer">
-                            <div className="p-1 h-8 border-2 border-gray-500">
+                            <div className="p-2 h-10 border-2 border-gray-500 rounded-l-md">
                                 <IoSearchOutline className="w-6 h-6" />
                             </div>
                             {/* <p>Recherche</p> */}
-                            <input className="h-8 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
+                            <input className="h-10 w-48 border-2 border-gray-500 pl-2 rounded-r-md outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
                         </div>
                         {/* <div className="flex gap-2 items-center">
                             <CiFilter className="w-6 h-6" />
@@ -123,8 +120,8 @@ const EstablishmentList = () => {
                             className="flex gap-2 items-center cursor-pointer">
                             {
                                 sortAsc ?
-                                    <FcAlphabeticalSortingAz className="w-6 h-6" />
-                                    : <FcAlphabeticalSortingZa className="w-6 h-6" />
+                                    <FcAlphabeticalSortingAz className="w-8 h-8" />
+                                    : <FcAlphabeticalSortingZa className="w-8 h-8" />
                             }
                             <p>Trier</p>
                         </div>

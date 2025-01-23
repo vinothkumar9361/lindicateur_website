@@ -1,6 +1,8 @@
-"use client";
+`use client`;
 
 import Image from "next/image";
+
+import { useState, useEffect } from "react";
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -11,6 +13,12 @@ import SlideImg2 from '@/Images/Home/slider-img-2.avif';
 import SlideImg3 from '@/Images/Home/slider-img-3.avif';
 
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { GetAllBannerList } from '@/store/slices/customerAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
 
 const data: any = [
     {
@@ -42,6 +50,14 @@ function SampleNextArrow(props: any) {
 }
 
 const AdSlider = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors, CustomerBannerList } = useSelector((state: RootState) => state.lindicateur);
+
+    console.log(CustomerBannerList);
+    
+    useEffect(() => {
+            dispatch(GetAllBannerList(data));
+    }, [dispatch])
 
     var settings = {
         dots: true,

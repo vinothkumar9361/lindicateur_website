@@ -46,46 +46,46 @@ const Profile = () => {
                         <CgProfile className="w-20 h-20" />
                     </div>
                     <div className="py-3">
-                        <p className="block text-lg text-gray-900">Bonnie Green</p>
-                        <p className="block text-sm  text-gray-500 truncate">admin@@econergiefrance.fr</p>
+                        <p className="block text-lg text-gray-900">{Customer?.data?.existingUser?.customerName}</p>
+                        <p className="block text-sm  text-gray-500 truncate">{Customer?.data?.existingUser?.email}</p>
                     </div>
                 </div>
                 <div className="shadow py-2 px-4 border-2 mt-6 sm:flex sm:flex-wrap">
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">Nom </p>
-                        <p className="block text-base text-gray-600 truncate">admin</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.customerName}</p>
                     </div>
-                    <div className="py-3 sm:w-1/2">
+                    {/* <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">Prénom</p>
                         <p className="block text-base text-gray-600 truncate">admin</p>
-                    </div>
+                    </div> */}
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">Email </p>
-                        <p className="block text-base text-gray-600 truncate">admin@@econergiefrance.fr</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.email}</p>
                     </div>
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">Téléphone </p>
-                        <p className="block text-base text-gray-600 truncate">06 03 84 08 12</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.phone}</p>
                     </div>
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">Nom de l'entreprise</p>
-                        <p className="block text-base text-gray-600 truncate">Akkenna</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.companyName}</p>
                     </div>
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">Adresse</p>
-                        <p className="block text-base text-gray-600 truncate">53 Rue Carnot</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.address}</p>
                     </div>
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">ville</p>
-                        <p className="block text-base text-gray-600 truncate">Boulogne</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.city}</p>
                     </div>
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">État</p>
-                        <p className="block text-base text-gray-600 truncate">Billancourt</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.state}</p>
                     </div>
                     <div className="py-3 sm:w-1/2">
                         <p className="block text-lg font-medium text-gray-900">code PIN</p>
-                        <p className="block text-base text-gray-600 truncate">92100</p>
+                        <p className="block text-base text-gray-600 truncate">{Customer?.data?.existingUser?.pincode}</p>
                     </div>
                 </div>
             </div>

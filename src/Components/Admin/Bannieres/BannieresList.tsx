@@ -30,9 +30,9 @@ const BannieresList = () => {
                             <p>Trier</p>
                         </div>
                     </div>
-                    {/* <div>
-                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
-                    </div> */}
+                    <div>
+                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter une bannière</button>
+                    </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">

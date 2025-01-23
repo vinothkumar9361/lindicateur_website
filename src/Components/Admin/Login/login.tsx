@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from 'next/link'
+import { useRouter } from 'next/router';
 
 import { useState, useEffect } from "react";
 
@@ -10,18 +10,80 @@ import Logo from '@/Images/Home/Logo.png';
 import { PiWarningCircleBold } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+import Swal from 'sweetalert2';
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { LoginForAdmin, ValitateOtpForAdmin } from '@/store/slices/adminAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
+
+import Spinner from "@/Components/Common/Loading";
+
 import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
 
 const LoginSchema = Yup.object().shape({
-    userName: Yup.string().required('Enter a user name.'),
-    password: Yup.string().required('Please provide a valid password').min(8, 'Password is too short - should be 8 chars minimum.').matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+    userName: Yup.string().required('Enter a user name.').required('Enter an email address like example@mysite.com.'),
+    password: Yup.string().required('Please provide a valid password').min(5, 'Password is too short - should be 8 chars minimum.').matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+});
+
+const OtpSchema = Yup.object().shape({
+    otp: Yup.string().required('Please provide a 6 digit code').min(6).max(6),
 });
 
 const LoginForm = () => {
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
+    
+    const [token, setToken] = useState<string | null>(null);
+
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
     const [showVerfication, setShowVerfication] = useState<boolean | null>(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const tokenString = localStorage.getItem('admin-auth-token');
+            setToken(tokenString);
+            if (tokenString) {
+                router.push(`/admin/liste-des-etablissements/`);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: success?.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                setShowVerfication(true);
+                if (success?.token) {
+                    localStorage.setItem('admin-auth-token', success?.token);
+                }
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+            })
+        }
+    }, [dispatch, success, errors]);
+
+    console.log(success);
+    console.log(errors);
 
     return (
         <>
@@ -42,9 +104,18 @@ const LoginForm = () => {
                                     initialValues={{
                                         otp: '',
                                     }}
-                                    validationSchema={LoginSchema}
+                                    validationSchema={OtpSchema}
                                     onSubmit={values => {
-                                        console.log(values);
+                                        let otp = {
+                                            otp: values?.otp
+                                        }
+                                        console.log(otp);
+
+                                        let token = localStorage.getItem('admin-auth-token');
+                                        token = token || success?.token;
+                                        console.log(token);
+
+                                        dispatch(ValitateOtpForAdmin({ token, otp }))
                                     }}
                                 >
                                     {({ errors, touched }) => (
@@ -57,6 +128,7 @@ const LoginForm = () => {
                                                 </label>
                                                 <Field
                                                     name="otp"
+                                                    type="number"
                                                     className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
                                                 />
                                                 {errors.otp && touched.otp ? (
@@ -67,7 +139,11 @@ const LoginForm = () => {
                                             <button
                                                 type="submit"
                                                 className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">
-                                                S'inscrire
+                                                {
+                                                    Loading ?
+                                                        <Spinner />
+                                                        : "S'inscrire"
+                                                }
                                             </button>
                                             <div className="px-6 mt-8 text-center cursor-pointer">
                                                 <p className="text-sky-400 ">Vous n'avez pas reçu le code ?</p>
@@ -90,7 +166,14 @@ const LoginForm = () => {
                                     }}
                                     validationSchema={LoginSchema}
                                     onSubmit={values => {
-                                        console.log(values);
+                                        let sendOtp = {
+                                            email: values?.userName,
+                                            password: values?.password,
+                                            roleId: "1"
+                                        }
+                                        console.log(sendOtp);
+
+                                        dispatch(LoginForAdmin(sendOtp))
                                     }}
                                 >
                                     {({ errors, touched }) => (
@@ -124,14 +207,20 @@ const LoginForm = () => {
                                                 <input type="checkbox" className="shadow txt_green" />
                                                 <p>Souvenez-vous de moi</p>
                                             </div>
-                                            <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">Connexion</button>
+                                            <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">
+                                                {
+                                                    Loading ?
+                                                        <Spinner />
+                                                        : "Connexion"
+                                                }
+                                            </button>
                                         </Form>
                                     )}
                                 </Formik>
                             </div>
                         </div>
                 }
-            </div>
+            </div >
         </>
     )
 }

@@ -1,14 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import Link from 'next/link'
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 import Logo from '@/Images/Home/Logo.png';
 
 import { PiWarningCircleBold } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { LoginForCustomer } from '@/store/slices/customerAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
 
 import { Formik, Form, Field } from 'formik';
 
@@ -20,7 +29,52 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
+
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const tokenString = localStorage.getItem('user-auth-token');
+            if (tokenString) {
+                router.push(`/dashboard/`);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: success?.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                if (success?.token) {
+                    localStorage.setItem('user-auth-token', success?.token);
+                    router.push(`/dashboard/`);
+                }
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+            })
+        }
+    }, [dispatch, success, errors]);
+
+    console.log(success);
+    console.log(errors);
 
     return (
         <>
@@ -42,7 +96,14 @@ const LoginForm = () => {
                             }}
                             validationSchema={LoginSchema}
                             onSubmit={values => {
-                                console.log(values);
+                                let data = {
+                                    email: values?.userName,
+                                    password: values?.password,
+                                    roleId: "2"
+                                }
+                                console.log(data);
+
+                                dispatch(LoginForCustomer(data))
                             }}
                         >
                             {({ errors, touched }) => (

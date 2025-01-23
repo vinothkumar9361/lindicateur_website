@@ -1,46 +1,49 @@
-`use client`;
+"use client";
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
-import Swal from 'sweetalert2';
 
 import { IoSearchOutline } from "react-icons/io5";
 import { CiFilter } from "react-icons/ci";
 import { BiSort } from "react-icons/bi";
 import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc";
 
+import AddCategorie from "./AddCategorie";
+import EditCategorie from "./EditCategorie";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllEtablissementListForAdmin, DeleteEtablissementForAdmin } from '@/store/slices/adminAction';
+import { GetAllCategoryListForAdmin } from '@/store/slices/adminAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
-const EstablishmentList = () => {
+const CategorieList = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
-    const { Loading, success, errors, AdminEtabliselist } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminCategoryList } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
+    const [showAdd, setShowAdd] = useState<boolean | null>(false);
+    const [showEdit, setShowEdit] = useState<boolean | null>(false);
+    const [categoryName, setCategoryName] = useState<string | null>(null);
     const [sortAsc, setSortAsc] = useState<boolean>(true);
 
     const handleSearch = (value: any) => {
-        dispatch(GetAllEtablissementListForAdmin({ token, page: 1, search: value }));
+        dispatch(GetAllCategoryListForAdmin({ token, page: 1, type: 'admin', search: value }));
     }
 
-    // const handleSort = (value: any) => {
-    //     dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
-    // }
     useEffect(() => {
-        if(token){
-            dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
-        }
+        dispatch(GetAllCategoryListForAdmin({ token, page: 1, type: 'admin', sort: sortAsc ? "ASC" : "DESC" }));
 
     }, [sortAsc]);
 
+    const handleCloseAdd = () => {
+        setShowAdd(false);
+    }
+    const handleCloseEdit = () => {
+        setShowEdit(false);
+    }
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -50,89 +53,63 @@ const EstablishmentList = () => {
 
     useEffect(() => {
         if (token) {
-            dispatch(GetAllEtablissementListForAdmin({ token, page: 1 }));
+            dispatch(GetAllCategoryListForAdmin({ token, type: 'admin' }));
         }
     }, [dispatch, token])
 
-    console.log(AdminEtabliselist);
-
-    useEffect(() => {
-        if (success) {
-            Swal.fire({
-                title: success?.data?.message,
-                icon: "success",
-                iconColor: "#36AA00",
-                confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
-                timer: 5000,
-            }).then(() => {
-                dispatch(successMessage(""));
-            })
-        }
-        else if (errors) {
-            Swal.fire({
-                title: errors?.response?.data?.message,
-                icon: "error",
-                iconColor: "#CA0505",
-                confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
-                timer: 5000,
-            }).then(() => {
-            })
-        }
-    }, [dispatch, success, errors]);
-
-    const deleteDetails = (id: any) => {
-        Swal.fire({
-            title: "Etes-vous sûr de vouloir supprimer vos données ?",
-            icon: "warning",
-            iconColor: "#CA0505",
-            showCancelButton: true,
-            cancelButtonColor: "#025BFD",
-            confirmButtonColor: "#CA0505",
-            confirmButtonText: "Supprimer"
-        }).then((result) => {
-            if (result?.isConfirmed) {
-                dispatch(DeleteEtablissementForAdmin({ token, id }));
-            }
-        })
-    }
+    console.log(AdminCategoryList);
 
     return (
         <>
+            {
+                showAdd ?
+                    <AddCategorie showAdd={showAdd} closeAdd={handleCloseAdd} />
+                    : null
+            }
+            {
+                showEdit ?
+                    <EditCategorie showEdit={showEdit} closeEdit={handleCloseEdit} categoryName={categoryName} />
+                    : null
+            }
+
             <div className="w-full lg:w-auto">
                 <div>
-                    <h3 className="pb-4" >Liste des établissements</h3>
+                    <h3 className="pb-4" >Liste des categorie</h3>
                     <hr className="" />
                 </div>
                 <div className="flex flex-col lg:flex-row gap-5 w-full lg:justify-between py-4">
                     <div className="flex gap-8  lg:gap-14 py-2 px-2">
                         <div className="flex items-center cursor-pointer">
-                            <div className="p-1 h-8 border-2 border-gray-500">
-                                <IoSearchOutline className="w-6 h-6" />
+                            <div className="p-1 h-10 border-2 border-gray-500">
+                                <IoSearchOutline className="w-6 h-8" />
                             </div>
                             {/* <p>Recherche</p> */}
-                            <input className="h-8 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
+                            <input className="h-10 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
                         </div>
                         {/* <div className="flex gap-2 items-center">
-                            <CiFilter className="w-6 h-6" />
-                            <p>Filtre</p>
-                        </div> */}
+                                                    <CiFilter className="w-6 h-6" />
+                                                    <p>Filtre</p>
+                                                </div> */}
                         <div
                             onClick={() => {
                                 setSortAsc(!sortAsc)
                             }}
                             className="flex gap-2 items-center cursor-pointer">
-                                {
-                                    sortAsc ?
-                                    <FcAlphabeticalSortingAz className="w-6 h-6" />
-                                    : <FcAlphabeticalSortingZa className="w-6 h-6" />
-                                }
+                            {
+                                sortAsc ?
+                                    <FcAlphabeticalSortingAz className="w-8 h-8" />
+                                    : <FcAlphabeticalSortingZa className="w-8 h-8" />
+                            }
                             <p>Trier</p>
                         </div>
                     </div>
                     <div>
-                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
+                        <button
+                            onClick={() => { setShowAdd(true) }}
+                            className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
+                        >
+                            Ajouter un Categorié
+                        </button>
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
@@ -149,16 +126,10 @@ const EstablishmentList = () => {
                                     No.
                                 </th>
                                 <th scope="col" className="px-6 py-3 border-2">
-                                    Société ID
+                                    categorié ID
                                 </th>
                                 <th scope="col" className="px-6 py-3 border-2">
-                                    Nom de la société
-                                </th>
-                                {/* <th scope="col" className="px-6 py-3 border-2">
-                                    Publicité
-                                </th> */}
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Statut
+                                    Nom de la categorié
                                 </th>
                                 <th scope="col" className="px-6 py-3 border-2">
                                     Action
@@ -167,7 +138,7 @@ const EstablishmentList = () => {
                         </thead>
                         <tbody>
                             {
-                                AdminEtabliselist?.data?.data?.map((data: any, i: number) => {
+                                AdminCategoryList?.data?.category?.map((data: any, i: number) => {
                                     return (
                                         <>
                                             <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -184,17 +155,19 @@ const EstablishmentList = () => {
                                                     {"I00" + data?.id}
                                                 </td>
                                                 <td className="px-6 py-4 border-2">
-                                                    {data?.companyName}
-                                                </td>
-                                                {/* <td className="px-6 py-4 border-2">
-                                                    oui
-                                                </td> */}
-                                                <td className="px-6 py-4 border-2">
-                                                    {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
+                                                    {data?.categoryName}
                                                 </td>
                                                 <td className="flex items-center px-6 py-4 ">
-                                                    <a onClick={() => { router.push(`/admin/modifier-an-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
-                                                    <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
+                                                    <a
+                                                        onClick={() => {
+                                                            setShowEdit(true)
+                                                            setCategoryName(data)
+                                                        }}
+                                                        className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                    >
+                                                        Modifier
+                                                    </a>
+                                                    {/* <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Supprimer</a> */}
                                                 </td>
                                             </tr>
                                         </>
@@ -209,4 +182,4 @@ const EstablishmentList = () => {
     )
 }
 
-export default EstablishmentList;
+export default CategorieList;

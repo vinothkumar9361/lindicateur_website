@@ -1,17 +1,28 @@
-"use client";
+`use client`;
 
 import Image from "next/image";
+import { useRouter } from 'next/router';
 
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 import Logo from '@/Images/Home/Logo.png';
 
 import { PiWarningCircleBold } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
+import Spinner from "@/Components/Common/Loading";
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { SignUpForCustomer } from '@/store/slices/customerAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
+
 import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
+import { log } from "console";
 
 const LoginSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -23,7 +34,42 @@ const LoginSchema = Yup.object().shape({
 });
 
 const SignupForm = () => {
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
+
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: success?.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                dispatch(successMessage(''));
+                router.push('login');
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                dispatch(errorMessage(''));
+            })
+        }
+    }, [dispatch, success, errors]);
+
+    console.log(success);
+    console.log(errors);
 
     return (
         <>
@@ -54,6 +100,20 @@ const SignupForm = () => {
                             validationSchema={LoginSchema}
                             onSubmit={values => {
                                 console.log(values);
+                                let newCustomer = {
+                                    customerName: values?.firstName + "" + values?.lastName,
+                                    email: values?.email,
+                                    password: values?.password,
+                                    phone: values?.phone,
+                                    address: values?.address,
+                                    city: values?.city,
+                                    state: values?.state,
+                                    pincode: values?.pincode,
+                                    roleId: 2,
+                                    companyName: values?.companyName
+                                }
+
+                                dispatch(SignUpForCustomer(newCustomer));
                             }}
                         >
                             {({ errors, touched }) => (
@@ -74,14 +134,14 @@ const SignupForm = () => {
                                     </div>
                                     <div className='flex flex-col pt-4 lg:w-1/2 lg:pr-4'>
                                         <label htmlFor="email" className='text-left pb-2'>Email *</label>
-                                        <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700' />
+                                        <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                         {errors.email && touched.email ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                         ) : null}
                                     </div>
                                     <div className='flex flex-col pt-4 lg:w-1/2 lg:pl-4'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone *</label>
-                                        <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700' />
+                                        <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                         {errors.phone && touched.phone ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
                                         ) : null}
@@ -137,7 +197,13 @@ const SignupForm = () => {
                                         ) : null}
                                     </div>
                                     <div className="w-full lg:flex lg:justify-center lg:pt-8">
-                                        <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-96 mb-5 lg:mb-3 search-btn">Créer un compte</button>
+                                        <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-96 mb-5 lg:mb-3 search-btn">
+                                            {
+                                                Loading ?
+                                                    <Spinner />
+                                                    : "Créer un compte"
+                                            }
+                                        </button>
                                     </div>
                                     <div className="w-full text-center">
                                         <p className="px-8 pt-4">Vous avez déjà un compte ? <a href="/login/" className="text-black font-medium underline">Se connecter</a></p>

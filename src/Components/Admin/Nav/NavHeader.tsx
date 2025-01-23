@@ -1,7 +1,7 @@
-"use client";
+`use client`;
 
 import Image from "next/image";
-
+import {useRouter} from "next/router";
 import { useState, useEffect } from "react";
 
 import Logo from '@/Images/Home/Logo.png';
@@ -10,13 +10,39 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineNotificationsActive, MdMenu } from "react-icons/md";
 import { BsArrowLeft } from "react-icons/bs";
 
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { GetAdminProfile } from '@/store/slices/adminAction';
+import { RootState, AppDispatch } from '@/store/store';
 
-const NavHeader = ({showsidebar, changesidebar}:any) => {
+const NavHeader = ({ showsidebar, changesidebar }: any) => {
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors, Admin } = useSelector((state: RootState) => state.lindicateur);
+
+    const [token, setToken] = useState<string | null>(null);
     const [show, setShow] = useState<boolean | null>(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const tokenString = localStorage.getItem('admin-auth-token');
+            if(!tokenString){
+                router.push('/admin/login/')
+            }
+            setToken(tokenString);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (token) {
+            dispatch(GetAdminProfile(token));
+        }
+    }, [token])
 
     const handlechange = () => {
         changesidebar(!showsidebar)
     }
+    
     return (
         <>
             <nav className="fixed navbar w-full bg-gray-200 border-gray-200 dark:bg-gray-900 z-10">
@@ -24,13 +50,13 @@ const NavHeader = ({showsidebar, changesidebar}:any) => {
                     <a href="#" className="hidden lg:flex items-center space-x-3 rtl:space-x-reverse py-4">
                         <Image src={Logo} alt="logo" width={300} height={100} className="w-40 lg:w-80" />
                     </a>
-                    <div className="lg:hidden" onClick={() => { changesidebar()}}>
+                    <div className="lg:hidden" onClick={() => { changesidebar() }}>
                         {
                             showsidebar ?
-                            <BsArrowLeft className="h-10 w-10 my-2 mx-4 cursor-pointer" />
-                            : <MdMenu className="h-10 w-10 my-2 mx-4 cursor-pointer" />
+                                <BsArrowLeft className="h-10 w-10 my-2 mx-4 cursor-pointer" />
+                                : <MdMenu className="h-10 w-10 my-2 mx-4 cursor-pointer" />
                         }
-                        
+
                     </div>
                     <div className="flex items-center relative lg:gap-8 lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-2 lg:mr-10">
                         <div>
@@ -43,7 +69,7 @@ const NavHeader = ({showsidebar, changesidebar}:any) => {
                             aria-expanded="false"
                             data-dropdown-toggle="user-dropdown"
                             data-dropdown-placement="bottom"
-                            onClick={() => { setShow(!show)}}
+                            onClick={() => { setShow(!show) }}
                         >
                             <span className="sr-only">Open user menu</span>
                             <CgProfile className=" w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
@@ -53,8 +79,8 @@ const NavHeader = ({showsidebar, changesidebar}:any) => {
                             id="user-dropdown"
                         >
                             <div className="px-4 py-3">
-                                <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-                                <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">admin@@econergiefrance.fr</span>
+                                <span className="block text-sm text-gray-900 dark:text-white">{Admin?.data?.existingUser?.adminName}</span>
+                                <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{Admin?.data?.existingUser?.email}</span>
                             </div>
                             <ul className="py-2" aria-labelledby="user-menu-button">
                                 <li>

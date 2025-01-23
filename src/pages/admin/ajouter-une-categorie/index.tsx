@@ -1,13 +1,13 @@
-`use client`;
+'use client';
 
 import Layout from "@/Components/Admin/Layout";
-import AddEtablissement from "@/Components/Admin/Etablissement/AddEtablissement";
+import AddCategorie from "@/Components/Admin/Categorie/AddCategorie";
 
 const Add = () => {
     return (
         <>
             <Layout>
-                <AddEtablissement />
+                <AddCategorie />
             </Layout>
         </>
     )

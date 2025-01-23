@@ -1,13 +1,39 @@
-"use client";
+`use client`;
 
 import Image from "next/image";
+
+import { useState, useEffect } from "react";
 
 import { IoSearchOutline } from "react-icons/io5";
 import { CiFilter } from "react-icons/ci";
 import { BiSort } from "react-icons/bi";
 
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { GetAllEtablissementApprovalForAdmin } from '@/store/slices/adminAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
 
 const EstablishmentApproval = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors, AdminUnapprovalEtabliselist } = useSelector((state: RootState) => state.lindicateur);
+
+    const [token, setToken] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState<number>(0);
+    const pageLimit = 20;
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const tokenString = localStorage.getItem('admin-auth-token');
+            setToken(tokenString);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (token) {
+            dispatch(GetAllEtablissementApprovalForAdmin({ token, page: 1, pageLimit }));
+        }
+    }, [dispatch, token, pageLimit])
+
     return (
         <>
             <div className="w-full lg:w-auto">
@@ -26,9 +52,9 @@ const EstablishmentApproval = () => {
                             <p>Trier</p>
                         </div>
                     </div>
-                    {/* <div>
+                    <div>
                         <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
-                    </div> */}
+                    </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">

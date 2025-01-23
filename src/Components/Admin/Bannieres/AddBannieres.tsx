@@ -50,28 +50,28 @@ const AddBannieres = () => {
                             <Form className="md:flex md:flex-wrap md:w-full">
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                    <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700' />
+                                    <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.company && touched.company ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
-                                    <Field name="startdate" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700' />
+                                    <Field name="startdate" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.startdate && touched.startdate ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.startdate}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
-                                    <Field name="enddate" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700' />
+                                    <Field name="enddate" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.enddate && touched.enddate ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                    <Field name="postcode" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700' />
+                                    <Field name="postcode" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.postcode && touched.postcode ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
                                     ) : null}

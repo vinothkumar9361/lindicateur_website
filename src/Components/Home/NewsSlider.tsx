@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import TestImg from '@/Images/Home/Logo.png';
+import TestImg from '@/Images/Home/news-slider-img.avif';
 
 import { FaChevronRight, FaChevronCircleRight, FaChevronCircleLeft } from "react-icons/fa";
 
@@ -15,6 +15,39 @@ import "slick-carousel/slick/slick-theme.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { parseString } from "xml2js";
+
+const data: any = [
+    {
+        image: TestImg,
+        title: "Discours de politique générale : Bayrou ignore le climat",
+        description: "Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News.",
+        time: "10/01/2025 à 07:35"
+    },
+    {
+        image: TestImg,
+        title: "Discours de politique générale : Bayrou ignore le climat",
+        description: "Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News.",
+        time: "10/01/2025 à 07:35"
+    },
+    {
+        image: TestImg,
+        title: "Discours de politique générale : Bayrou ignore le climat",
+        description: "Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News.",
+        time: "10/01/2025 à 07:35"
+    },
+    {
+        image: TestImg,
+        title: "Discours de politique générale : Bayrou ignore le climat",
+        description: "Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News.",
+        time: "10/01/2025 à 07:35"
+    },
+    {
+        image: TestImg,
+        title: "Discours de politique générale : Bayrou ignore le climat",
+        description: "Comprehensive up-to-date news coverage, aggregated from sources all over the world by Google News.",
+        time: "10/01/2025 à 07:35"
+    },
+]
 
 const SamplePrevArrow = (props: any) => {
     const { className, style, onClick } = props;
@@ -38,29 +71,26 @@ const NewsSlider = () => {
     const [show, setShow] = useState<boolean | null>(true);
     const [jsonData, setJsonData] = useState<any>(null);
 
-    useEffect(() => {
-        const fetchXML = async () => {
-            try {
-                // Fetch the XML file from an API or local file
-                const response = await axios.get("/api/get-xml");
+    // useEffect(() => {
+    //     const fetchXML = async () => {
+    //         try {
+    //             const response = await axios.get("/api/get-xml");
 
-                // Convert XML to JSON
-                parseString(response.data, { explicitArray: false }, (err, result) => {
-                    if (err) {
-                        console.error("Error parsing XML:", err);
-                    } else {
-                        setJsonData(result); // Store JSON data in state
-                    }
-                });
-            } catch (error) {
-                console.error("Error fetching XML:", error);
-            }
-        };
+    //             parseString(response.data, { explicitArray: false }, (err, result) => {
+    //                 if (err) {
+    //                     console.error("Error parsing XML:", err);
+    //                 } else {
+    //                     setJsonData(result); 
+    //                 }
+    //             });
+    //         } catch (error) {
+    //             console.error("Error fetching XML:", error);
+    //         }
+    //     };
 
-        fetchXML();
-    }, []);
+    //     fetchXML();
+    // }, []);
 
-    console.log(jsonData?.rss?.channel?.item);
     
     var settings = {
         // dots: true,
@@ -111,18 +141,18 @@ const NewsSlider = () => {
                     </div>
                     <Slider {...settings} className="px-10 mt-4 mb-14">
                         {
-                            jsonData?.rss?.channel?.item?.map((item: any, i: number) => {
+                            data?.map((item: any, i: number) => {
                                 return (
                                     <>
                                         <div className="box_shadow_light">
-                                            <div className="bg-gray-100 h-40 text-center flex justify-center content-center items-center">
-                                                <Image src={TestImg} alt="img" className="w-full h-20" />
+                                            <div className="bg-gray-100 text-center justify-items-center">
+                                                <Image src={item?.image} alt="img" className="w-full h-48" />
                                             </div>
                                             <div className="pt-3 p-4">
-                                                <p className="font-medium mb-2 txt_light_green line-clamp-2">{item?.title}</p>
-                                                <p className="pb-2">{item?.pubDate}</p>
-                                                <p className="mb-2 line-clamp-2">{item?.description}</p>
-                                                <a href={item?.link}><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
+                                                <p className="font-medium pb-2 txt_light_green">{item?.title}</p>
+                                                <p className="pb-2">{item?.time}</p>
+                                                <p className="pb-2">{item?.description}</p>
+                                                <a href=""><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
                                             </div>
                                         </div>
                                     </>

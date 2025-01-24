@@ -55,9 +55,9 @@ const SearchMaps = () => {
 
 
 
-    const getMapMarker = async (city: any) => {
+    const getMapMarker = async (city: any, i:number) => {
         console.log(city);
-        
+
         const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`;
         const response = await axios.get(url);
         const { data }: any = response;
@@ -70,10 +70,13 @@ const SearchMaps = () => {
             longitude = parseFloat(lon);
 
             let marker = {
-               lat: latitude, 
-               lng: longitude 
+                id: i+ 1,
+                name: city,
+                position: {
+                    lat: latitude,
+                    lng: longitude
+                }
             }
-
             return marker;
         }
 
@@ -84,7 +87,7 @@ const SearchMaps = () => {
     //         console.log(value)
     //         let position = getMapMarker(value?.city);
     //         console.log(position);
-            
+
 
     //         //     name: "New York, New York",
     //         //     position: { lat: 40.712776, lng: -74.005974 }
@@ -93,17 +96,36 @@ const SearchMaps = () => {
     // }, [CustomerPublicitesList])
 
     useEffect(() => {
-        CustomerPublicitesList?.data?.data?.forEach((value: any) => {    
-            let position = getMapMarker(value?.city).then((position) => {
-                setMarkerValue([...markerValue, position])
-                 // Now logs the actual object
-            }).catch((error) => {
-                console.error("Error fetching map marker:", error);
+        if (CustomerPublicitesList?.data?.data) {
+            CustomerPublicitesList?.data?.data?.forEach((value: any, i:number) => {
+                let position = getMapMarker(value?.city, i).then((position) => {
+                    setMarkerValue([...markerValue, position])
+                    // Now logs the actual object
+                }).catch((error) => {
+                    console.error("Error fetching map marker:", error);
+                });
             });
-            
-        });
+        }
     }, [CustomerPublicitesList]);
-    
+
+    useEffect(() => {
+        if (CustomerResearchData?.data?.data) {
+            CustomerResearchData?.data?.data?.forEach((value: any, i:number) => {
+                let position = getMapMarker(value?.city, i).then((position) => {
+                    setMarkerValue([...markerValue, position])
+                    // Now logs the actual object
+                }).catch((error) => {
+                    console.error("Error fetching map marker:", error);
+                });
+            });
+        }
+    }, [CustomerResearchData]);
+
+    console.log(CustomerResearchData);
+
+    console.log(markerValue);
+
+
     const handleActiveMarker = (marker: any) => {
         if (marker === activeMarker) {
             return;
@@ -143,7 +165,7 @@ const SearchMaps = () => {
                 >
                     {/* Example marker */}
                     {/* <Marker position={center} /> */}
-                    {markers.map(({ id, name, position }) => (
+                    {markerValue.map(({ id, name, position }:any) => (
                         <Marker
                             key={id}
                             position={position}

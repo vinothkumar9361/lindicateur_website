@@ -10,11 +10,12 @@ import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api';
 
+import Select from 'react-select';
 import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -38,6 +39,11 @@ const Search = () => {
 
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
     const [categoryType, setCategoryType] = useState<any | null>([]);
+
+    const [categoryName, setCategoryName] = useState<any | null>(null);
+    const [companyName, setCompanyName] = useState<any | null>(null);
+    const [locationName, setLocationName] = useState<any | null>(null);
+
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -85,6 +91,12 @@ const Search = () => {
         dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
     }
 
+    const handleProfileSearch = () => {
+        dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
+        dispatch(GetAllPublicitesList({ categoryName: categoryName?.value }))
+
+    }
+
     return (
         <>
             <div className="bg-white p-2 sm:p-4">
@@ -124,23 +136,38 @@ const Search = () => {
                             </div>
                             :
                             <div className="lg:bg-white xl:h-32">
-                                <div className="px-2 sm:px-10 pt-4">
+                                {/* <div className="px-2 sm:px-10 pt-4">
                                     <label htmlFor="">À qui appartient ce numéro ?</label>
-                                </div>
-                                <div className="px-2 sm:px-10 pt-3 sm:flex sm:flex-col sm:item-center xl:grid xl:grid-cols-4 xl:gap-4 xl:px-2 xl:pb-8">
-                                    <MultiSelect
+                                </div> */}
+                                <div className="px-2 sm:px-10 pt-8 sm:flex sm:flex-col sm:item-center xl:grid xl:grid-cols-4 xl:gap-4 xl:px-2 xl:pb-8">
+                                    {/* <MultiSelect
+
+                                        hasSelectAll={false}
                                         options={categoryType}
                                         value={select}
                                         onChange={setSelect}
                                         labelledBy="Quoi: Un restaurant, un dentiste..."
                                         overrideStrings={{ "selectSomeItems": "Quoi: Un restaurant, un dentiste..." }}
                                         className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500"
+                                    /> */}
+                                    <Select
+                                        options={categoryType}
+                                        value={categoryName}
+                                        onChange={(value) => { setCategoryName(value)}}
+                                        placeholder="Quoi:Un restaurant..."
+                                        className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 serarch-input focus:ring-transparent"
                                     />
                                     {/* <input type="text" placeholder="Quoi: Un restaurant, un dentiste..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500" /> */}
-                                    <input type="text" placeholder="Qui: Monsieur Jean, SARL..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2" />
-                                    {/* <input type="text" placeholder="Où: France, Ile-de-France, Paris..." className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2" /> */}
+                                    <input
+                                        type="text"
+                                        value={companyName}
+                                        onChange={(e) => setCompanyName(e.target.value)}
+                                        placeholder="Qui: Monsieur Jean, SARL..."
+                                        className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent focus:inset-ring-2"
+                                    />
+                                    <input type="text" placeholder="Où: France, Ile-de-France, Paris..." className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent" />
 
-                                    <div className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2">
+                                    {/* <div className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2">
                                         <LoadScript
                                             googleMapsApiKey='AIzaSyD7xvZFtE4aQWnCIw5UlF8IoayDrYnoiRo'
                                             libraries={["places"]}
@@ -159,9 +186,9 @@ const Search = () => {
                                                 />
                                             </StandaloneSearchBox>
                                         </LoadScript>
-                                    </div>
+                                    </div> */}
 
-                                    <button className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Rechercher</button>
+                                    <button onClick={() => { handleProfileSearch() }} className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Rechercher</button>
                                 </div>
                             </div>
                     }

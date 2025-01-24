@@ -56,22 +56,38 @@ const LoginForm = () => {
     useEffect(() => {
 
         if (success) {
-            if(success?.data?.message === ''){
-
+            if(success?.data?.isValidation){
+                Swal.fire({
+                    title: success?.data?.message,
+                    icon: "success",
+                    iconColor: "#36AA00",
+                    confirmButtonColor: "#36AA00",
+                    confirmButtonText: "Okay",
+                    timer: 5000,
+                }).then(() => {
+                    setShowVerfication(true);
+                    if (success?.token) {
+                        localStorage.setItem('admin-auth-token', success?.token);
+                    }
+                })
             }
-            Swal.fire({
-                title: success?.data?.message,
-                icon: "success",
-                iconColor: "#36AA00",
-                confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
-                timer: 5000,
-            }).then(() => {
-                setShowVerfication(true);
-                if (success?.token) {
-                    localStorage.setItem('admin-auth-token', success?.token);
-                }
-            })
+            else {
+                Swal.fire({
+                    title: success?.data?.message,
+                    icon: "success",
+                    iconColor: "#36AA00",
+                    confirmButtonColor: "#36AA00",
+                    confirmButtonText: "Okay",
+                    timer: 5000,
+                }).then(() => {
+                    setShowVerfication(true);
+                    if (success?.token) {
+                        localStorage.setItem('admin-auth-token', success?.token);
+                        router.push(`/admin/liste-des-etablissements/`);
+                    }
+                })
+            }
+            
         }
         else if (errors) {
             Swal.fire({

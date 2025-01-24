@@ -1,8 +1,13 @@
 `use client`;
+import axios from 'axios';
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { useJsApiLoader, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
+
+import { useSelector } from 'react-redux';
+
+import { RootState, AppDispatch } from '@/store/store';
 
 const AnyReactComponent = ({ text }: any) => <div>{text}</div>;
 
@@ -35,6 +40,10 @@ const center = {
 }
 
 const SearchMaps = () => {
+    const { Loading, success, errors, CustomerResearchData, CustomerPublicitesList } = useSelector((state: RootState) => state.lindicateur);
+
+    console.log(CustomerPublicitesList);
+
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: 'AIzaSyD7xvZFtE4aQWnCIw5UlF8IoayDrYnoiRo',
@@ -46,6 +55,47 @@ const SearchMaps = () => {
     const [activeMarker, setActiveMarker] = useState<number | null>(null);
 
     const [map, setMap] = useState<any>(null);
+    const [markerValue, setMarkerValue] = useState<any>([]);
+
+
+
+    const getMapMarker = async (city: any) => {
+        console.log(city);
+        
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`;
+        const response = await axios.get(url);
+        const { data }: any = response;
+
+        let latitude;
+        let longitude;
+        if (data && data.length > 0) {
+            const { lat, lon } = data[0];
+            latitude = parseFloat(lat);
+            longitude = parseFloat(lon);
+
+            let marker = {
+               lat: latitude, 
+               lng: longitude 
+            }
+
+            return marker;
+        }
+
+    }
+
+    useEffect(() => {
+        CustomerPublicitesList?.data?.data?.map((value: any) => {
+            console.log(value)
+            let position = getMapMarker(value?.city);
+            console.log(position);
+            
+
+            //     name: "New York, New York",
+            //     position: { lat: 40.712776, lng: -74.005974 }
+        });
+        // setCategoryType(options)
+    }, [CustomerPublicitesList])
+
 
     const handleActiveMarker = (marker: any) => {
         if (marker === activeMarker) {

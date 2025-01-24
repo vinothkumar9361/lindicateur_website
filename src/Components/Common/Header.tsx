@@ -40,7 +40,7 @@ function Header() {
         <>
             <nav className={`${scrollPositionY >= 600 ? "hidden" : "fixed"} navbar w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10`}>
                 <div className="flex flex-wrap lg:flex-row items-center justify-between mx-auto">
-                    <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse py-4">
+                    <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse py-4">
                       <Image src={Logo} alt="logo" width={300} height={100} className="w-56" />
                     </a>
                     <div className="md:inline lg:hidden flex items-center lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-5 ">

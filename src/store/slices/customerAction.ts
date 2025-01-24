@@ -176,10 +176,25 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
         console.log(val);
 
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
-            if (response.status === 200 || response.status === 201) {
-                return response;
+            if (val?.search && val?.categoryName) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
             }
+            if (val?.categoryName) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?categoryName=${val?.categoryName}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+             else {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+
         } catch (error) {
             return rejectWithValue(error);
         }
@@ -206,7 +221,7 @@ export const GetAllPublicitesList = createAsyncThunk(
     'lindicateur/GetAllPublicitesList',
     async (val: any, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.cetegoryName}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&imageSize=1 Écran (900 x 580 px)`);
             if (response.status === 200 || response.status === 201) {
                 return response;
             }

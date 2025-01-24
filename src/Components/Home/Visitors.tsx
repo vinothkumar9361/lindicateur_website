@@ -21,8 +21,10 @@ const Visitors = () => {
                             <h4 className="txt_green font-medium">Augmentez votre visibilité</h4>
                             <h3 className="text-black font-normal mb-2">Des visiteurs, mais de quelle manière?</h3>
                             <p><b>Objectif professionnel :</b> stimuler l'engagement et les interactions grâce à nos campagnes publicitaires. Nous vous assurons une visibilité optimale sur les moteurs de recherche les plus utilisés (Google, Bing, etc.).</p>
-                            <button className="text-black font-medium border_black p-3 w-60 mt-5 mb-5 lg:mb-3 search-btn">Nous contacter</button>
-                            </div>
+                            <a href="/contact/">
+                                <button className="text-black font-medium border_black p-3 w-60 mt-5 mb-5 lg:mb-3 search-btn">Nous contacter</button>
+                            </a>
+                        </div>
                     </div>
                     <div className="lg:pl-6 lg:pr-0 lg:w-2/3 px-4">
                         <Image src={TestImg} alt="img" className="lg:h-full lg:w-full" />

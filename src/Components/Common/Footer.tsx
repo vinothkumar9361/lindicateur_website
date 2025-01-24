@@ -69,7 +69,7 @@ function Footer() {
                                 <a href="/contact/" className="block py-2 px-3 font-medium text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
                             </li>
                         </ul>
-                        <p className="mt-2 px-4">53 Rue Carnot - Boulogne-Billancourt 92100 </p>
+                        {/* <p className="mt-2 px-4">53 Rue Carnot - Boulogne-Billancourt 92100 </p> */}
                     </div>
                     <div className="hidden xl:inline xl:flex">
                         <div className="bg_black text-white pt-2 pb-3 lg:px-4 xl:px-6 text-center">
@@ -77,14 +77,12 @@ function Footer() {
                             <p className="">Du lundi au vendredi</p>
                             <p className="">De 9h à 18h</p>
                         </div>
-                        <div className="bg_green py-4 text-center lg:px-4">
-                            <div className="text-center">
-                                {/* <FaPhoneAlt /> */}
+                        <div className="bg_green py-4 text-center flex justify-center item-center content-center place-items-center lg:px-4">
+                            {/* <div className="text-center">
                                 <p className="fs_20 text-center">06 03 84 08 12</p>
-                            </div>
-                            <div className="">
-                                {/* <IoMdMail /> */}
-                                <p>contact@econergiefrance.fr</p>
+                            </div> */}
+                            <div className="flex justify-center item-center content-center place-items-center">
+                                <p className="font-medium"> contact@lindicateur.fr</p>
                             </div>
                         </div>
                     </div>

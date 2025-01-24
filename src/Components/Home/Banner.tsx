@@ -1,6 +1,7 @@
-"use client";
+`use client`;
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import Logo from '@/Images/Home/logo.svg';
 import BannerBackground from '@/Images/Home/banner_background.jpg';
@@ -13,7 +14,14 @@ import { Tabs } from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 
+import Select from 'react-select';
 import { MultiSelect } from "react-multi-select-component";
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList } from '@/store/slices/customerAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
 
 const categoryType = [
     { value: 'item-1', label: 'Fabrication, location, vente de coffrages' },
@@ -22,24 +30,60 @@ const categoryType = [
 ]
 
 const Banner = () => {
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors, CustomerCategoryList } = useSelector((state: RootState) => state.lindicateur);
     const [show, setShow] = useState<boolean | null>(false);
     const [select, setSelect] = useState<any | null>([]);
 
-     const [scrollPositionY, setScrollPositionY] = useState(0);
-    
-        useEffect(() => {
-            const handleScroll = () => {
-                setScrollPositionY(window.scrollY);
-            };
-        
-            window.addEventListener("scroll", handleScroll);
-        
-            return () => {
-              window.removeEventListener("scroll", handleScroll);
-            };
-          }, []);
-          
-   
+    const [scrollPositionY, setScrollPositionY] = useState(0);
+    const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
+    const [categoryType, setCategoryType] = useState<any | null>([]);
+
+    const [categoryName, setCategoryName] = useState<any | null>(null);
+    const [companyName, setCompanyName] = useState<any | null>(null);
+    const [locationName, setLocationName] = useState<any | null>(null);
+
+    useEffect(() => {
+        dispatch(GetAllCategoryList({ type: "website" }));
+    }, [dispatch])
+
+    useEffect(() => {
+        if (CustomerCategoryList?.data?.category) {
+            const options = CustomerCategoryList?.data?.category?.map((value: any) => ({
+                value: value?.categoryName,
+                label: value?.categoryName
+            }));
+            setCategoryType(options)
+        }
+    }, [CustomerCategoryList])
+
+    const handlePhoneSearch = () => {
+        router.push(`/rechercher/${companyName}/${categoryName?.value}/${locationName}/${phoneNumber}`)
+
+        // dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
+    }
+
+    const handleProfileSearch = () => {
+        router.push(`/rechercher/${companyName}/${categoryName?.value}/${locationName}/${phoneNumber}`)
+        // dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
+        // dispatch(GetAllPublicitesList({ categoryName: categoryName?.value }))
+       
+    }
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrollPositionY(window.scrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+
     return (
         <>
             <div className="home_banner px-6 flex flex-col content-center items-center justify-center h-full">
@@ -75,6 +119,8 @@ const Banner = () => {
                                                 <PhoneInput
                                                     country={'fr'}
                                                     placeholder="N° de téléphone"
+                                                    value={phoneNumber}
+                                                    onChange={(value) => { setPhoneNumber(value) }}
                                                 />
                                                 <button className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
                                             </div>
@@ -89,18 +135,42 @@ const Banner = () => {
                                             <label htmlFor="">À qui appartient ce numéro ?</label>
                                         </div>
                                         <div className="px-10 pt-3 sm:flex sm:flex-col sm:item-center lg:grid lg:grid-cols-4 lg:gap-5 lg:px-8 lg:pb-8">
-                                            <MultiSelect
+                                            {/* <MultiSelect
                                                 options={categoryType}
                                                 value={select}
                                                 onChange={setSelect}
                                                 labelledBy="Quoi: Un restaurant, un dentiste..."
                                                 overrideStrings={{ "selectSomeItems": "Quoi: Un restaurant, un dentiste..." }}
                                                 className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500"
+                                            /> */}
+                                            <Select
+                                                options={categoryType}
+                                                value={categoryName}
+                                                onChange={(value) => { setCategoryName(value) }}
+                                                placeholder="Quoi:Un restaurant..."
+                                                className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
                                             />
                                             {/* <input type="text" placeholder="Quoi: Un restaurant, un dentiste..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500" /> */}
-                                            <input type="text" placeholder="Qui: Monsieur Jean, SARL..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2" />
-                                            <input type="text" placeholder="Où: France, Ile-de-France, Paris..." className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2" />
-                                            <button className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Rechercher</button>
+                                            <input
+                                                type="text"
+                                                value={companyName}
+                                                onChange={(e) => setCompanyName(e.target.value)}
+                                                placeholder="Qui: Monsieur Jean, SARL..."
+                                                className="border-0 border-b-2 text-black border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2"
+                                            />
+                                            <input
+                                                type="text"
+                                                value={locationName}
+                                                onChange={(e) => setCategoryName(e.target.value)}
+                                                placeholder="Où: France, Ile-de-France, Paris..."
+                                                className="border-0 border-b-2 text-black border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2"
+                                            />
+                                            <button
+                                                onClick={() => { handleProfileSearch() }}
+                                                className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn"
+                                            >
+                                                Rechercher
+                                            </button>
                                         </div>
                                     </div>
                             }
@@ -109,7 +179,7 @@ const Banner = () => {
                     </div>
                 </div>
             </div>
-            <div className={`${scrollPositionY >= 800 ? "absolute" : "fixed" } banner-background`}>
+            <div className={`${scrollPositionY >= 800 ? "absolute" : "fixed"} banner-background`}>
                 <Image src={BannerBackground} alt="banner" />
             </div>
 

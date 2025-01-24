@@ -20,28 +20,28 @@ function Header() {
             console.log(currentUrl.pathname);
             setCurrentPathname(currentUrl.pathname);
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         const handleScroll = () => {
-          if(window.innerWidth >= 1050){
-            setScrollPositionY(window.scrollY);
-          }
+            if (window.innerWidth >= 1050) {
+                setScrollPositionY(window.scrollY);
+            }
         };
-    
+
         window.addEventListener("scroll", handleScroll);
-    
+
         return () => {
-          window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("scroll", handleScroll);
         };
-      }, []);
-            
+    }, []);
+
     return (
         <>
             <nav className={`${scrollPositionY >= 600 ? "hidden" : "fixed"} navbar w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10`}>
                 <div className="flex flex-wrap lg:flex-row items-center justify-between mx-auto">
                     <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse py-4">
-                      <Image src={Logo} alt="logo" width={300} height={100} className="w-56" />
+                        <Image src={Logo} alt="logo" width={300} height={100} className="w-56" />
                     </a>
                     <div className="md:inline lg:hidden flex items-center lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-5 ">
                         <button
@@ -114,14 +114,12 @@ function Header() {
                             <p className="">Du lundi au vendredi</p>
                             <p className="">De 9h à 18h</p>
                         </div>
-                        <div className="bg_green py-4 text-center lg:px-4">
-                            <div className="text-center">
-                                {/* <FaPhoneAlt /> */}
+                        <div className="bg_green py-4 text-center flex justify-center item-center content-center place-items-center lg:px-4">
+                            {/* <div className="text-center">
                                 <p className="fs_20 text-center">06 03 84 08 12</p>
-                            </div>
-                            <div className="">
-                                {/* <IoMdMail /> */}
-                                <p>contact@econergiefrance.fr</p>
+                            </div> */}
+                            <div className="flex justify-center item-center content-center place-items-center">
+                                <p className="font-medium"> contact@lindicateur.fr</p>
                             </div>
                         </div>
                     </div>

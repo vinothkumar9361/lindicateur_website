@@ -42,14 +42,10 @@ const center = {
 const SearchMaps = () => {
     const { Loading, success, errors, CustomerResearchData, CustomerPublicitesList } = useSelector((state: RootState) => state.lindicateur);
 
-    console.log(CustomerPublicitesList);
-
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: 'AIzaSyD7xvZFtE4aQWnCIw5UlF8IoayDrYnoiRo',
     })
-
-    console.log(isLoaded);
 
 
     const [activeMarker, setActiveMarker] = useState<number | null>(null);
@@ -83,20 +79,31 @@ const SearchMaps = () => {
 
     }
 
-    useEffect(() => {
-        CustomerPublicitesList?.data?.data?.map((value: any) => {
-            console.log(value)
-            let position = getMapMarker(value?.city);
-            console.log(position);
+    // useEffect(() => {
+    //     CustomerPublicitesList?.data?.data?.map((value: any) => {
+    //         console.log(value)
+    //         let position = getMapMarker(value?.city);
+    //         console.log(position);
             
 
-            //     name: "New York, New York",
-            //     position: { lat: 40.712776, lng: -74.005974 }
+    //         //     name: "New York, New York",
+    //         //     position: { lat: 40.712776, lng: -74.005974 }
+    //     });
+    //     // setCategoryType(options)
+    // }, [CustomerPublicitesList])
+
+    useEffect(() => {
+        CustomerPublicitesList?.data?.data?.forEach((value: any) => {    
+            let position = getMapMarker(value?.city).then((position) => {
+                setMarkerValue([...markerValue, position])
+                 // Now logs the actual object
+            }).catch((error) => {
+                console.error("Error fetching map marker:", error);
+            });
+            
         });
-        // setCategoryType(options)
-    }, [CustomerPublicitesList])
-
-
+    }, [CustomerPublicitesList]);
+    
     const handleActiveMarker = (marker: any) => {
         if (marker === activeMarker) {
             return;

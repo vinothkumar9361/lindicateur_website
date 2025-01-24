@@ -176,13 +176,21 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
         console.log(val);
 
         try {
-            if (val?.search && val?.categoryName) {
+            if (val?.search != "null" && val?.search != null && val?.categoryName != "null" && val?.categoryName != null && val?.city != "null" && val?.city != null) {
+                console.log("testing");
+                
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}&city=${val?.city}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+            else if (val?.search != "null" && val?.search != null && val?.categoryName != "null" && val?.categoryName != null) {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
-            if (val?.categoryName) {
+            else if (val?.categoryName) {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearch?categoryName=${val?.categoryName}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;

@@ -27,6 +27,8 @@ const categoryType = [
 
 const Search = () => {
     const router = useRouter();
+    const { companyName, categoryName, locationName, phoneNumber } = router.query;
+
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, CustomerCategoryList } = useSelector((state: RootState) => state.lindicateur);
 
@@ -37,12 +39,12 @@ const Search = () => {
     const [latitude, setlatitude] = useState('');
     const [longitude, setLongitude] = useState('');
 
-    const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
+    const [sphoneNumber, setSphoneNumber] = useState<any | null>(null);
     const [categoryType, setCategoryType] = useState<any | null>([]);
 
-    const [categoryName, setCategoryName] = useState<any | null>(null);
-    const [companyName, setCompanyName] = useState<any | null>(null);
-    const [locationName, setLocationName] = useState<any | null>(null);
+    const [scategoryName, setScategoryName] = useState<any | null>(null);
+    const [scompanyName, setScompanyName] = useState<any | null>(null);
+    const [slocationName, setSlocationName] = useState<any | null>(null);
 
 
     useEffect(() => {
@@ -51,6 +53,16 @@ const Search = () => {
             setToken(tokenString);
         }
     }, []);
+
+    useEffect(() => {
+        if (companyName || categoryName || locationName) {
+            dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName, city: locationName }));
+            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+        }
+        else if(phoneNumber){
+            dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
+        }
+    }, [companyName, categoryName, locationName, phoneNumber]);
 
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
@@ -88,12 +100,12 @@ const Search = () => {
     }
 
     const handlePhoneSearch = () => {
-        dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
+        dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber : sphoneNumber }))
     }
 
     const handleProfileSearch = () => {
-        dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
-        dispatch(GetAllPublicitesList({ categoryName: categoryName?.value }))
+        dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value }));
+        dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
 
     }
 
@@ -127,8 +139,8 @@ const Search = () => {
                                         <PhoneInput
                                             country={'fr'}
                                             placeholder="N° de téléphone"
-                                            value={phoneNumber}
-                                            onChange={(value) => { setPhoneNumber(value) }}
+                                            value={sphoneNumber}
+                                            onChange={(value) => { setSphoneNumber(value) }}
                                         />
                                         <button onClick={() => handlePhoneSearch()} disabled={!phoneNumber} className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
                                     </div>
@@ -152,20 +164,26 @@ const Search = () => {
                                     /> */}
                                     <Select
                                         options={categoryType}
-                                        value={categoryName}
-                                        onChange={(value) => { setCategoryName(value)}}
+                                        value={scategoryName}
+                                        onChange={(value) => { setScategoryName(value) }}
                                         placeholder="Quoi:Un restaurant..."
                                         className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 serarch-input focus:ring-transparent"
                                     />
                                     {/* <input type="text" placeholder="Quoi: Un restaurant, un dentiste..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500" /> */}
                                     <input
                                         type="text"
-                                        value={companyName}
-                                        onChange={(e) => setCompanyName(e.target.value)}
+                                        value={scompanyName}
+                                        onChange={(e) => setScompanyName(e.target.value)}
                                         placeholder="Qui: Monsieur Jean, SARL..."
                                         className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent focus:inset-ring-2"
                                     />
-                                    <input type="text" placeholder="Où: France, Ile-de-France, Paris..." className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent" />
+                                    <input
+                                        type="text"
+                                        value={slocationName}
+                                        onChange={(e) => setScategoryName(e.target.value)}
+                                        placeholder="Où: France, Ile-de-France, Paris..."
+                                        className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent"
+                                    />
 
                                     {/* <div className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2">
                                         <LoadScript

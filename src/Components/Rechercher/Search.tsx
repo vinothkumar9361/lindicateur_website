@@ -29,6 +29,12 @@ const Search = () => {
     const router = useRouter();
     const { companyName, categoryName, locationName, phoneNumber } = router.query;
 
+    console.log(router.query);
+    console.log("Company Name:", companyName);
+  console.log("Category Name:", categoryName);
+  console.log("Location Name:", locationName);
+  console.log("Phone Number:", phoneNumber);
+
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, CustomerCategoryList } = useSelector((state: RootState) => state.lindicateur);
 

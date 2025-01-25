@@ -1,9 +1,20 @@
-"use client";
+`use client`;
 
 import { PiWarningCircleBold } from "react-icons/pi";
 
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+
+import Spinner from "@/Components/Common/Loading";
+
+import { useEffect } from "react";
+import Swal from 'sweetalert2';
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { ContactUsForm } from '@/store/slices/commonAction';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
 
 const ContactSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -15,6 +26,9 @@ const ContactSchema = Yup.object().shape({
 });
 
 const ContactForm = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
+
     const mapStyle: React.CSSProperties = {
         position: "relative",
         textAlign: "right",
@@ -30,6 +44,39 @@ const ContactForm = () => {
     // const iframeStyle: React.CSSProperties = {
     //     height: "100%",
     // };
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: success?.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                dispatch(successMessage(""));
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                dispatch(errorMessage(""));
+            })
+        }
+    }, [dispatch, success, errors]);
+
+
+    console.log(success);
+    console.log(errors);
+
+
 
     return (
         <>
@@ -49,8 +96,18 @@ const ContactForm = () => {
                                 message: '',
                             }}
                             validationSchema={ContactSchema}
-                            onSubmit={values => {
+                            onSubmit={(values, { resetForm }) => {
                                 console.log(values);
+                                let contactData = {
+                                    firstName: values?.firstName,
+                                    lastName: values?.lastName,
+                                    email: values?.email,
+                                    phone: values?.phone,
+                                    descrtiption: values?.message
+                                }
+
+                                dispatch(ContactUsForm({ contactData }))
+                                resetForm();
                             }}
                         >
                             {({ errors, touched }) => (
@@ -90,7 +147,13 @@ const ContactForm = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                         ) : null}
                                     </div>
-                                    <button type="submit" className="text-black font-bold border_black p-3 w-full mt-6 sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Envoyer</button>
+                                    <button type="submit" className="text-black font-bold border_black p-3 w-full mt-6 sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">
+                                        {
+                                            Loading ?
+                                                <Spinner />
+                                                : "Envoyer"
+                                        }
+                                    </button>
                                 </Form>
                             )}
                         </Formik>

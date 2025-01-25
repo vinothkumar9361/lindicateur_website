@@ -4,15 +4,18 @@ import axios, { AxiosHeaders } from 'axios';
 import { LoginForAdmin, ValitateOtpForAdmin, GetAdminProfile, UpdateAdminProfile } from '@/store/slices/adminAction';
 import {
     GetAllEtablissementListForAdmin, GetEtablissementForAdmin, AddEtablissementForAdmin,
-    UpdateEtablissementForAdmin, DeleteEtablissementForAdmin, GetAllEtablissementApprovalForAdmin
+    UpdateEtablissementForAdmin, DeleteEtablissementForAdmin, GetAllEtablissementApprovalForAdmin,
+    ApprovedOrUnApprovalEtablissementForAdmin
 } from '@/store/slices/adminAction';
-import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin } from '@/store/slices/adminAction';
+import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
 import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, UpdateBannersForAdmin, DeleteBannersForAdmin, PublishBannersForAdmin } from '@/store/slices/adminAction';
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
 import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllBannerList, GetAllCategoryList } from '@/store/slices/customerAction';
+
+import { ForgotPassword, ImageUpload, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
 
 interface Headers extends AxiosHeaders {
     authorization?: string;
@@ -81,6 +84,66 @@ const ReduxSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // Image Upload 
+            .addCase(ImageUpload.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(ImageUpload.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(ImageUpload.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Update Password 
+            .addCase(UpdatePassword.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(UpdatePassword.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(UpdatePassword.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Forgot Password 
+            .addCase(ForgotPassword.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(ForgotPassword.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(ForgotPassword.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+              // Contact Us
+              .addCase(ContactUsForm.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(ContactUsForm.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(ContactUsForm.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
             // Admin Module
             // Login For Admin
             .addCase(LoginForAdmin.pending, (state) => {
@@ -232,6 +295,21 @@ const ReduxSlice = createSlice({
                 state.AdminUnapprovalEtabliselist = null;
             })
 
+            // Approved Or Unapproval Establishment for admin
+            .addCase(ApprovedOrUnApprovalEtablissementForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(ApprovedOrUnApprovalEtablissementForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(ApprovedOrUnApprovalEtablissementForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
             // Add Category for admin
             .addCase(AddCategoryForAdmin.pending, (state) => {
                 state.Loading = true;
@@ -272,6 +350,21 @@ const ReduxSlice = createSlice({
                 state.success = action.payload;
             })
             .addCase(UpdateCategoryForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Update Category for admin
+            .addCase(DeleteCategoryForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(DeleteCategoryForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(DeleteCategoryForAdmin.rejected, (state, action) => {
                 state.errors = action.payload;
                 state.Loading = false;
                 state.success = null;

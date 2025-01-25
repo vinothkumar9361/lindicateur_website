@@ -34,12 +34,8 @@ const markers = [
     }
 ];
 
-const center = {
-    lat: -3.745,
-    lng: -38.523,
-}
 
-const SearchMaps = () => {
+const SearchMaps = ({ place }: any) => {
     const { Loading, success, errors, CustomerResearchData, CustomerPublicitesList } = useSelector((state: RootState) => state.lindicateur);
 
     const { isLoaded } = useJsApiLoader({
@@ -47,30 +43,31 @@ const SearchMaps = () => {
         googleMapsApiKey: 'AIzaSyD7xvZFtE4aQWnCIw5UlF8IoayDrYnoiRo',
     })
 
-
     const [activeMarker, setActiveMarker] = useState<number | null>(null);
 
     const [map, setMap] = useState<any>(null);
     const [markerValue, setMarkerValue] = useState<any>([]);
 
+    const getMapMarker = async (city: any, i: number) => {
+        console.log("city", city);
+        
+        const url = `https://api.xn--lindicateur-rfrencement-nccb.fr/admin/getMap?q=${city}`;
+        const response = await fetch(url);
+        console.log("res", response);
+        
+        const data = await response.json();
 
+        // const { data }: any = response;
 
-    const getMapMarker = async (city: any, i:number) => {
-        console.log(city);
-
-        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`;
-        const response = await axios.get(url);
-        const { data }: any = response;
-
-        let latitude;
-        let longitude;
+        let latitude: any;
+        let longitude: any;
         if (data && data.length > 0) {
             const { lat, lon } = data[0];
             latitude = parseFloat(lat);
             longitude = parseFloat(lon);
 
             let marker = {
-                id: i+ 1,
+                id: i + 1,
                 name: city,
                 position: {
                     lat: latitude,
@@ -82,49 +79,59 @@ const SearchMaps = () => {
 
     }
 
-    // useEffect(() => {
-    //     CustomerPublicitesList?.data?.data?.map((value: any) => {
-    //         console.log(value)
-    //         let position = getMapMarker(value?.city);
-    //         console.log(position);
+    useEffect(() => {
+        if (place) {
+            console.log("place", place);
 
-
-    //         //     name: "New York, New York",
-    //         //     position: { lat: 40.712776, lng: -74.005974 }
-    //     });
-    //     // setCategoryType(options)
-    // }, [CustomerPublicitesList])
+            let position = getMapMarker(place, 1).then((position) => {
+                setMarkerValue([position])
+            }).catch((error) => {
+                console.error("Error fetching map marker:", error);
+            });
+        }
+    }, [place])
 
     useEffect(() => {
         if (CustomerPublicitesList?.data?.data) {
-            CustomerPublicitesList?.data?.data?.forEach((value: any, i:number) => {
-                let position = getMapMarker(value?.city, i).then((position) => {
-                    setMarkerValue([...markerValue, position])
-                    // Now logs the actual object
-                }).catch((error) => {
-                    console.error("Error fetching map marker:", error);
+            Promise.all(
+                CustomerPublicitesList.data.data.map((value: any, i: number) =>
+                    getMapMarker(value?.city, i)
+                )
+            )
+                .then((positions) => {
+                    setMarkerValue((prevMarkers:any) => {
+                        const uniquePositions = positions.filter(
+                            (pos) => !prevMarkers.some((m:any) => JSON.stringify(m) === JSON.stringify(pos))
+                        );
+                        return [...prevMarkers, ...uniquePositions];
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching map markers:", error);
                 });
-            });
         }
     }, [CustomerPublicitesList]);
 
     useEffect(() => {
         if (CustomerResearchData?.data?.data) {
-            CustomerResearchData?.data?.data?.forEach((value: any, i:number) => {
-                let position = getMapMarker(value?.city, i).then((position) => {
-                    setMarkerValue([...markerValue, position])
-                    // Now logs the actual object
-                }).catch((error) => {
-                    console.error("Error fetching map marker:", error);
+            Promise.all(
+                CustomerResearchData.data.data.map((value: any, i: number) =>
+                    getMapMarker(value?.city, i)
+                )
+            )
+                .then((positions) => {
+                    setMarkerValue((prevMarkers:any) => {
+                        const uniquePositions = positions.filter(
+                            (pos) => !prevMarkers.some((m:any) => JSON.stringify(m) === JSON.stringify(pos))
+                        );
+                        return [...prevMarkers, ...uniquePositions];
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error fetching map markers:", error);
                 });
-            });
         }
     }, [CustomerResearchData]);
-
-    console.log(CustomerResearchData);
-
-    console.log(markerValue);
-
 
     const handleActiveMarker = (marker: any) => {
         if (marker === activeMarker) {
@@ -134,11 +141,6 @@ const SearchMaps = () => {
     };
 
     const onLoad = useCallback((map: any) => {
-        // Set center and zoom
-        // map.setCenter(center);
-        // map.setZoom(10);
-
-        // setMap(map);
         const bounds = new window.google.maps.LatLngBounds();
         markers.forEach(({ position }) => bounds.extend(position));
         map.fitBounds(bounds);
@@ -158,26 +160,26 @@ const SearchMaps = () => {
             <div className="h-96 lg:h-screen">
                 <GoogleMap
                     mapContainerStyle={{ width: "100%", height: "100%" }}
-                    center={center}
-                    zoom={10}
+                    center={{ lat: 46.603354, lng: 1.888334 }}
+                    zoom={8}
                     onLoad={onLoad}
                     onUnmount={onUnmount}
                 >
-                    {/* Example marker */}
-                    {/* <Marker position={center} /> */}
-                    {markerValue.map(({ id, name, position }:any) => (
-                        <Marker
-                            key={id}
-                            position={position}
-                            onClick={() => handleActiveMarker(id)}
-                        >
-                            {activeMarker === id ? (
-                                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                                    <div>{name}</div>
-                                </InfoWindow>
-                            ) : null}
-                        </Marker>
-                    ))}
+                    {markerValue.map(({ id, name, position }: any) => {
+                        return (
+                            <Marker
+                                key={id}
+                                position={position}
+                                onClick={() => handleActiveMarker(id)}
+                            >
+                                {activeMarker === id ? (
+                                    <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                                        <div>{name}</div>
+                                    </InfoWindow>
+                                ) : null}
+                            </Marker>
+                        )
+                    })}
                 </GoogleMap>
             </div>
         </>

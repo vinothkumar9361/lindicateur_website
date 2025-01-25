@@ -32,9 +32,10 @@ const PublicitesList = () => {
     }
 
     useEffect(() => {
-        dispatch(GetAllPublicitesListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
-
-    }, [sortAsc]);
+        if (token) {
+            dispatch(GetAllPublicitesListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
+        }
+    }, [sortAsc, token]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {

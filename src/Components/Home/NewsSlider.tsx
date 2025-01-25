@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import TestImg from '@/Images/Home/news-slider-img.avif';
+import TestImg from '@/Images/Home/Logo.png';
 
 import { FaChevronRight, FaChevronCircleRight, FaChevronCircleLeft } from "react-icons/fa";
 
@@ -71,27 +71,27 @@ const NewsSlider = () => {
     const [show, setShow] = useState<boolean | null>(true);
     const [jsonData, setJsonData] = useState<any>(null);
 
-    // useEffect(() => {
-    //     const fetchXML = async () => {
-    //         try {
-    //             const response = await axios.get("/api/get-xml");
+    useEffect(() => {
+        const fetchXML = async () => {
+            try {
+                const response = await axios.get("/api/get-xml");
 
-    //             parseString(response.data, { explicitArray: false }, (err, result) => {
-    //                 if (err) {
-    //                     console.error("Error parsing XML:", err);
-    //                 } else {
-    //                     setJsonData(result); 
-    //                 }
-    //             });
-    //         } catch (error) {
-    //             console.error("Error fetching XML:", error);
-    //         }
-    //     };
+                parseString(response.data, { explicitArray: false }, (err, result) => {
+                    if (err) {
+                        console.error("Error parsing XML:", err);
+                    } else {
+                        setJsonData(result);
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching XML:", error);
+            }
+        };
 
-    //     fetchXML();
-    // }, []);
+        fetchXML();
+    }, []);
 
-    
+
     var settings = {
         // dots: true,
         arrows: true,
@@ -141,18 +141,18 @@ const NewsSlider = () => {
                     </div>
                     <Slider {...settings} className="px-10 mt-4 mb-14">
                         {
-                            data?.map((item: any, i: number) => {
+                            jsonData?.rss?.channel?.item?.map((item: any, i: number) => {
                                 return (
                                     <>
                                         <div className="box_shadow_light">
-                                            <div className="bg-gray-100 text-center justify-items-center">
-                                                <Image src={item?.image} alt="img" className="w-full h-48" />
+                                            <div className="bg-gray-100 h-40 text-center flex justify-center content-center items-center">
+                                                <Image src={TestImg} alt="img" className="w-full h-16" />
                                             </div>
                                             <div className="pt-3 p-4">
-                                                <p className="font-medium pb-2 txt_light_green">{item?.title}</p>
-                                                <p className="pb-2">{item?.time}</p>
-                                                <p className="pb-2">{item?.description}</p>
-                                                <a href=""><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
+                                                <p className="font-medium mb-2 txt_light_green line-clamp-2">{item?.title}</p>
+                                                <p className="pb-2">{item?.pubDate}</p>
+                                                <p className="mb-2 line-clamp-2">{item?.description}</p>
+                                                <a href={item?.link}><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
                                             </div>
                                         </div>
                                     </>

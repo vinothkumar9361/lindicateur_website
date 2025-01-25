@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 import { IoSearchOutline } from "react-icons/io5";
 import { CiFilter } from "react-icons/ci";
@@ -14,7 +15,7 @@ import EditCategorie from "./EditCategorie";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllCategoryListForAdmin } from '@/store/slices/adminAction';
+import { GetAllCategoryListForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -58,6 +59,50 @@ const CategorieList = () => {
     }, [dispatch, token])
 
     console.log(AdminCategoryList);
+
+    const deleteDetails = (id: any) => {
+        Swal.fire({
+            title: "Etes-vous sûr de vouloir supprimer vos données ?",
+            icon: "warning",
+            iconColor: "#CA0505",
+            showCancelButton: true,
+            cancelButtonColor: "#025BFD",
+            confirmButtonColor: "#CA0505",
+            confirmButtonText: "Supprimer"
+        }).then((result) => {
+            if (result?.isConfirmed) {
+                dispatch(DeleteCategoryForAdmin({ token, id }));
+            }
+        })
+    }
+
+    useEffect(() => {
+            if (success) {
+                Swal.fire({
+                    title: success?.data?.message,
+                    icon: "success",
+                    iconColor: "#36AA00",
+                    confirmButtonColor: "#36AA00",
+                    confirmButtonText: "Okay",
+                    timer: 5000,
+                }).then(() => {
+                    dispatch(successMessage(""));
+                    dispatch(GetAllCategoryListForAdmin({ token, type: 'admin' }));
+                })
+            }
+            else if (errors) {
+                Swal.fire({
+                    title: errors?.response?.data?.message,
+                    icon: "error",
+                    iconColor: "#CA0505",
+                    confirmButtonColor: "#CA0505",
+                    confirmButtonText: "Okay",
+                    timer: 5000,
+                }).then(() => {
+                    dispatch(errorMessage(""));
+                })
+            }
+        }, [dispatch, success, errors]);
 
     return (
         <>
@@ -167,7 +212,7 @@ const CategorieList = () => {
                                                     >
                                                         Modifier
                                                     </a>
-                                                    {/* <a href="#" className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Supprimer</a> */}
+                                                    <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Supprimer</a>
                                                 </td>
                                             </tr>
                                         </>

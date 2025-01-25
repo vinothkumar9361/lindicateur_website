@@ -37,11 +37,14 @@ const EditEstablishment = () => {
     const { Loading, success, errors, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
+    const [currentPathname, setCurrentPathname] = useState('');
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
             setToken(tokenString);
+            const currentUrl = new URL(window.location.href);
+            setCurrentPathname(currentUrl.pathname);
         }
     }, []);
 
@@ -74,6 +77,7 @@ const EditEstablishment = () => {
                 confirmButtonText: "Okay",
                 timer: 5000,
             }).then(() => {
+                dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);
@@ -100,11 +104,12 @@ const EditEstablishment = () => {
                             logo: AdminEtablise?.data?.existingCompanyProfile?.logo || '',
                             photos: AdminEtablise?.data?.existingCompanyProfile?.photos || '',
                             phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
+                            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
                         }}
-                        validationSchema={AddetablishmentSchema}
+                        // validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             console.log(values);
-                            let data = {
+                            let updateData = {
                                 fullName: values?.name,
                                 categoryName: values?.category,
                                 companyName: values?.company,
@@ -114,24 +119,34 @@ const EditEstablishment = () => {
                                 photos: values?.photos,
                                 phoneNumber: values?.phone,
                                 type: "admin",
-                                city: values?.city
+                                city: values?.city,
+                                id: AdminEtablise?.data?.existingCompanyProfile?.id,
+                                websiteURL: values?.websiteURL
                             }
-                            console.log(data);
-                            dispatch(UpdateEtablissementForAdmin({ token, data }))
+                            console.log(updateData);
+                            dispatch(UpdateEtablissementForAdmin({ token, updateData }))
                         }}
                     >
                         {({ errors, touched }: any) => (
                             <Form className="md:flex md:flex-wrap md:w-full">
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="name" className='text-left pb-2'>Nom et Prénom</label>
-                                    <Field name="name" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    <Field
+                                        name="name"
+                                        className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        disabled={currentPathname.includes("/voir-un-etablissement/")}
+                                    />
                                     {errors.name && touched.name ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.name}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                    <Field name="category" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    <Field
+                                        name="category"
+                                        className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        disabled={currentPathname.includes("/voir-un-etablissement/")}
+                                    />
                                     {errors.category && touched.category ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                     ) : null}
@@ -145,21 +160,21 @@ const EditEstablishment = () => {
                                 </div> */}
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                    <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field name="company" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.company && touched.company ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                    <Field name="postcode" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field name="postcode" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.postcode && touched.postcode ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="city" className='text-left pb-2'>Ville</label>
-                                    <Field name="city" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    <Field name="city" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.city && touched.city ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.city}</div>
                                     ) : null}
@@ -167,7 +182,7 @@ const EditEstablishment = () => {
 
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="email" className='text-left pb-2'>Courriel</label>
-                                    <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    <Field name="email" type="email" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.email && touched.email ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                     ) : null}
@@ -184,7 +199,7 @@ const EditEstablishment = () => {
                                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                             </div>
-                                            <input id="dropzone-file" type="file" className="hidden" />
+                                            <input id="dropzone-file" type="file" disabled={currentPathname.includes("/voir-un-etablissement/")} className="hidden" />
                                         </label>
                                     </div>
                                     {errors.logo && touched.logo ? (
@@ -203,7 +218,7 @@ const EditEstablishment = () => {
                                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                                                 <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                             </div>
-                                            <input id="dropzone-file" type="file" className="hidden" multiple />
+                                            <input id="dropzone-file" type="file" disabled={currentPathname.includes("/voir-un-etablissement/")} className="hidden" multiple />
                                         </label>
                                     </div>
                                     {errors.photos && touched.photos ? (
@@ -212,18 +227,18 @@ const EditEstablishment = () => {
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                    <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    <Field name="phone" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.phone && touched.phone ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
                                     ) : null}
                                 </div>
-                                {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                    <label htmlFor="message" className='text-left pb-2'>Je souhaite référencer mon établissement</label>
-                                    <Field name="message" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
+                                    <Field name="websiteURL" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.message && touched.message ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                     ) : null}
-                                </div> */}
+                                </div>
                                 <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
                                     <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn">
                                         {

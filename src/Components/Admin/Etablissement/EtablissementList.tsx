@@ -35,7 +35,7 @@ const EstablishmentList = () => {
     //     dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
     // }
     useEffect(() => {
-        if(token){
+        if (token) {
             dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
         }
 
@@ -53,8 +53,6 @@ const EstablishmentList = () => {
             dispatch(GetAllEtablissementListForAdmin({ token, page: 1 }));
         }
     }, [dispatch, token])
-
-    console.log(AdminEtabliselist);
 
     useEffect(() => {
         if (success) {
@@ -123,11 +121,11 @@ const EstablishmentList = () => {
                                 setSortAsc(!sortAsc)
                             }}
                             className="flex gap-2 items-center cursor-pointer">
-                                {
-                                    sortAsc ?
+                            {
+                                sortAsc ?
                                     <FcAlphabeticalSortingAz className="w-6 h-6" />
                                     : <FcAlphabeticalSortingZa className="w-6 h-6" />
-                                }
+                            }
                             <p>Trier</p>
                         </div>
                     </div>
@@ -135,7 +133,7 @@ const EstablishmentList = () => {
                         <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
                     </div>
                 </div>
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                             <tr className="border-2">
@@ -193,6 +191,7 @@ const EstablishmentList = () => {
                                                     {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
                                                 </td>
                                                 <td className="flex items-center px-6 py-4 ">
+                                                    <a onClick={() => { router.push(`/admin/voir-un-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">Voir</a>
                                                     <a onClick={() => { router.push(`/admin/modifier-an-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
                                                     <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
                                                 </td>

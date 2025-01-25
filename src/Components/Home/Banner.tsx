@@ -59,16 +59,14 @@ const Banner = () => {
     }, [CustomerCategoryList])
 
     const handlePhoneSearch = () => {
-        router.push(`/rechercher/${companyName}/${categoryName?.value}/${locationName}/${phoneNumber}`)
-
-        // dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
+        router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName ? locationName : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
     }
 
     const handleProfileSearch = () => {
-        router.push(`/rechercher/${companyName}/${categoryName?.value}/${locationName}/${phoneNumber}`)
+        router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName ? locationName : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
         // dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
         // dispatch(GetAllPublicitesList({ categoryName: categoryName?.value }))
-       
+
     }
 
     useEffect(() => {
@@ -122,11 +120,8 @@ const Banner = () => {
                                                     value={phoneNumber}
                                                     onChange={(value) => { setPhoneNumber(value) }}
                                                 />
-                                                <button className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
+                                                <button onClick={() => handlePhoneSearch()} className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
                                             </div>
-                                            {/* <div>
-                                                <button className="txt_green border_green p-3 w-full my-5 rounded-lg search-btn flex gap-3 place-content-center sm:w-64 "><FaSearch className="mt-1" /> Rechercher</button>
-                                            </div> */}
                                         </div>
                                     </div>
                                     :
@@ -135,14 +130,6 @@ const Banner = () => {
                                             <label htmlFor="">À qui appartient ce numéro ?</label>
                                         </div>
                                         <div className="px-10 pt-3 sm:flex sm:flex-col sm:item-center lg:grid lg:grid-cols-4 lg:gap-5 lg:px-8 lg:pb-8">
-                                            {/* <MultiSelect
-                                                options={categoryType}
-                                                value={select}
-                                                onChange={setSelect}
-                                                labelledBy="Quoi: Un restaurant, un dentiste..."
-                                                overrideStrings={{ "selectSomeItems": "Quoi: Un restaurant, un dentiste..." }}
-                                                className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500"
-                                            /> */}
                                             <Select
                                                 options={categoryType}
                                                 value={categoryName}

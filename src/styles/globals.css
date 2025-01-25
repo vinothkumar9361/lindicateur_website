@@ -64,6 +64,12 @@ li {
   }
 }
 
+@media (min-width: 1537px){
+  .container {
+    max-width: 1200px;
+  }
+}
+
 .bg_green {
   background: var(--backgroundGreen);
 }

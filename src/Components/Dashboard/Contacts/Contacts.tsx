@@ -13,12 +13,12 @@ const Contacts = () => {
                     <p className="">Du lundi au vendredi</p>
                     <p className="">De 9h à 18h</p>
                 </div>
-                <div className="bg_green py-4 text-center md:w-1/2 md:py-6 lg:px-4">
+                <div className="bg_green py-4 text-center flex justify-center items-center content-center md:w-1/2 md:py-6 lg:px-4">
                     <div className="text-center">
-                        <p className="fs_20 text-center">06 03 84 08 12</p>
+                        {/* <p className="fs_20 text-center">06 03 84 08 12</p> */}
                     </div>
-                    <div className="">
-                        <p>contact@econergiefrance.fr</p>
+                    <div className="flex justify-center items-center content-center text-center">
+                        <p>contact@lindicateur.fr</p>
                     </div>
                 </div>
             </div>

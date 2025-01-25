@@ -68,9 +68,9 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
 
                     </div>
                     <div className="flex items-center relative md:gap-5 lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-2 lg:mr-10">
-                        <div>
+                        {/* <div>
                             <MdOutlineNotificationsActive className="w-6 h-6 sm:w-8 sm:h-8 lg:w-8 lg:h-8" />
-                        </div>
+                        </div> */}
                         <button
                             type="button"
                             className="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 "

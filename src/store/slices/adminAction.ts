@@ -122,21 +122,21 @@ export const GetAllEtablissementListForAdmin = createAsyncThunk(
         })
         try {
             if (val?.search) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfile?search=${val?.search}&page=${val?.page}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfile?search=${val?.search}&page=${val?.page}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfile?alphabetOrder=${val?.sort}&page=${val?.page}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfile?alphabetOrder=${val?.sort}&page=${val?.page}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfile?page=${val?.page}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfile?page=${val?.page}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
@@ -181,28 +181,28 @@ export const GetAllEtablissementApprovalForAdmin = createAsyncThunk(
         })
         try {
             if (val?.search && val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfileUnApproval?search=${val?.search}&isApproved=false&alphabetOrder=${val?.sort}&page=${val?.page}&limit=${val?.pageLimit}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUnApproval?search=${val?.search}&isApproved=false&alphabetOrder=${val?.sort}&page=${val?.page}&limit=${val?.pageLimit}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.search) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfileUnApproval?search=${val?.search}&isApproved=false&page=${val?.page}&limit=${val?.pageLimit}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUnApproval?search=${val?.search}&isApproved=false&page=${val?.page}&limit=${val?.pageLimit}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfileUnApproval?search=false&isApproved=false&alphabetOrder=${val?.sort}&page=${val?.page}&limit=${val?.pageLimit}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUnApproval?&isApproved=false&alphabetOrder=${val?.sort}&page=${val?.page}&limit=${val?.pageLimit}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/gellAllCompanyProfileUnApproval?search=false&isApproved=false&alphabetOrder=ASC&page=${val?.page}&limit=${val?.pageLimit}`
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUnApproval?isApproved=false&alphabetOrder=ASC&page=${val?.page}&limit=${val?.pageLimit}`
                     , { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
@@ -247,6 +247,27 @@ export const DeleteEtablissementForAdmin = createAsyncThunk(
         })
         try {
             const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/deleteCompanyProfile/${val?.id}`
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const ApprovedOrUnApprovalEtablissementForAdmin = createAsyncThunk(
+    'lindicateur/ApprovedOrUnApprovalEtablissementForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/assignCompanyApproval`, val?.updateData
                 , { headers: headers });
             if (response.status === 200 || response.status === 201) {
                 return response;
@@ -415,25 +436,25 @@ export const GetAllBannerListForAdmin = createAsyncThunk(
         })
         try {
             if (val?.search && val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?search=${val?.search}&alphabetOrder=${val?.sort}&page=${val?.page}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllBanner?search=${val?.search}&alphabetOrder=${val?.sort}&page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.search) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?search=${val?.search}&page=${val?.page}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllBanner?search=${val?.search}&page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?alphabetOrder=${val?.sort}&page=${val?.page}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllBanner?alphabetOrder=${val?.sort}&page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllBanner?page=${val?.page}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllBanner?page=${val?.page}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
@@ -623,6 +644,27 @@ export const UpdateCategoryForAdmin = createAsyncThunk(
         })
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/updateCategory`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const DeleteCategoryForAdmin = createAsyncThunk(
+    'lindicateur/DeleteCategoryForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/deleteCategory/${val?.id}`
                 , { headers: headers });
             if (response.status === 200 || response.status === 201) {
                 return response;

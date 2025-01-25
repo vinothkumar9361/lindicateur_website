@@ -28,10 +28,17 @@ const data: any = [
     }
 ]
 
-const ResultData = () => {
+const ResultData = ({handlePlace}:any) => {
     const { Loading, success, errors, CustomerResearchData, CustomerPublicitesList } = useSelector((state: RootState) => state.lindicateur);
 
     console.log(CustomerPublicitesList);
+
+    const handleSelectPlace = (value:any) => {
+        console.log("testing");
+        
+        handlePlace(value);
+    }
+
 
     return (
         <>
@@ -46,12 +53,12 @@ const ResultData = () => {
                             <>
                                 {
                                     item?.adBgType == "poster" ?
-                                        <div className="ad-card cursor-pointer">
+                                        <div onClick={() => { handleSelectPlace(item?.city)}} className="ad-card cursor-pointer">
                                             <img src={item?.photos} alt="img" className="w-full h-full" />
                                             {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                         </div>
                                         :
-                                        <div className="ad-banner cursor-pointer">
+                                        <div onClick={() => { handleSelectPlace(item?.city)}} className="cursor-pointer ad-banner cursor-pointer">
                                             <div className="ad-text">
                                                 <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
                                                     <div className="pb-4">
@@ -87,7 +94,7 @@ const ResultData = () => {
                         CustomerResearchData?.data?.data?.map((item: any, i: number) => {
                             return (
                                 <>
-                                    <div className="w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
+                                    <div onClick={() => { handleSelectPlace(item?.city)}} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
                                         <div className="bg-gray-100 h-32 text-center flex justify-center content-center items-center">
                                             <Image src={TestImg} alt="img" className="w-full h-20" />
                                         </div>

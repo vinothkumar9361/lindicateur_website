@@ -529,3 +529,14 @@ li {
 .css-1nmdiq5-menu {
   color: #000 !important;
 }
+
+.phone-input .react-tel-input,
+.phone-input .react-tel-input input {
+   width: 100% !important;
+   border-radius: 10px !important;
+}
+
+.phone-input .react-tel-input .selected-flag {
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10pc !important;
+}

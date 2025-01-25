@@ -12,6 +12,8 @@ import { PiWarningCircleBold } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import Spinner from "@/Components/Common/Loading";
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -26,11 +28,11 @@ import { log } from "console";
 
 const LoginSchema = Yup.object().shape({
     firstName: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Enter a first name.'),
-    email: Yup.string().email('Invalid email').required('Enter an email address like example@mysite.com.'),
-    phone: Yup.number().required('Enter a phone number.'),
+        .min(2, 'Trop court !')
+        .max(50, 'rop longtemps !')
+        .required('Entrez un prénom.'),
+    email: Yup.string().email('E-mail invalide').required('Saisissez une adresse e-mail telle que exemple@monsite.com.'),
+    password: Yup.string().required('Veuillez fournir un mot de passe valide.').min(8, 'Le mot de passe est trop court - il doit comporter au moins 8 caractères.').matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres latines.'),
 });
 
 const SignupForm = () => {
@@ -39,6 +41,7 @@ const SignupForm = () => {
     const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
 
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
+    const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
 
     useEffect(() => {
         if (success) {
@@ -104,7 +107,7 @@ const SignupForm = () => {
                                     customerName: values?.firstName + "" + values?.lastName,
                                     email: values?.email,
                                     password: values?.password,
-                                    phone: values?.phone,
+                                    phone: phoneNumber,
                                     address: values?.address,
                                     city: values?.city,
                                     state: values?.state,
@@ -139,9 +142,15 @@ const SignupForm = () => {
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                         ) : null}
                                     </div>
-                                    <div className='flex flex-col pt-4 lg:w-1/2 lg:pl-4'>
+                                    <div className='flex flex-col pt-4 phone-input lg:w-1/2 lg:pl-4'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone *</label>
-                                        <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <PhoneInput
+                                            country={'fr'}
+                                            placeholder="N° de téléphone"
+                                            value={phoneNumber}
+                                            onChange={(value) => { setPhoneNumber(value) }}
+                                        />
+                                        {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' /> */}
                                         {errors.phone && touched.phone ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
                                         ) : null}

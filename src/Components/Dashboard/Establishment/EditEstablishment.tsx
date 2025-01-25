@@ -60,6 +60,7 @@ const EditEstablishment = () => {
     }, []);
 
     useEffect(() => {
+        if (!id) return;
         if (token && id) {
             dispatch(GetEtablissementForAdmin({ token, id }));
         }
@@ -219,9 +220,9 @@ const EditEstablishment = () => {
 
     return (
         <>
-            <div className="w-full lg:w-auto">
+            <div className="w-full lg:w-auto pb-20">
                 <div>
-                    <h3 className="pb-4" >Modifier an établissement</h3>
+                    <h3 className="pb-4" > {currentPathname.includes("/voir-un-etablissement/") ? "voir un etablissement" : "Modifier an établissement"}</h3>
                     <hr className="" />
                 </div>
                 <div className='sm:px-16 md:px-4'>
@@ -316,35 +317,32 @@ const EditEstablishment = () => {
                                     <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                     {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
-                                        {
-                                            logoUrl || values?.logo ?
-                                                <div className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-                                                    <a href="" className="w-full text-wrap break-words px-4 text-black">{logoUrl}</a>
-                                                </div>
-                                                :
-                                                <>
-                                                    <label htmlFor="logo-upload" className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-                                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                            <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                            </svg>
-                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 150x150px)</p>
-                                                        </div>
-                                                        <input
-                                                            id="logo-upload"
-                                                            name="logo-upload"
-                                                            type="file"
-                                                            className="hidden"
-                                                            onChange={(e: any) => {
-                                                                setLogoUpload(e.target.files[0])
-                                                            }}
-                                                            multiple
-                                                        />
-                                                    </label>
-                                                </>
-                                        }
+                                        <label htmlFor="logo-upload" className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                            {
+                                                logoUrl || values?.logo ?
+                                                    <p className="w-full text-wrap break-words px-4 text-black">{logoUrl || values?.logo}</p>
+                                                    :
+                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                        </svg>
+                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 150x150px)</p>
+                                                    </div>
+                                            }
 
+                                            <input
+                                                id="logo-upload"
+                                                name="logo-upload"
+                                                type="file"
+                                                className="hidden"
+                                                disabled={currentPathname.includes("/voir-un-etablissement/")}
+                                                onChange={(e: any) => {
+                                                    setLogoUpload(e.target.files[0])
+                                                }}
+                                                multiple
+                                            />
+                                        </label>
                                     </div>
                                     {errorsMessage ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
@@ -354,34 +352,32 @@ const EditEstablishment = () => {
                                     <label htmlFor="photos-upload" className='text-left pb-2'>Ajouter des photos</label>
                                     {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
-                                        {
-                                            photosUrl || values?.photos ?
-                                                <div className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-                                                    <a href="" className="w-full text-wrap break-words px-4 text-black">{photosUrl}</a>
-                                                </div>
-                                                :
-                                                <>
-                                                    <label htmlFor="photos-upload" className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-                                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                            <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                            </svg>
-                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                                                        </div>
-                                                        <input
-                                                            id="photos-upload"
-                                                            name="photos-upload"
-                                                            type="file"
-                                                            className="hidden"
-                                                            onChange={(e: any) => {
-                                                                setPhotosUpload(e.target.files[0])
-                                                            }}
-                                                            multiple
-                                                        />
-                                                    </label>
-                                                </>
-                                        }
+
+                                        <label htmlFor="photos-upload" className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                            {
+                                                photosUrl || values?.photos ?
+                                                    <p className="w-full text-wrap break-words px-4 text-black">{photosUrl || values?.photos}</p>
+                                                    :
+                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                        </svg>
+                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                    </div>
+                                            }
+                                            <input
+                                                id="photos-upload"
+                                                name="photos-upload"
+                                                type="file"
+                                                className="hidden"
+                                                disabled={currentPathname.includes("/voir-un-etablissement/")}
+                                                onChange={(e: any) => {
+                                                    setPhotosUpload(e.target.files[0])
+                                                }}
+                                                multiple
+                                            />
+                                        </label>
                                     </div>
                                     {errorMessagephoto ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
@@ -420,7 +416,7 @@ const EditEstablishment = () => {
                         )}
                     </Formik>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

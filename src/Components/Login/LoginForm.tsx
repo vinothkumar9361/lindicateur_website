@@ -26,8 +26,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 const LoginSchema = Yup.object().shape({
-    userName: Yup.string().required('Enter a user name.'),
-    password: Yup.string().required('Please provide a valid password').min(8, 'Password is too short - should be 8 chars minimum.').matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+    userName: Yup.string().required("Entrez un nom d'utilisateur.").required('Saisissez une adresse e-mail telle que exemple@monsite.com.'),
+    password: Yup.string().required('Veuillez fournir un mot de passe valide.').min(8, 'Le mot de passe est trop court - il doit comporter au moins 8 caractères.').matches(/[a-zA-Z]/, 'Le mot de passe ne peut contenir que des lettres latines.'),
 });
 
 const LoginForm = () => {
@@ -124,7 +124,7 @@ const LoginForm = () => {
                                     <div className='flex flex-col pt-4'>
                                         <div className="flex justify-between">
                                             <label htmlFor="password" className='text-left pb-2'>Mot de passe </label>
-                                            <p className="text-xs text-gray-400 text-right pt-1">Mot de passe oublié ?</p>
+                                            <p className="text-xs text-gray-400 text-right pt-1"><a href="/forgot-password/" className="text-blue-500">Mot de passe oublié ?</a></p>
                                         </div>
                                         <div className="relative">
                                             <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />

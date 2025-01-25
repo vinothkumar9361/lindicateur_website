@@ -63,7 +63,7 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
                         }
 
                     </div>
-                    <div className="flex items-center relative lg:gap-8 lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-2 lg:mr-10">
+                    <div className="flex items-center relative lg:gap-8 lg:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse mr-4 lg:mr-10">
                         {/* <div>
                             <MdOutlineNotificationsActive className="w-6 h-6 sm:w-8 sm:h-8 lg:w-8 lg:h-8" />
                         </div> */}

@@ -65,6 +65,9 @@ const EstablishmentList = () => {
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
+                if (token) {
+                    dispatch(GetAllEtablissementListForAdmin({ token, page: 1 }));
+                }
             })
         }
         else if (errors) {
@@ -109,13 +112,8 @@ const EstablishmentList = () => {
                             <div className="p-1 h-8 border-2 border-gray-500">
                                 <IoSearchOutline className="w-6 h-6" />
                             </div>
-                            {/* <p>Recherche</p> */}
                             <input className="h-8 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
                         </div>
-                        {/* <div className="flex gap-2 items-center">
-                            <CiFilter className="w-6 h-6" />
-                            <p>Filtre</p>
-                        </div> */}
                         <div
                             onClick={() => {
                                 setSortAsc(!sortAsc)
@@ -130,7 +128,12 @@ const EstablishmentList = () => {
                         </div>
                     </div>
                     <div>
-                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
+                        <button
+                            onClick={() => { router.push('/admin/ajouter-un-etablissement/') }}
+                            className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
+                        >
+                            Ajouter un établissement
+                        </button>
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">

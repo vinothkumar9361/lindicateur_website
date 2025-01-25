@@ -128,10 +128,15 @@ const PublicitesList = () => {
                         </div>
                     </div>
                     <div>
-                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un Publicité</button>
+                        <button
+                            onClick={() => { router.push('/admin/ajouter-un-publicite/') }}
+                            className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
+                        >
+                            Ajouter un Publicité
+                        </button>
                     </div>
                 </div>
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                             <tr className="border-2">
@@ -192,7 +197,7 @@ const PublicitesList = () => {
                                                     {data?.startDate + " / " + data?.endDate}
                                                 </td>
                                                 <td className="px-6 py-4 border-2">
-                                                    {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
+                                                {data?.isPublished ? "publié" : "inédite"}
                                                 </td>
                                                 <td className="flex items-center px-6 py-4 ">
                                                     <a onClick={() => { router.push(`/admin/voir-un-publicite/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>

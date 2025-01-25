@@ -82,7 +82,7 @@ const EstablishmentApproval = () => {
                 let updateData = {
                     id: id,
                     isApproved: isApproved ? true : false,
-                    isRejected : isApproved ? false : true,
+                    isRejected: isApproved ? false : true,
                 }
                 dispatch(ApprovedOrUnApprovalEtablissementForAdmin({ token, updateData }));
             }
@@ -151,7 +151,12 @@ const EstablishmentApproval = () => {
                         </div>
                     </div>
                     <div>
-                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
+                        <button
+                            onClick={() => { router.push('/admin/ajouter-un-etablissement/') }}
+                            className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
+                        >
+                            Ajouter un établissement
+                        </button>
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">

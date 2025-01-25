@@ -35,8 +35,9 @@ const CategorieList = () => {
     }
 
     useEffect(() => {
-        dispatch(GetAllCategoryListForAdmin({ token, page: 1, type: 'admin', sort: sortAsc ? "ASC" : "DESC" }));
-
+        if (token) {
+            dispatch(GetAllCategoryListForAdmin({ token, page: 1, type: 'admin', sort: sortAsc ? "ASC" : "DESC" }));
+        }
     }, [sortAsc]);
 
     const handleCloseAdd = () => {
@@ -58,8 +59,6 @@ const CategorieList = () => {
         }
     }, [dispatch, token])
 
-    console.log(AdminCategoryList);
-
     const deleteDetails = (id: any) => {
         Swal.fire({
             title: "Etes-vous sûr de vouloir supprimer vos données ?",
@@ -72,48 +71,58 @@ const CategorieList = () => {
         }).then((result) => {
             if (result?.isConfirmed) {
                 dispatch(DeleteCategoryForAdmin({ token, id }));
+                if (token) {
+                    dispatch(GetAllCategoryListForAdmin({ token, type: 'admin' }));
+                }
             }
         })
     }
 
     useEffect(() => {
-            if (success) {
-                Swal.fire({
-                    title: success?.data?.message,
-                    icon: "success",
-                    iconColor: "#36AA00",
-                    confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
-                    timer: 5000,
-                }).then(() => {
-                    dispatch(successMessage(""));
-                    dispatch(GetAllCategoryListForAdmin({ token, type: 'admin' }));
-                })
-            }
-            else if (errors) {
-                Swal.fire({
-                    title: errors?.response?.data?.message,
-                    icon: "error",
-                    iconColor: "#CA0505",
-                    confirmButtonColor: "#CA0505",
-                    confirmButtonText: "Okay",
-                    timer: 5000,
-                }).then(() => {
-                    dispatch(errorMessage(""));
-                })
-            }
-        }, [dispatch, success, errors]);
+        if (success) {
+            Swal.fire({
+                title: success?.data?.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                dispatch(successMessage(""));
+                dispatch(GetAllCategoryListForAdmin({ token, type: 'admin' }));
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "Okay",
+                timer: 5000,
+            }).then(() => {
+                dispatch(errorMessage(""));
+            })
+        }
+    }, [dispatch, success, errors]);
 
     return (
         <>
             {
                 showAdd ?
-                    <AddCategorie showAdd={showAdd} closeAdd={handleCloseAdd} />
+                    <AddCategorie
+                        showAdd={showAdd}
+                        closeAdd={handleCloseAdd}
+                    />
                     : null
             }
             {
                 showEdit ?
-                    <EditCategorie showEdit={showEdit} closeEdit={handleCloseEdit} categoryName={categoryName} />
+                    <EditCategorie
+                        showEdit={showEdit}
+                        closeEdit={handleCloseEdit}
+                        categoryName={categoryName}
+                    />
                     : null
             }
 
@@ -128,13 +137,8 @@ const CategorieList = () => {
                             <div className="p-1 h-10 border-2 border-gray-500">
                                 <IoSearchOutline className="w-6 h-8" />
                             </div>
-                            {/* <p>Recherche</p> */}
                             <input className="h-10 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
                         </div>
-                        {/* <div className="flex gap-2 items-center">
-                                                    <CiFilter className="w-6 h-6" />
-                                                    <p>Filtre</p>
-                                                </div> */}
                         <div
                             onClick={() => {
                                 setSortAsc(!sortAsc)

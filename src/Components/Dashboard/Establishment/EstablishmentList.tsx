@@ -127,7 +127,12 @@ const EstablishmentList = () => {
                         </div>
                     </div>
                     <div>
-                        <button className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg">Ajouter un établissement</button>
+                        <button
+                            onClick={() => { router.push(`/dashboard/ajouter-un-etablissement/`) }}
+                            className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
+                        >
+                            Ajouter un établissement
+                        </button>
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
@@ -188,7 +193,7 @@ const EstablishmentList = () => {
                                                     {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
                                                 </td>
                                                 <td className="flex items-center px-6 py-4 ">
-                                                <a onClick={() => { router.push(`/dashboard/voir-un-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">Voir</a>
+                                                    <a onClick={() => { router.push(`/dashboard/voir-un-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">Voir</a>
                                                     <a onClick={() => { router.push(`/dashboard/modifier-an-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
                                                     <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
                                                 </td>

@@ -51,6 +51,7 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                 confirmButtonText: "Okay",
                 timer: 5000,
             }).then(() => {
+                dispatch(successMessage(""));
                 closeEdit();
                 if (token) {
                     dispatch(GetAdminProfile(token))
@@ -66,6 +67,7 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                 confirmButtonText: "Okay",
                 timer: 5000,
             }).then(() => {
+                dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);

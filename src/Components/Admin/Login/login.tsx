@@ -81,13 +81,13 @@ const LoginForm = () => {
                     timer: 5000,
                 }).then(() => {
                     setShowVerfication(true);
+                    dispatch(successMessage(""))
                     if (success?.token) {
                         localStorage.setItem('admin-auth-token', success?.token);
                         router.push(`/admin/liste-des-etablissements/`);
                     }
                 })
             }
-            
         }
         else if (errors) {
             Swal.fire({
@@ -98,6 +98,7 @@ const LoginForm = () => {
                 confirmButtonText: "Okay",
                 timer: 5000,
             }).then(() => {
+                dispatch(errorMessage(""))
             })
         }
     }, [dispatch, success, errors]);
@@ -191,8 +192,6 @@ const LoginForm = () => {
                                             password: values?.password,
                                             roleId: "1"
                                         }
-                                        console.log(sendOtp);
-
                                         dispatch(LoginForAdmin(sendOtp))
                                     }}
                                 >
@@ -208,7 +207,7 @@ const LoginForm = () => {
                                             <div className='flex flex-col pt-4'>
                                                 <div className="flex justify-between">
                                                     <label htmlFor="password" className='text-left pb-2'>Mot de passe </label>
-                                                    <p className="text-xs text-gray-400 text-right pt-1">Mot de passe oublié ?</p>
+                                                    <p className="text-xs text-gray-400 text-right pt-1"><a href="/forgot-password/" className="text-blue-500">Mot de passe oublié ?</a></p>
                                                 </div>
                                                 <div className="relative">
                                                     <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />

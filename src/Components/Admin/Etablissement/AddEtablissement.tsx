@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { PiWarningCircleBold } from "react-icons/pi";
 
 import Swal from 'sweetalert2';
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -42,6 +44,7 @@ const Addetablissement = () => {
     const [photosUrl, setPhotosUrl] = useState<any | null>(null);
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
+    const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
 
     console.log("logoUpload", logoUpload);
     console.log("errorMessage", errorMessage);
@@ -247,7 +250,7 @@ const Addetablissement = () => {
                                 email: values?.email,
                                 logo: logoUrl,
                                 photos: photosUrl,
-                                phoneNumber: values?.phone,
+                                phoneNumber: phoneNumber,
                                 type: "admin",
                                 city: values?.city,
                                 websiteURL: values?.websiteURL,
@@ -402,9 +405,15 @@ const Addetablissement = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
                                         ) : null}
                                     </div>
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                        <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <PhoneInput
+                                            country={'fr'}
+                                            placeholder="N° de téléphone"
+                                            value={phoneNumber}
+                                            onChange={(value) => { setPhoneNumber(value) }}
+                                        />
+                                        {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         {errors.phone && touched.phone ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
                                         ) : null}

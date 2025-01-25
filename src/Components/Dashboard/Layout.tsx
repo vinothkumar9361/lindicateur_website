@@ -8,6 +8,14 @@ import SideBar from "@/Components/Dashboard/Nav/SideBar";
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const [showSidebar, setShowSidebar] = useState<boolean | null>(true);
 
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            if (window.innerWidth < 1024) {
+                setShowSidebar(false);
+            }
+        }
+    }, []);
+
     const handleChangeSidebarShow = () => {
         setShowSidebar(!showSidebar);
     }

@@ -19,7 +19,7 @@ import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList,  GetAllCity } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList, GetAllCity } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -46,7 +46,7 @@ const Banner = () => {
     const [locationName, setLocationName] = useState<any | null>(null);
 
     console.log(CustomerCityList);
-    
+
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
         dispatch(GetAllCity({ type: "website" }));
@@ -73,13 +73,32 @@ const Banner = () => {
     }, [CustomerCityList])
 
     console.log(locationName);
-    
+
     const handlePhoneSearch = () => {
-        router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName ? locationName : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
+
+        if (phoneNumber) {
+            localStorage.setItem('phoneNumber', phoneNumber)
+        }
+        router.push(`/rechercher/`);
+        // router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName ? locationName : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
     }
 
     const handleProfileSearch = () => {
-        router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName?.value ? locationName?.value : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
+        if (companyName) {
+            localStorage.setItem('companyName', companyName)
+        }
+        if (categoryName?.value) {
+            localStorage.setItem('categoryName', categoryName?.value)
+        }
+        if (locationName) {
+            localStorage.setItem('locationName', locationName)
+        }
+        if (phoneNumber) {
+            localStorage.setItem('phoneNumber', phoneNumber)
+        }
+        router.push(`/rechercher/`);
+
+        // router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName?.value ? locationName?.value : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
         // dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
         // dispatch(GetAllPublicitesList({ categoryName: categoryName?.value }))
 

@@ -30,22 +30,26 @@ const Search = () => {
     const router = useRouter();
     // const { companyName, categoryName, locationName, phoneNumber } = router.query;
 
-    const params = useParams();
-    const companyName = params?.companyName;
-    const categoryName = params?.categoryName;
-    const locationName = params?.locationName;
-    const phoneNumber = params?.phoneNumber;
+    // const params = useParams();
+    // const companyName = params?.companyName;
+    // const categoryName = params?.categoryName;
+    // const locationName = params?.locationName;
+    // const phoneNumber = params?.phoneNumber;
 
-    console.log(router.query);
-    console.log("Company Name:", companyName);
-    console.log("Category Name:", categoryName);
-    console.log("Location Name:", locationName);
-    console.log("Phone Number:", phoneNumber);
+    // console.log(router.query);
+    // console.log("Company Name:", companyName);
+    // console.log("Category Name:", categoryName);
+    // console.log("Location Name:", locationName);
+    // console.log("Phone Number:", phoneNumber);
 
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, CustomerCategoryList, CustomerCityList } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
+    const [companyName, setCompanyName] = useState<any | null>(null);
+    const [categoryName, setCategoryName] = useState<any | null>(null);
+    const [locationName, setLocationName] = useState<any | null>(null);
+    const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
 
     const [show, setShow] = useState<boolean | null>(false);
     const [select, setSelect] = useState<any | null>([]);
@@ -64,7 +68,17 @@ const Search = () => {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
+            const companyNameString = localStorage.getItem('companyName');
+            const categoryNameString = localStorage.getItem('categoryName');
+            const locationNameString = localStorage.getItem('locationName');
+            const phoneNumberString = localStorage.getItem('phoneNumber');
+            
+
             setToken(tokenString);
+            setCompanyName(companyNameString);
+            setCategoryName(categoryNameString);
+            setLocationName(locationNameString);
+            setPhoneNumber(phoneNumberString);
         }
     }, []);
 

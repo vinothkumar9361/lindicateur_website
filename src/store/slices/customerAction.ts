@@ -196,6 +196,12 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
                     return response;
                 }
             }
+            else if (val?.city) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?city=${val?.city}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
              else {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
                 if (response.status === 200 || response.status === 201) {
@@ -262,6 +268,22 @@ export const GetAllCategoryList = createAsyncThunk(
 
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategoryCustomers?type=${val?.type}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetAllCity = createAsyncThunk(
+    'lindicateur/GetAllCity',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllFranchState?type=${val?.type}`);
             if (response.status === 200 || response.status === 201) {
                 return response;
             }

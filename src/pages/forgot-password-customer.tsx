@@ -5,7 +5,7 @@ export default function SignUp() {
     return (
         <>
             <div className="bg-gray-100 pt-24">
-                <ForgotPasswordForm />
+                <ForgotPasswordForm roleId={2}/>
             </div>
         </>
     );

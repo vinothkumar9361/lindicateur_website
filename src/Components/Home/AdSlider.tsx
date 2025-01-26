@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -50,19 +51,22 @@ function SampleNextArrow(props: any) {
 }
 
 const AdSlider = () => {
+    const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, CustomerBannerList } = useSelector((state: RootState) => state.lindicateur);
 
     console.log(CustomerBannerList);
-    
+
     useEffect(() => {
-            dispatch(GetAllBannerList(data));
+        dispatch(GetAllBannerList(data));
     }, [dispatch])
 
     var settings = {
         dots: true,
         arrows: true,
         infinite: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -71,34 +75,93 @@ const AdSlider = () => {
     };
     return (
         <>
-            <div className="bg-white pt-14 pb-14 ad-slider">
-                <div className="container mx-auto">
-
-                    <Slider {...settings} className="">
-                        {
-                            data?.map((item: any, i: number) => {
-                                return (
-                                    <>
-                                        <div className="">
-                                            <div className="bg-gray-100 text-center justify-items-center">
-                                                <Image src={item?.image} alt="img" className="w-full h-40 sm:h-52 md:h-60 lg:h-full" />
-                                                <div className="overlay-content ml-20 lg:ml-30">
-                                                    <h3 className="text-white font-bold text-2xl sm:text-4xl lg:text-7xl lg:w-60">{item?.title}</h3>
-                                                    {
-                                                        item?.title ?
-                                                            <button className="border border-1 text-xs sm:text-lg p-2 sm:px-4 lg:px-6 mt-2 text-white banner-btn">Read More</button>
-                                                            : null
-                                                    }
+            {
+                CustomerBannerList?.data?.data?.length > 0 ?
+                    CustomerBannerList?.data?.data?.length == 1 ?
+                        <div className="bg-white pt-14 pb-14 ad-slider">
+                            <div className="container mx-auto">
+                                {
+                                    CustomerBannerList?.data?.data?.map((item: any, i: number) => {
+                                        return (
+                                            <>
+                                                <div className="">
+                                                    <div onClick={() => { router.push(item?.websiteURL) }} className="relative bg-gray-100 text-center justify-items-center">
+                                                        <img src={item?.photos} alt="img" className="w-full h-40 sm:h-52 md:h-60 lg:h-full" />
+                                                        <div className="overlay-content flex flex-col pt-4 lg:justify-center lg:items-start lg:content-start lg:pl-10">
+                                                            <img src={item?.logo} alt="logo" className="w-40 h-10 lg:w-60 lg:h-14" />
+                                                            <h3 className="text-white text-left font-bold text-sm sm:text-xl lg:text-4xl w-52 sm:w-80 lg:w-2/3">{item?.companyName}</h3>
+                                                            <p className="text-white text-left text-xs sm:text-sm w-52 sm:w-80 lg:w-2/3 pt-2">{item?.description}</p>
+                                                        </div>
+                                                        <div className="address-content text-white p-2">
+                                                            {
+                                                                item?.email ?
+                                                                    <p >{item?.email}</p>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                item?.phoneNumber ?
+                                                                    <p>{item?.phoneNumber}</p>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                item?.city ?
+                                                                    <p>{item?.city}</p>
+                                                                    : null
+                                                            }
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                )
-                            })
-                        }
-                    </Slider>
-                </div>
-            </div>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                        :
+                        <div className="bg-white pt-14 pb-14 ad-slider">
+                            <div className="container mx-auto">
+
+                                <Slider {...settings} className="">
+                                    {
+                                        CustomerBannerList?.data?.data?.map((item: any, i: number) => {
+                                            return (
+                                                <>
+                                                    <div className="">
+                                                        <div onClick={() => { router.push(item?.websiteURL) }} className="relative bg-gray-100 text-center justify-items-center ad-card">
+                                                            <img src={item?.photos} alt="img" className="w-full h-40 sm:h-52 md:h-60 lg:h-full" />
+                                                            <div className="overlay-content flex flex-col pt-4 lg:justify-center lg:items-start lg:content-start lg:pl-16">
+                                                                <img src={item?.logo} alt="logo" className="w-40 h-10 lg:w-60 lg:h-14" />
+                                                                <h3 className="text-white text-left font-bold text-sm sm:text-xl lg:text-4xl w-52 sm:w-80 lg:w-2/3">{item?.companyName}</h3>
+                                                                <p className="text-white text-left text-xs sm:text-sm w-52 sm:w-80 lg:w-2/3 pt-2">{item?.description}</p>
+                                                            </div>
+                                                            <div className="address-content text-white p-2">
+                                                                {
+                                                                    item?.email ?
+                                                                        <p >{item?.email}</p>
+                                                                        : null
+                                                                }
+                                                                {
+                                                                    item?.phoneNumber ?
+                                                                        <p>{item?.phoneNumber}</p>
+                                                                        : null
+                                                                }
+                                                                {
+                                                                    item?.city ?
+                                                                        <p>{item?.city}</p>
+                                                                        : null
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </Slider>
+                            </div>
+                        </div>
+                    : null
+            }
         </>
     )
 }

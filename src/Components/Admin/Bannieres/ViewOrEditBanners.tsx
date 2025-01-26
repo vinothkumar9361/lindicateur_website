@@ -65,7 +65,7 @@ const ViewOrEditBanners = () => {
 
     useEffect(() => {
         if (logoUpload) {
-            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
             const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
 
             if (logoUpload) {
@@ -73,7 +73,7 @@ const ViewOrEditBanners = () => {
                 const fileSize: any = logoUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorsMessage('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, or GIF file.');
+                    setErrorsMessage('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, AVIF or GIF file.');
                 }
                 else if (fileSize > maxFileSize) {
                     setErrorsMessage('File size should be less than 2 MB.');
@@ -101,7 +101,7 @@ const ViewOrEditBanners = () => {
             }
         }
         else if (photosUpload) {
-            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
             const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
 
             if (photosUpload) {
@@ -109,7 +109,7 @@ const ViewOrEditBanners = () => {
                 const fileSize: any = photosUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorMessagephoto('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, or GIF file.');
+                    setErrorMessagephoto('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, AVIF or GIF file.');
                 }
                 else if (fileSize > maxFileSize) {
                     setErrorMessagephoto('File size should be less than 2 MB.');
@@ -121,8 +121,8 @@ const ViewOrEditBanners = () => {
                         const img: any = new Image();
                         img.onload = () => {
                             const { width, height } = img;
-                            // if (width > 805 || height > 405) {
-                            //     setErrorMessagephoto('Image dimensions should be less than 800x400 pixels.');
+                            // if (width > 1050 || height > 350) {
+                            //     setErrorMessagephoto('Image dimensions should be less than 1050x350 pixels.');
                             // }
                             // else{
                             handleUploadImg();
@@ -149,7 +149,7 @@ const ViewOrEditBanners = () => {
             showCancelButton: true,
             cancelButtonColor: "#025BFD",
             confirmButtonColor: "#CA0505",
-            confirmButtonText: `${AdminBanners?.data?.existingBanner?.isPublished ? "publier" : "annuler la publication"}`
+            confirmButtonText: `${AdminBanners?.data?.existingBanner?.isPublished ? "annuler la publication" : "publier"}`
         }).then((result) => {
             if (result?.isConfirmed) {
                 let publishData: any = {
@@ -240,7 +240,7 @@ const ViewOrEditBanners = () => {
         <>
             <div className="w-full lg:w-auto pb-20">
                 <div>
-                    <h3 className="pb-4" >Voir un bannieres</h3>
+                    <h3 className="pb-4" >{ currentPathname.includes("/voir-un-bannieres/") ? "Voir un bannieres" : "modifier un bannieres"}</h3>
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
@@ -419,7 +419,7 @@ const ViewOrEditBanners = () => {
                                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                                         </svg>
                                                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 1050x350px)</p>
                                                     </div>
                                             }
                                             <input

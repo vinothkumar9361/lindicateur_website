@@ -13,7 +13,7 @@ import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, Updat
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllBannerList, GetAllCategoryList } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllBannerList, GetAllCategoryList, GetAllCity } from '@/store/slices/customerAction';
 
 import { ForgotPassword, ImageUpload, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
 
@@ -42,6 +42,7 @@ interface InitialState {
     CustomerBannerList: any | null;
     CustomerPublicitesList: any | null;
     CustomerCategoryList: any | null;
+    CustomerCityList: any | null;
 
 }
 
@@ -65,6 +66,7 @@ const initialState: InitialState = {
     CustomerBannerList : null,
     CustomerPublicitesList : null,
     CustomerCategoryList : null,
+    CustomerCityList: null
 };
 
 // Create the slice
@@ -699,6 +701,21 @@ const ReduxSlice = createSlice({
                 state.errors = action.payload;
                 state.Loading = false;
                 state.CustomerCategoryList = null;
+            })
+
+             // Get All City List
+             .addCase(GetAllCity.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllCity.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerCityList = action.payload;
+            })
+            .addCase(GetAllCity.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerCityList = null;
             })
 
     },

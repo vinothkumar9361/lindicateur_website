@@ -1,6 +1,7 @@
 `use client`;
 
 import { useRouter } from "next/router";
+import { useParams } from 'next/navigation'
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
@@ -32,6 +33,8 @@ const AddetablishmentSchema = Yup.object().shape({
 const EditEstablishment = () => {
     const router = useRouter();
     const { id } = router.query;
+    // const { id } = useParams();
+
     console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();

@@ -29,7 +29,7 @@ const LoginSchema = Yup.object().shape({
     userName: Yup.string().required("Entrez un nom d'utilisateur.").required('Saisissez une adresse e-mail telle que exemple@monsite.com.'),
 });
 
-const ForgotPasswordForm = () => {
+const ForgotPasswordForm = ({roleId}:any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
@@ -97,6 +97,7 @@ const ForgotPasswordForm = () => {
                             onSubmit={values => {
                                 let updateData = {
                                     email: values?.userName,
+                                    roleId: roleId
                                 }
                                 console.log(updateData);
 

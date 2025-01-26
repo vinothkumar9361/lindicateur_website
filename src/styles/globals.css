@@ -64,7 +64,7 @@ li {
   }
 }
 
-@media (min-width: 1537px){
+@media (min-width: 1537px) {
   .container {
     max-width: 1200px;
   }
@@ -403,17 +403,35 @@ li {
   }
 }
 
+.ad-slider .ad-card {
+  height: 400px;
+}
 .ad-slider .overlay-content {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
   position: absolute;
-  top: 20%;
+  top: 0;
   font-family: playfair display, serif;
   /* left: 0; */
+  width: 100%;
+  height: 100%;
+}
+
+.ad-slider .address-content {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 }
 
 .ad-slider .overlay-content h3 {
   font-family: playfair display, serif;
 }
 
+@media (max-width:950px) {
+  .ad-slider .ad-card {
+    height: 200px;
+  }
+}
 /* Research */
 .search-box {
   height: 100vh !important;
@@ -474,7 +492,7 @@ li {
   box-shadow: none !important;
 }
 
-.ad-card{
+.ad-card {
   /* width: 900px; */
   width: 100%;
   height: 580px;
@@ -513,14 +531,14 @@ li {
   position: absolute;
 }
 
-.ad-address{
+.ad-address {
   width: 250px;
   bottom: 20px;
   right: 20px;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.ad-left-box{
+.ad-left-box {
   background-color: #8BB603;
   height: 580px;
   width: 300px;
@@ -532,8 +550,8 @@ li {
 
 .phone-input .react-tel-input,
 .phone-input .react-tel-input input {
-   width: 100% !important;
-   border-radius: 10px !important;
+  width: 100% !important;
+  border-radius: 10px !important;
 }
 
 .phone-input .react-tel-input .selected-flag {

@@ -207,7 +207,7 @@ const LoginForm = () => {
                                             <div className='flex flex-col pt-4'>
                                                 <div className="flex justify-between">
                                                     <label htmlFor="password" className='text-left pb-2'>Mot de passe </label>
-                                                    <p className="text-xs text-gray-400 text-right pt-1"><a href="/forgot-password/" className="text-blue-500">Mot de passe oublié ?</a></p>
+                                                    <p className="text-xs text-gray-400 text-right pt-1"><a href="/forgot-password-admin/" className="text-blue-500">Mot de passe oublié ?</a></p>
                                                 </div>
                                                 <div className="relative">
                                                     <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />

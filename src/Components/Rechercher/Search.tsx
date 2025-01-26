@@ -15,7 +15,7 @@ import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList, GetAllCity } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -31,12 +31,12 @@ const Search = () => {
 
     console.log(router.query);
     console.log("Company Name:", companyName);
-  console.log("Category Name:", categoryName);
-  console.log("Location Name:", locationName);
-  console.log("Phone Number:", phoneNumber);
+    console.log("Category Name:", categoryName);
+    console.log("Location Name:", locationName);
+    console.log("Phone Number:", phoneNumber);
 
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, CustomerCategoryList } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, CustomerCategoryList, CustomerCityList } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
 
@@ -47,6 +47,7 @@ const Search = () => {
 
     const [sphoneNumber, setSphoneNumber] = useState<any | null>(null);
     const [categoryType, setCategoryType] = useState<any | null>([]);
+    const [cityType, setCityType] = useState<any | null>([]);
 
     const [scategoryName, setScategoryName] = useState<any | null>(null);
     const [scompanyName, setScompanyName] = useState<any | null>(null);
@@ -65,13 +66,14 @@ const Search = () => {
             dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName, city: locationName }));
             dispatch(GetAllPublicitesList({ categoryName: categoryName }))
         }
-        else if(phoneNumber){
+        else if (phoneNumber) {
             dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
         }
     }, [companyName, categoryName, locationName, phoneNumber]);
 
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
+        dispatch(GetAllCity({ type: "website" }));
     }, [dispatch])
 
     useEffect(() => {
@@ -83,6 +85,17 @@ const Search = () => {
             setCategoryType(options)
         }
     }, [CustomerCategoryList])
+
+    useEffect(() => {
+        if (CustomerCityList?.data?.states) {
+            const options = CustomerCityList?.data?.states?.map((value: any) => ({
+                value: value?.name,
+                label: value?.name
+            }));
+            setCityType(options)
+        }
+    }, [CustomerCityList])
+
 
     const inputRef: any = useRef("");
 
@@ -106,11 +119,11 @@ const Search = () => {
     }
 
     const handlePhoneSearch = () => {
-        dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber : sphoneNumber }))
+        dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber: sphoneNumber }))
     }
 
     const handleProfileSearch = () => {
-        dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value }));
+        dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city:slocationName?.value }));
         dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
 
     }
@@ -183,13 +196,20 @@ const Search = () => {
                                         placeholder="Qui: Monsieur Jean, SARL..."
                                         className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent focus:inset-ring-2"
                                     />
-                                    <input
+                                    <Select
+                                        options={cityType}
+                                        value={slocationName}
+                                        onChange={(value) => { setSlocationName(value) }}
+                                        placeholder="Où: France..."
+                                        className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                    />
+                                    {/* <input
                                         type="text"
                                         value={slocationName}
                                         onChange={(e) => setScategoryName(e.target.value)}
                                         placeholder="Où: France, Ile-de-France, Paris..."
                                         className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent"
-                                    />
+                                    /> */}
 
                                     {/* <div className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2">
                                         <LoadScript

@@ -19,7 +19,7 @@ import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList,  GetAllCity } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -32,20 +32,24 @@ const categoryType = [
 const Banner = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, CustomerCategoryList } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, CustomerCategoryList, CustomerCityList } = useSelector((state: RootState) => state.lindicateur);
     const [show, setShow] = useState<boolean | null>(false);
     const [select, setSelect] = useState<any | null>([]);
 
     const [scrollPositionY, setScrollPositionY] = useState(0);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
     const [categoryType, setCategoryType] = useState<any | null>([]);
+    const [cityType, setCityType] = useState<any | null>([]);
 
     const [categoryName, setCategoryName] = useState<any | null>(null);
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [locationName, setLocationName] = useState<any | null>(null);
 
+    console.log(CustomerCityList);
+    
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
+        dispatch(GetAllCity({ type: "website" }));
     }, [dispatch])
 
     useEffect(() => {
@@ -58,12 +62,24 @@ const Banner = () => {
         }
     }, [CustomerCategoryList])
 
+    useEffect(() => {
+        if (CustomerCityList?.data?.states) {
+            const options = CustomerCityList?.data?.states?.map((value: any) => ({
+                value: value?.name,
+                label: value?.name
+            }));
+            setCityType(options)
+        }
+    }, [CustomerCityList])
+
+    console.log(locationName);
+    
     const handlePhoneSearch = () => {
         router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName ? locationName : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
     }
 
     const handleProfileSearch = () => {
-        router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName ? locationName : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
+        router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName?.value ? locationName?.value : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
         // dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
         // dispatch(GetAllPublicitesList({ categoryName: categoryName?.value }))
 
@@ -145,13 +161,20 @@ const Banner = () => {
                                                 placeholder="Qui: Monsieur Jean, SARL..."
                                                 className="border-0 border-b-2 text-black border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2"
                                             />
-                                            <input
+                                            <Select
+                                                options={cityType}
+                                                value={locationName}
+                                                onChange={(value) => { setLocationName(value) }}
+                                                placeholder="Où: France..."
+                                                className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                            />
+                                            {/* <input
                                                 type="text"
                                                 value={locationName}
-                                                onChange={(e) => setCategoryName(e.target.value)}
+                                                onChange={(e) => setLocationName(e.target.value)}
                                                 placeholder="Où: France, Ile-de-France, Paris..."
                                                 className="border-0 border-b-2 text-black border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2"
-                                            />
+                                            /> */}
                                             <button
                                                 onClick={() => { handleProfileSearch() }}
                                                 className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn"

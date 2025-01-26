@@ -420,9 +420,6 @@ const AddBannieres = () => {
                                         onChange={(value) => { setPhoneNumber(value) }}
                                     />
                                     {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
-                                    {errors.phone && touched.phone ? (
-                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
-                                    ) : null}
                                 </div>
 
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>

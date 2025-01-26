@@ -197,10 +197,16 @@ const PublicitesList = () => {
                                                     {data?.startDate + " / " + data?.endDate}
                                                 </td>
                                                 <td className="px-6 py-4 border-2">
-                                                {data?.isPublished ? "publié" : "inédite"}
+                                                    {data?.isPublished ? "publié" : "inédite"}
                                                 </td>
                                                 <td className="flex items-center px-6 py-4 ">
-                                                    <a onClick={() => { router.push(`/admin/voir-un-publicite/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+                                                    <a
+                                                        onClick={() => {
+                                                            localStorage.setItem('admin-publicite-id', data?.id)
+                                                            router.push(`/admin/voir-un-publicite/`)
+                                                        }}
+                                                        className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                    >Voir</a>
                                                     <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
                                                 </td>
                                             </tr>

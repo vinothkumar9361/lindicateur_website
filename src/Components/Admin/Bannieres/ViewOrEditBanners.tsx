@@ -33,14 +33,16 @@ const AddetablishmentSchema = Yup.object().shape({
 const ViewOrEditBanners = () => {
     const router = useRouter();
     const params = useParams();
-    const id = params?.id;
-    console.log(id);
+    // const id = params?.id;
+    // console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, AdminBanners } = useSelector((state: RootState) => state.lindicateur);
     console.log(AdminBanners);
 
     const [token, setToken] = useState<string | null>(null);
+    const [id, setId] = useState<string | null>(null);
+
     const [currentPathname, setCurrentPathname] = useState('');
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
     const [logoUrl, setLogoUrl] = useState<any | null>(null);
@@ -53,6 +55,8 @@ const ViewOrEditBanners = () => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
             setToken(tokenString);
+            const localId = localStorage.getItem('admin-banner-id');
+            setId(localId);
             const currentUrl = new URL(window.location.href);
             setCurrentPathname(currentUrl.pathname);
         }
@@ -237,15 +241,33 @@ const ViewOrEditBanners = () => {
         dispatch(ImageUpload({ imageData }));
     }
 
+    const editDetails = (id: any) => {
+        Swal.fire({
+            title: "Etes-vous sûr de vouloir modifier vos données ?",
+            icon: "warning",
+            iconColor: "#CA0505",
+            showCancelButton: true,
+            cancelButtonColor: "#025BFD",
+            confirmButtonColor: "#CA0505",
+            confirmButtonText: "Modifier"
+        }).then((result) => {
+            if (result?.isConfirmed) {
+                localStorage.setItem('customer-banner-id', id)
+                router.push(`/admin/modifier-un-bannieres/`)
+                window.location.reload();
+            }
+        })
+    }
+
     return (
         <>
             <div className="w-full lg:w-auto pb-20">
                 <div>
-                    <h3 className="pb-4" >{ currentPathname.includes("/voir-un-bannieres/") ? "Voir un bannieres" : "modifier un bannieres"}</h3>
+                    <h3 className="pb-4" >{currentPathname.includes("/voir-un-bannieres/") ? "Voir un bannieres" : "modifier un bannieres"}</h3>
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
-                    <button onClick={() => { router.push(`/admin/modifier-un-bannieres/${AdminBanners?.data?.existingBanner?.id}`) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
+                    <button onClick={() => { editDetails(AdminBanners?.data?.existingBanner?.id) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
                     <button onClick={() => { PublishDetails(AdminBanners?.data?.existingBanner?.id) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">{AdminBanners?.data?.existingBanner?.isPublished ? "Annuler la publication" : "Publier"}</button>
 
                 </div>

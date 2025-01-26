@@ -71,25 +71,29 @@ const NewsSlider = () => {
     const [show, setShow] = useState<boolean | null>(true);
     const [jsonData, setJsonData] = useState<any>(null);
 
-    // useEffect(() => {
-    //     const fetchXML = async () => {
-    //         try {
-    //             const response = await axios.get("/api/get-xml");
+    useEffect(() => {
+        const fetchXML = async () => {
+            try {
+                const response = await axios.get("https://api.xn--lindicateur-rfrencement-nccb.fr/admin/xmlfileget");
 
-    //             parseString(response.data, { explicitArray: false }, (err, result) => {
-    //                 if (err) {
-    //                     console.error("Error parsing XML:", err);
-    //                 } else {
-    //                     setJsonData(result);
-    //                 }
-    //             });
-    //         } catch (error) {
-    //             console.error("Error fetching XML:", error);
-    //         }
-    //     };
+                console.log(response);
 
-    //     fetchXML();
-    // }, []);
+                parseString(response.data, { explicitArray: false }, (err, result) => {
+                    if (err) {
+                        console.error("Error parsing XML:", err);
+                    } else {
+                        console.log(result);
+
+                        setJsonData(result);
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching XML:", error);
+            }
+        };
+
+        fetchXML();
+    }, []);
 
 
     var settings = {
@@ -141,7 +145,7 @@ const NewsSlider = () => {
                     </div>
                     <Slider {...settings} className="px-10 mt-4 mb-14">
                         {
-                            data?.map((item: any, i: number) => {
+                            jsonData?.rss?.channel?.item?.map((item: any, i: number) => {
                                 return (
                                     <>
                                         <div className="box_shadow_light">
@@ -150,9 +154,9 @@ const NewsSlider = () => {
                                             </div>
                                             <div className="pt-3 p-4">
                                                 <p className="font-medium mb-2 txt_light_green line-clamp-2">{item?.title}</p>
-                                                <p className="pb-2">{item?.time}</p>
+                                                <p className="pb-2">{item?.pubDate}</p>
                                                 <p className="mb-2 line-clamp-2">{item?.description}</p>
-                                                <a href={item?.link}><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
+                                                <a href={item?.link} target="_blank"><p className="text-right font-medium underline flex">En savoir plus <FaChevronRight className="mt-1" /></p></a>
                                             </div>
                                         </div>
                                     </>

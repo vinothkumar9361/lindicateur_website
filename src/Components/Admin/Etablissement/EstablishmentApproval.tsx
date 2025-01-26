@@ -223,8 +223,21 @@ const EstablishmentApproval = () => {
                                                             <a onClick={() => { approvedOrUnapprovalDetails(false, data?.id) }} className="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Refuser</a>
                                                         </td>
                                                         <td className="px-6 py-4 ">
-                                                            <a onClick={() => { router.push(`/admin/voir-un-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">Voir</a>
-                                                            <a onClick={() => { router.push(`/admin/modifier-an-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+                                                            <a
+                                                                onClick={() => {
+                                                                    localStorage.setItem('admin-estab-id', data?.id)
+                                                                    router.push(`/admin/voir-un-etablissement/`)
+                                                                }}
+                                                                className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">
+                                                                Voir
+                                                            </a>
+                                                            <a
+                                                                onClick={() => {
+                                                                    localStorage.setItem('admin-estab-id', data?.id)
+                                                                    router.push(`/admin/modifier-an-etablissement/`)
+                                                                }}
+                                                                className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                            >Modifier</a>
                                                             <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
                                                         </td>
                                                     </tr>
@@ -238,7 +251,7 @@ const EstablishmentApproval = () => {
                             <div className="py-20 text-center">
                                 <h3 className="text-gray-500 font bold">aucune donnée</h3>
                             </div>
-                                                 
+
                     }
                 </div>
             </div>

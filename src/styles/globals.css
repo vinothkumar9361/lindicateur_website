@@ -427,7 +427,13 @@ li {
   font-family: playfair display, serif;
 }
 
-@media (max-width:950px) {
+@media (max-width:1024px) {
+  .ad-slider .ad-card {
+    height: 250px;
+  }
+}
+
+@media (max-width:650px) {
   .ad-slider .ad-card {
     height: 200px;
   }

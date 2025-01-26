@@ -165,6 +165,11 @@ const Search = () => {
     }
 
     const handleProfileSearch = () => {
+        localStorage.removeItem('companyName');
+        localStorage.removeItem('categoryName');
+        localStorage.removeItem('locationName');
+        localStorage.removeItem('phoneNumber');
+
         dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city: slocationName?.value }));
         dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
 

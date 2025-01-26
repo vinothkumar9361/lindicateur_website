@@ -32,15 +32,16 @@ const AddetablishmentSchema = Yup.object().shape({
 
 const ViewOrEditPublicites = () => {
     const router = useRouter();
-    const params = useParams();
-    const id = params?.id;
-    console.log(id);
+    // const params = useParams();
+    // const id = params?.id;
+    // console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, AdminPublicites } = useSelector((state: RootState) => state.lindicateur);
     console.log(AdminPublicites);
 
     const [token, setToken] = useState<string | null>(null);
+    const [id, setId] = useState<string | null>(null);
     const [currentPathname, setCurrentPathname] = useState('');
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
     const [logoUrl, setLogoUrl] = useState<any | null>(null);
@@ -53,6 +54,8 @@ const ViewOrEditPublicites = () => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
             setToken(tokenString);
+            const localId = localStorage.getItem('admin-publicite-id');
+            setId(localId);
             const currentUrl = new URL(window.location.href);
             setCurrentPathname(currentUrl.pathname);
         }
@@ -86,11 +89,12 @@ const ViewOrEditPublicites = () => {
                         const img: any = new Image();
                         img.onload = () => {
                             const { width, height } = img;
-                            // if (width > 155 || height > 155) {
-                            //     setErrorsMessage('Image dimensions should be less than 150x150 pixels.');
-                            // }
-
-                            handleUploadImg();
+                            if (width > 155 || height > 155) {
+                                setErrorsMessage('Image dimensions should be less than 150x150 pixels.');
+                            }
+                            else{
+                                handleUploadImg();
+                            }
                         };
                         img.src = e.target.result;
                     };
@@ -122,12 +126,12 @@ const ViewOrEditPublicites = () => {
                         const img: any = new Image();
                         img.onload = () => {
                             const { width, height } = img;
-                            // if (width > 805 || height > 405) {
-                            //     setErrorMessagephoto('Image dimensions should be less than 800x400 pixels.');
-                            // }
-                            // else{
+                            if (width > 905 || height > 585) {
+                                setErrorMessagephoto('Image dimensions should be less than 900x580 pixels.');
+                            }
+                            else{
                             handleUploadImg();
-                            // }
+                            }
 
                         };
                         img.src = e.target.result;
@@ -237,6 +241,24 @@ const ViewOrEditPublicites = () => {
         dispatch(ImageUpload({ imageData }));
     }
 
+    const editDetails = (id: any) => {
+            Swal.fire({
+                title: "Etes-vous sûr de vouloir modifier vos données ?",
+                icon: "warning",
+                iconColor: "#CA0505",
+                showCancelButton: true,
+                cancelButtonColor: "#025BFD",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "Modifier"
+            }).then((result) => {
+                if (result?.isConfirmed) {
+                    localStorage.setItem('customer-publicite-id', id)
+                    router.push(`/admin/modifier-un-publicite/`)
+                    window.location.reload();
+                }
+            })
+        }
+
     return (
         <>
             <div className="w-full lg:w-auto">
@@ -245,7 +267,8 @@ const ViewOrEditPublicites = () => {
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
-                    <button onClick={() => { router.push(`/admin/modifier-un-publicite/${AdminPublicites?.data?.existingAds?.id}`) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
+                    <button 
+                    onClick={() => { editDetails(AdminPublicites?.data?.existingAds?.id) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
                     <button onClick={() => { PublishDetails(AdminPublicites?.data?.existingAds?.id) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">{AdminPublicites?.data?.existingAds?.isPublished ? "Annuler la publication" : "Publier"}</button>
 
                 </div>

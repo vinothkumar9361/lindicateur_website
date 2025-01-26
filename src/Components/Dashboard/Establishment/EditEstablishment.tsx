@@ -32,15 +32,17 @@ const AddetablishmentSchema = Yup.object().shape({
 
 const EditEstablishment = () => {
     const router = useRouter();
-    const params = useParams();
-    const id = params?.id;
+    // const params = useParams();
+    // const id = params?.id;
 
-    console.log(id);
+    // console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
+    const [id, setId] = useState<string | null>(null);
+
     const [currentPathname, setCurrentPathname] = useState('');
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
     const [logoUrl, setLogoUrl] = useState<any | null>(null);
@@ -53,6 +55,8 @@ const EditEstablishment = () => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('user-auth-token');
             setToken(tokenString);
+            const localId = localStorage.getItem('customer-estab-id');
+            setId(localId);
             const currentUrl = new URL(window.location.href);
             setCurrentPathname(currentUrl.pathname);
         }

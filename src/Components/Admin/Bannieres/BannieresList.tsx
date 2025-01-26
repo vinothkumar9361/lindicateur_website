@@ -32,7 +32,7 @@ const BannieresList = () => {
     }
 
     useEffect(() => {
-        if(token){
+        if (token) {
             dispatch(GetAllBannerListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
         }
     }, [sortAsc]);
@@ -130,7 +130,7 @@ const BannieresList = () => {
                     </div>
                     <div>
                         <button
-                        onClick={() => { router.push('/admin/ajouter-une-banniere/')}}
+                            onClick={() => { router.push('/admin/ajouter-une-banniere/') }}
                             className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
                         >
                             Ajouter une bannière
@@ -201,7 +201,14 @@ const BannieresList = () => {
                                                     {data?.isPublished ? "publié" : "inédite"}
                                                 </td>
                                                 <td className="flex items-center px-6 py-4 ">
-                                                    <a onClick={() => { router.push(`/admin/voir-un-bannieres/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Voir</a>
+                                                    <a onClick={() => {
+                                                        localStorage.setItem('admin-banner-id', data?.id)
+                                                        router.push(`/admin/voir-un-bannieres/`)
+                                                    }}
+                                                        className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                    >
+                                                        Voir
+                                                    </a>
                                                     <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
                                                 </td>
                                             </tr>

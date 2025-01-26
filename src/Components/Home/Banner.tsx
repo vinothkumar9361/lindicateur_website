@@ -45,8 +45,6 @@ const Banner = () => {
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [locationName, setLocationName] = useState<any | null>(null);
 
-    console.log(CustomerCityList);
-
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
         dispatch(GetAllCity({ type: "website" }));
@@ -71,8 +69,6 @@ const Banner = () => {
             setCityType(options)
         }
     }, [CustomerCityList])
-
-    console.log(locationName);
 
     const handlePhoneSearch = () => {
 

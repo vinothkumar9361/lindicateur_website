@@ -135,7 +135,7 @@ const EstablishmentList = () => {
                         </button>
                     </div>
                 </div>
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                             <tr className="border-2">

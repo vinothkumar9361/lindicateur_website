@@ -160,78 +160,86 @@ const EstablishmentApproval = () => {
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-                            <tr className="border-2">
-                                <th scope="col" className="p-4 border-2">
-                                    <div className="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label className="sr-only">checkbox</label>
-                                    </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    No.
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Société ID
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Nom de la société
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Publicité
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Statut
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                AdminUnapprovalEtabliselist?.data?.data?.map((data: any, i: number) => {
-                                    return (
-                                        <>
-                                            <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                <td className="w-4 p-4 border-2">
-                                                    <div className="flex items-center">
-                                                        <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label className="sr-only">checkbox</label>
-                                                    </div>
-                                                </td>
-                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
-                                                    {i + 1}
-                                                </th>
-                                                <td className="px-6 py-4 border-2">
-                                                    {"I00" + data?.id}
-                                                </td>
-                                                <td className="px-6 py-4 border-2">
-                                                    {data?.companyName}
-                                                </td>
-                                                {/* <td className="px-6 py-4 border-2">
+                    {
+                        AdminUnapprovalEtabliselist?.data?.data?.length > 0 ?
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                                    <tr className="border-2">
+                                        <th scope="col" className="p-4 border-2">
+                                            <div className="flex items-center">
+                                                <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                <label className="sr-only">checkbox</label>
+                                            </div>
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            No.
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Société ID
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Nom de la société
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Publicité
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Statut
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        AdminUnapprovalEtabliselist?.data?.data?.map((data: any, i: number) => {
+                                            return (
+                                                <>
+                                                    <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td className="w-4 p-4 border-2">
+                                                            <div className="flex items-center">
+                                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label className="sr-only">checkbox</label>
+                                                            </div>
+                                                        </td>
+                                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
+                                                            {i + 1}
+                                                        </th>
+                                                        <td className="px-6 py-4 border-2">
+                                                            {"I00" + data?.id}
+                                                        </td>
+                                                        <td className="px-6 py-4 border-2">
+                                                            {data?.companyName}
+                                                        </td>
+                                                        {/* <td className="px-6 py-4 border-2">
                                                     oui
                                                 </td> */}
-                                                <td className="px-6 py-4 border-2">
-                                                    {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
-                                                </td>
-                                                <td className="px-6 border-2">
-                                                    <a onClick={() => { approvedOrUnapprovalDetails(true, data?.id) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Approuver</a>
-                                                    <a onClick={() => { approvedOrUnapprovalDetails(false, data?.id) }} className="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Refuser</a>
-                                                </td>
-                                                <td className="px-6 py-4 ">
-                                                    <a onClick={() => { router.push(`/admin/voir-un-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">Voir</a>
-                                                    <a onClick={() => { router.push(`/admin/modifier-an-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
-                                                    <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
-                                                </td>
-                                            </tr>
-                                        </>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                                        <td className="px-6 py-4 border-2">
+                                                            {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
+                                                        </td>
+                                                        <td className="px-6 border-2">
+                                                            <a onClick={() => { approvedOrUnapprovalDetails(true, data?.id) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Approuver</a>
+                                                            <a onClick={() => { approvedOrUnapprovalDetails(false, data?.id) }} className="cursor-pointer font-medium text-red-600 dark:text-red-500 hover:underline ms-3">Refuser</a>
+                                                        </td>
+                                                        <td className="px-6 py-4 ">
+                                                            <a onClick={() => { router.push(`/admin/voir-un-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4">Voir</a>
+                                                            <a onClick={() => { router.push(`/admin/modifier-an-etablissement/${data?.id}`) }} className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</a>
+                                                            <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
+                                                        </td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            :
+                            <div className="py-20 text-center">
+                                <h3 className="text-gray-500 font bold">aucune donnée</h3>
+                            </div>
+                                                 
+                    }
                 </div>
             </div>
         </>

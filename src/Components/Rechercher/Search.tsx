@@ -1,6 +1,7 @@
 `use client`;
 
 import { useRouter } from "next/router";
+import { useParams } from 'next/navigation';
 
 import { useState, useEffect, useRef } from "react";
 
@@ -27,7 +28,13 @@ const categoryType = [
 
 const Search = () => {
     const router = useRouter();
-    const { companyName, categoryName, locationName, phoneNumber } = router.query;
+    // const { companyName, categoryName, locationName, phoneNumber } = router.query;
+
+    const params = useParams();
+    const companyName = params?.companyName;
+    const categoryName = params?.categoryName;
+    const locationName = params?.locationName;
+    const phoneNumber = params?.phoneNumber;
 
     console.log(router.query);
     console.log("Company Name:", companyName);
@@ -62,9 +69,30 @@ const Search = () => {
     }, []);
 
     useEffect(() => {
-        if (companyName || categoryName || locationName) {
+        if (companyName && categoryName && locationName) {
             dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName, city: locationName }));
             dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+        }
+        else if (companyName && categoryName) {
+            dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName }));
+            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+        }
+        else if (companyName && locationName) {
+            dispatch(GetAllEstablishmentProfileSearch({ search: companyName, city: locationName }));
+        }
+        else if (categoryName && locationName) {
+            dispatch(GetAllEstablishmentProfileSearch({ categoryName: categoryName, city: locationName }));
+            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+        }
+        else if (categoryName) {
+            dispatch(GetAllEstablishmentProfileSearch({ categoryName: categoryName }));
+            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+        }
+        else if (companyName) {
+            dispatch(GetAllEstablishmentProfileSearch({ search: companyName }));
+        }
+        else if (locationName) {
+            dispatch(GetAllEstablishmentProfileSearch({ city: locationName }));
         }
         else if (phoneNumber) {
             dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
@@ -123,7 +151,7 @@ const Search = () => {
     }
 
     const handleProfileSearch = () => {
-        dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city:slocationName?.value }));
+        dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city: slocationName?.value }));
         dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
 
     }

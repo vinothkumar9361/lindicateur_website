@@ -1,7 +1,7 @@
 `use client`;
 
 import { useRouter } from "next/router";
-import { useParams } from 'next/navigation'
+import { useParams } from 'next/navigation';
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
@@ -32,15 +32,13 @@ const AddetablishmentSchema = Yup.object().shape({
 
 const EditEstablishment = () => {
     const router = useRouter();
-    const { id } = router.query;
-    // const { id } = useParams();
+    const params = useParams();
+    const id = params?.id;
 
     console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
-
-    console.log(AdminEtablise);
 
     const [token, setToken] = useState<string | null>(null);
     const [currentPathname, setCurrentPathname] = useState('');
@@ -51,8 +49,6 @@ const EditEstablishment = () => {
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
 
-    console.log("logoUpload", logoUpload);
-    console.log("errorMessage", errorMessage);
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('user-auth-token');
@@ -62,17 +58,11 @@ const EditEstablishment = () => {
         }
     }, []);
 
-    // useEffect(() => {
-    //     if (!id) return;
-    //     if (token && id) {
-    //         dispatch(GetEtablissementForAdmin({ token, id }));
-    //     }
-    // }, [dispatch, token, id])
-
-    if (!id) return;
-    if (token && id) {
-        dispatch(GetEtablissementForAdmin({ token, id }));
-    }
+    useEffect(() => {
+        if (token && id) {
+            dispatch(GetEtablissementForAdmin({ token, id }));
+        }
+    }, [dispatch, token, id])
 
     useEffect(() => {
         if (logoUpload) {

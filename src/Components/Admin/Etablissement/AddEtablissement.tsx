@@ -332,7 +332,6 @@ const Addetablissement = () => {
                                     </div>
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
-                                        {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         <div className="flex items-center justify-center w-full">
                                             {
                                                 logoUrl ?

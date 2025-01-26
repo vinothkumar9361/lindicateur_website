@@ -62,12 +62,17 @@ const EditEstablishment = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (!id) return;
-        if (token && id) {
-            dispatch(GetEtablissementForAdmin({ token, id }));
-        }
-    }, [dispatch, token, id])
+    // useEffect(() => {
+    //     if (!id) return;
+    //     if (token && id) {
+    //         dispatch(GetEtablissementForAdmin({ token, id }));
+    //     }
+    // }, [dispatch, token, id])
+
+    if (!id) return;
+    if (token && id) {
+        dispatch(GetEtablissementForAdmin({ token, id }));
+    }
 
     useEffect(() => {
         if (logoUpload) {

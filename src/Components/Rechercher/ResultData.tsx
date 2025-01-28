@@ -28,14 +28,14 @@ const data: any = [
     }
 ]
 
-const ResultData = ({handlePlace}:any) => {
+const ResultData = ({ handlePlace }: any) => {
     const { Loading, success, errors, CustomerResearchData, CustomerPublicitesList } = useSelector((state: RootState) => state.lindicateur);
 
     console.log(CustomerPublicitesList);
 
-    const handleSelectPlace = (value:any) => {
+    const handleSelectPlace = (value: any) => {
         console.log("testing");
-        
+
         handlePlace(value);
     }
 
@@ -46,73 +46,83 @@ const ResultData = ({handlePlace}:any) => {
                 {/* <p className="w-full"><b>{CustomerResearchData?.data?.data?.length} résultats</b> trouvés "{CustomerResearchData?.data?.data[0]?.categoryName ? CustomerResearchData?.data?.data[0]?.categoryName : ""}"</p> */}
 
                 {
-                    CustomerPublicitesList?.data?.data?.map((item: any, i: number) => {
-                        console.log(item?.photos);
+                    CustomerPublicitesList?.data?.data?.length > 0 || CustomerResearchData?.data?.data?.length > 0 ?
+                        <>
+                            {
+                                CustomerPublicitesList?.data?.data?.map((item: any, i: number) => {
+                                    console.log(item?.photos);
 
-                        return (
-                            <>
+                                    return (
+                                        <>
+                                            {
+                                                item?.adBgType == "poster" ?
+                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card cursor-pointer">
+                                                        <img src={item?.photos} alt="img" className="w-full h-full" />
+                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
+                                                    </div>
+                                                    :
+                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer ad-banner cursor-pointer">
+                                                        <div className="ad-text">
+                                                            <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
+                                                                <div className="pb-4">
+                                                                    <img src={item?.logo ? item?.logo : Logo} alt="" />
+                                                                    {/* <Image src={Logo} alt="logo" /> */}
+                                                                </div>
+                                                                <div className="text-center">
+                                                                    <h3 className="pb-3">{item?.companyName}</h3>
+                                                                    <h6 className="text-lg pb-3">{item?.categoryName}</h6>
+                                                                    <p className="text-sm">{item?.description}</p>
+                                                                </div>
+
+                                                            </div>
+                                                            <div className="ad-address p-2 px-6 text-xs">
+                                                                <p className="mb-2">{item?.email}</p>
+                                                                <p className="mb-2">{item?.phoneNumber}</p>
+                                                                <p className="mb-2">{item?.city}</p>
+                                                                <p className="mb-2">{item?.city}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`ad-background`}>
+                                                            <Image src={item?.photos ? item?.photos : BannerBackground} alt="banner" width={900} height={580} />
+                                                        </div>
+                                                    </div>
+                                            }
+                                        </>
+                                    )
+                                })
+                            }
+
+                            <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
                                 {
-                                    item?.adBgType == "poster" ?
-                                        <div onClick={() => { handleSelectPlace(item?.city)}} className="ad-card cursor-pointer">
-                                            <img src={item?.photos} alt="img" className="w-full h-full" />
-                                            {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
-                                        </div>
-                                        :
-                                        <div onClick={() => { handleSelectPlace(item?.city)}} className="cursor-pointer ad-banner cursor-pointer">
-                                            <div className="ad-text">
-                                                <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
-                                                    <div className="pb-4">
-                                                        <img src={item?.logo ? item?.logo : Logo} alt="" />
-                                                        {/* <Image src={Logo} alt="logo" /> */}
+                                    CustomerResearchData?.data?.data?.map((item: any, i: number) => {
+                                        return (
+                                            <>
+                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
+                                                    <div className="bg-gray-100 h-32 text-center flex justify-center content-center items-center">
+                                                        <Image src={TestImg} alt="img" className="w-full h-20" />
                                                     </div>
-                                                    <div className="text-center">
-                                                        <h3 className="pb-3">{item?.companyName}</h3>
-                                                        <h6 className="text-lg pb-3">{item?.categoryName}</h6>
-                                                        <p className="text-sm">{item?.description}</p>
-                                                    </div>
-
-                                                </div>
-                                                <div className="ad-address p-2 px-6 text-xs">
-                                                    <p className="mb-2">{item?.email}</p>
-                                                    <p className="mb-2">{item?.phoneNumber}</p>
-                                                    <p className="mb-2">{item?.city}</p>
-                                                    <p className="mb-2">{item?.city}</p>
-                                                </div>
-                                            </div>
-                                            <div className={`ad-background`}>
-                                                <Image src={item?.photos ? item?.photos : BannerBackground} alt="banner" width={900} height={580} />
-                                            </div>
-                                        </div>
-                                }
-                            </>
-                        )
-                    })
-                }
-
-                <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
-                    {
-                        CustomerResearchData?.data?.data?.map((item: any, i: number) => {
-                            return (
-                                <>
-                                    <div onClick={() => { handleSelectPlace(item?.city)}} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
-                                        <div className="bg-gray-100 h-32 text-center flex justify-center content-center items-center">
-                                            <Image src={TestImg} alt="img" className="w-full h-20" />
-                                        </div>
-                                        {/* <div >
+                                                    {/* <div >
                                             <Image src={item?.photos ? item?.photos : item?.logo ? item?.logo : TestImg} alt="img" className="w-full" />
                                         </div> */}
-                                        <div className="text-center px-4 py-4">
-                                            <h5 className="font-bold py-2">{item?.companyName}</h5>
-                                            <p className="bg_green py-1 ">{item?.categoryName}</p>
-                                            <p className="py-2">{item?.city} {item?.postalCode}</p>
-                                            <p className="py-1"><b>Tel :</b>{item?.phoneNumber}</p>
-                                        </div>
-                                    </div>
-                                </>
-                            )
-                        })
-                    }
-                </div>
+                                                    <div className="text-center px-4 py-4">
+                                                        <h5 className="font-bold py-2">{item?.companyName}</h5>
+                                                        <p className="bg_green py-1 ">{item?.categoryName}</p>
+                                                        <p className="py-2">{item?.city} {item?.postalCode}</p>
+                                                        <p className="py-1"><b>Tel :</b>{item?.phoneNumber}</p>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </>
+                        :
+                        <div className="py-20 text-center">
+                            <h3 className="text-gray-500 font bold">aucune donnée</h3>
+                        </div>
+                }
+
 
             </div>
         </>

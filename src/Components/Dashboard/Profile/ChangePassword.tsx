@@ -47,7 +47,7 @@ const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) 
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
@@ -60,7 +60,7 @@ const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) 
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""));

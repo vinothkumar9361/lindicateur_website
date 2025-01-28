@@ -46,9 +46,6 @@ const Addetablissement = () => {
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
 
-    console.log("logoUpload", logoUpload);
-    console.log("errorMessage", errorMessage);
-
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -72,10 +69,10 @@ const Addetablissement = () => {
                 const fileSize: any = logoUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorsMessage('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, or GIF file.');
+                    setErrorsMessage("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage('File size should be less than 2 MB.');
+                    setErrorsMessage("La taille du fichier doit être inférieure à 2 Mo.");
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -108,10 +105,10 @@ const Addetablissement = () => {
                 const fileSize: any = photosUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorMessagephoto('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, or GIF file.');
+                    setErrorMessagephoto("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorMessagephoto('File size should be less than 2 MB.');
+                    setErrorMessagephoto('La taille du fichier doit être inférieure à 2 Mo.');
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -120,12 +117,12 @@ const Addetablissement = () => {
                         const img: any = new Image();
                         img.onload = () => {
                             const { width, height } = img;
-                            // if (width > 805 || height > 405) {
-                            //     setErrorMessagephoto('Image dimensions should be less than 800x400 pixels.');
-                            // }
-                            // else{
+                            if (width > 405 || height > 255) {
+                                setErrorMessagephoto("Les dimensions de l'image doivent être inférieures à 400x250 pixels.");
+                            }
+                            else{
                             handleUploadImg();
-                            // }
+                            }
 
                         };
                         img.src = e.target.result;
@@ -148,7 +145,7 @@ const Addetablissement = () => {
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     if (logoUpload) {
@@ -168,7 +165,7 @@ const Addetablissement = () => {
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
@@ -183,7 +180,7 @@ const Addetablissement = () => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""));
@@ -345,8 +342,8 @@ const Addetablissement = () => {
                                                                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                                                 </svg>
-                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 150x150px)</p>
+                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
                                                             </div>
                                                             <input
                                                                 id="logo-upload"
@@ -383,8 +380,8 @@ const Addetablissement = () => {
                                                                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                                                 </svg>
-                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (MAX. 400x250px)</p>
                                                             </div>
                                                             <input
                                                                 id="photos-upload"

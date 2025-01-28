@@ -51,7 +51,7 @@ const ForgotPasswordForm = ({roleId}:any) => {
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 if (success?.token) {
@@ -65,16 +65,13 @@ const ForgotPasswordForm = ({roleId}:any) => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);
-
-    console.log(success);
-    console.log(errors);
 
     return (
         <>
@@ -113,7 +110,6 @@ const ForgotPasswordForm = ({roleId}:any) => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.userName}</div>
                                         ) : null}
                                     </div>
-                                    
                                     
                                     <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">
                                         {

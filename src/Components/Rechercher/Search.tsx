@@ -11,6 +11,8 @@ import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api';
 
+import Spinner from "@/Components/Common/Loading";
+
 import Select from 'react-select';
 import { MultiSelect } from "react-multi-select-component";
 
@@ -72,7 +74,7 @@ const Search = () => {
             const categoryNameString = localStorage.getItem('categoryName');
             const locationNameString = localStorage.getItem('locationName');
             const phoneNumberString = localStorage.getItem('phoneNumber');
-            
+
 
             setToken(tokenString);
             setCompanyName(companyNameString);
@@ -115,8 +117,17 @@ const Search = () => {
 
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
-        dispatch(GetAllCity({ type: "website" }));
+        // dispatch(GetAllCity({ type: "website" }));
     }, [dispatch])
+
+    const handleInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            // setSearchValue(inputValue);
+            console.log("Search Value:", inputValue);
+            dispatch(GetAllCity({ type: "website", search: inputValue }));
+
+        }
+    };
 
     useEffect(() => {
         if (CustomerCategoryList?.data?.category) {
@@ -246,6 +257,8 @@ const Search = () => {
                                     <Select
                                         options={cityType}
                                         value={slocationName}
+                                        isSearchable
+                                        onInputChange={handleInputChange}
                                         onChange={(value) => { setSlocationName(value) }}
                                         placeholder="Où: France..."
                                         className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
@@ -279,7 +292,13 @@ const Search = () => {
                                         </LoadScript>
                                     </div> */}
 
-                                    <button onClick={() => { handleProfileSearch() }} className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">Rechercher</button>
+                                    <button onClick={() => { handleProfileSearch() }} className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">
+                                        {
+                                            Loading ?
+                                                <Spinner />
+                                                : "Rechercher"
+                                        }
+                                    </button>
                                 </div>
                             </div>
                     }

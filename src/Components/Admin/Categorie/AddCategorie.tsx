@@ -15,14 +15,12 @@ import { AddCategoryForAdmin, GetAllCategoryListForAdmin } from '@/store/slices/
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
-import { Button, Modal } from "flowbite-react";
-
-import { Formik, Form, Field, useFormikContext } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
 
 const CategorySchema = Yup.object().shape({
-    categoryname: Yup.string().required('Enter a category name'),
+    categoryname: Yup.string().required('Entrez un nom de catégorie'),
 });
 
 const AddCategorie = ({ showAdd, closeAdd }: any) => {
@@ -46,13 +44,14 @@ const AddCategorie = ({ showAdd, closeAdd }: any) => {
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
-                closeAdd();
+                dispatch(successMessage(""));
                 if (token) {
                     dispatch(GetAllCategoryListForAdmin({ token, type: 'admin' }));
                 }
+                closeAdd();
             })
         }
         else if (errors) {
@@ -61,15 +60,13 @@ const AddCategorie = ({ showAdd, closeAdd }: any) => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
+                dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);
-
-    console.log(success);
-    console.log(errors);
 
     return (
         <>

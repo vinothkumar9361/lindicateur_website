@@ -1,6 +1,6 @@
 `use client`;
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { CgProfile } from "react-icons/cg";
 import { MdModeEdit } from "react-icons/md";
@@ -10,13 +10,11 @@ import ChangePassword from "./ChangePassword";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetCustomerProfile } from '@/store/slices/customerAction';
-import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
 const Profile = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, Customer } = useSelector((state: RootState) => state.lindicateur);
+    const {  Customer } = useSelector((state: RootState) => state.lindicateur);
 
     const [showEdit, setShowEdit] = useState<boolean | null>(false);
     const [showChangePassword, setShowChangePassword] = useState<boolean | null>(false);
@@ -28,7 +26,6 @@ const Profile = () => {
     const handleCloseChangePassword = () => {
         setShowChangePassword(false);
     }
-
 
     return (
         <>

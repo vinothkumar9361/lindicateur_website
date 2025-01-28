@@ -1,12 +1,16 @@
-"use client";
+`use client`;
+
+import { useState, useEffect } from "react";
 
 import { PiWarningCircleBold } from "react-icons/pi";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { UpdateCustomerProfile } from '@/store/slices/customerAction';
+import { GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
+
+import Swal from 'sweetalert2';
 
 import Spinner from "@/Components/Common/Loading";
 
@@ -23,6 +27,50 @@ const AdminSchema = Yup.object().shape({
 const EditProfile = ({ showEdit, closeEdit }: any) => {
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, Customer } = useSelector((state: RootState) => state.lindicateur);
+
+    const [token, setToken] = useState<string | null>(null);
+    const [userId, setUserId] = useState<number | null>(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const tokenString = localStorage.getItem('user-auth-token');
+            const userID: any = localStorage.getItem('user-auth-id');
+            setToken(tokenString);
+            setUserId(userID);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: success?.data.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "D'accord",
+                timer: 5000,
+            }).then(() => {
+                dispatch(successMessage(""));
+                if (token && userId) {
+                    dispatch(GetCustomerProfile({ token, userId }));
+                }
+                closeEdit();
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "D'accord",
+                timer: 5000,
+            }).then(() => {
+                dispatch(errorMessage(""));
+            })
+        }
+    }, [dispatch, success, errors]);
+
 
     return (
         <>
@@ -45,7 +93,7 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                                 onClick={() => { closeEdit() }}
                             >
                                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                                 </svg>
                                 <span className="sr-only">Close modal</span>
                             </button>
@@ -73,65 +121,66 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                                         city: values?.city,
                                         state: values?.state,
                                         pincode: values?.pincode,
-                                        companyName: values?.company
+                                        companyName: values?.company,
+                                        roleId: 2
                                     }
                                     console.log(updateData);
 
-                                    dispatch(UpdateCustomerProfile(updateData))
+                                    dispatch(UpdateCustomerProfile({ token, updateData }));
                                 }}
                             >
                                 {({ errors, touched }: any) => (
-                                    <Form className="flex flex-wrap">
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pr-2'>
+                                    <Form className="flex flex-wrap pb-20">
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pr-2'>
                                             <label htmlFor="name" className='text-left pb-2'>Nom</label>
                                             <Field name="name" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.name && touched.name ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.name}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pl-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pl-2'>
                                             <label htmlFor="email" className='text-left pb-2'>Email</label>
                                             <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.email && touched.email ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pr-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pr-2'>
                                             <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                            <Field name="phone" type="number" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.phone && touched.phone ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pl-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pl-2'>
                                             <label htmlFor="company" className='text-left pb-2'>Nom de l'entreprise</label>
                                             <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.company && touched.company ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pr-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pr-2'>
                                             <label htmlFor="address" className='text-left pb-2'>Adresse</label>
                                             <Field name="address" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.address && touched.address ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pl-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pl-2'>
                                             <label htmlFor="city" className='text-left pb-2'>ville</label>
                                             <Field name="city" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.city && touched.city ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.city}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pr-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pr-2'>
                                             <label htmlFor="state" className='text-left pb-2'>État</label>
                                             <Field name="state" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.state && touched.state ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.state}</div>
                                             ) : null}
                                         </div>
-                                        <div className='flex flex-col pt-4 sm:w-1/2 sm:pl-2'>
+                                        <div className='flex flex-col pt-4 w-full sm:w-1/2 sm:pl-2'>
                                             <label htmlFor="pincode" className='text-left pb-2'>code PIN</label>
                                             <Field name="pincode" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                             {errors.pincode && touched.pincode ? (

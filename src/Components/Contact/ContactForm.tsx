@@ -18,11 +18,11 @@ import { RootState, AppDispatch } from '@/store/store';
 
 const ContactSchema = Yup.object().shape({
     firstName: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Enter a first name.'),
-    email: Yup.string().email('Invalid email').required('Enter an email address like example@mysite.com.'),
-    phone: Yup.number().required('Enter a phone number.'),
+        .min(2, 'Trop court !')
+        .max(50, 'rop longtemps !')
+        .required('Entrez un prénom.'),
+    email: Yup.string().email('E-mail invalide').required('Saisissez une adresse e-mail telle que exemple@monsite.com.'),
+    phone: Yup.number().required('Entrez un numéro de téléphone.'),
 });
 
 const ContactForm = () => {
@@ -52,7 +52,7 @@ const ContactForm = () => {
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
@@ -64,19 +64,13 @@ const ContactForm = () => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);
-
-
-    console.log(success);
-    console.log(errors);
-
-
 
     return (
         <>

@@ -24,10 +24,10 @@ import { PiWarningCircleBold } from "react-icons/pi";
 
 const AddetablishmentSchema = Yup.object().shape({
     company: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Enter a company name.'),
-    email: Yup.string().email('Invalid email').required('Enter an email address like example@mysite.com.'),
+        .min(2, 'Trop court !')
+        .max(50, 'rop longtemps !')
+        .required("Entrez un nom d'entreprise."),
+    email: Yup.string().email('E-mail invalide').required('Saisissez une adresse e-mail telle que exemple@monsite.com.'),
     phone: Yup.number().required('Enter a phone number.'),
 });
 
@@ -46,8 +46,6 @@ const Addetablissement = () => {
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
 
-    console.log("logoUpload", logoUpload);
-    console.log("errorMessage", errorMessage);
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -61,8 +59,6 @@ const Addetablissement = () => {
         }
     }, [dispatch, token])
 
-    console.log(AdminCategoryList);
-
     useEffect(() => {
         if (logoUpload) {
             const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -73,10 +69,10 @@ const Addetablissement = () => {
                 const fileSize: any = logoUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorsMessage('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, or GIF file.');
+                    setErrorsMessage("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage('File size should be less than 2 MB.');
+                    setErrorsMessage("La taille du fichier doit être inférieure à 2 Mo.");
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -109,10 +105,10 @@ const Addetablissement = () => {
                 const fileSize: any = photosUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorMessagephoto('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, or GIF file.');
+                    setErrorMessagephoto("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorMessagephoto('File size should be less than 2 MB.');
+                    setErrorMessagephoto('La taille du fichier doit être inférieure à 2 Mo.');
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -149,7 +145,7 @@ const Addetablissement = () => {
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     if (logoUpload) {
@@ -169,7 +165,7 @@ const Addetablissement = () => {
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
@@ -183,7 +179,7 @@ const Addetablissement = () => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""));
@@ -238,6 +234,7 @@ const Addetablissement = () => {
                             phone: phoneNumber,
                             message: '',
                             images: '1 Écran (900 x 580 px)',
+                            photoType: 'blank',
                             status: '',
                             websiteURL: ''
                         }}
@@ -258,6 +255,7 @@ const Addetablissement = () => {
                                 phoneNumber: phoneNumber,
                                 description: values?.message,
                                 imageSize: values?.images,
+                                adBgType: values?.photoType,
                                 websiteURL: values?.websiteURL,
                                 isPublished: values?.status === "1" ? true : false,
                             }
@@ -348,6 +346,26 @@ const Addetablissement = () => {
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    <label htmlFor="photoType" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">type de photo</label>
+                                    <select id="photoType" className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="blank">image de fond</option>
+                                        <option value="poster">affiche</option>
+                                    </select>
+                                    {errors.images && touched.images ? (
+                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.images}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4 phone-input'>
+                                    <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
+                                    <PhoneInput
+                                        country={'fr'}
+                                        placeholder="N° de téléphone"
+                                        value={phoneNumber}
+                                        onChange={(value) => { setPhoneNumber(value) }}
+                                    />
+                                    {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                     {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
@@ -363,8 +381,8 @@ const Addetablissement = () => {
                                                             <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                                             </svg>
-                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 150x150px)</p>
+                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
                                                         </div>
                                                         <input
                                                             id="logo-upload"
@@ -401,8 +419,8 @@ const Addetablissement = () => {
                                                             <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                                             </svg>
-                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                            <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF ({values?.images})</p>
                                                         </div>
                                                         <input
                                                             id="photos-upload"
@@ -422,31 +440,21 @@ const Addetablissement = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
                                     ) : null}
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
-                                    <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                    <PhoneInput
-                                        country={'fr'}
-                                        placeholder="N° de téléphone"
-                                        value={phoneNumber}
-                                        onChange={(value) => { setPhoneNumber(value) }}
-                                    />
-                                    {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
-                                </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
                                     <Field name="websiteURL" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.websiteURL && touched.websiteURL ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.websiteURL}</div>
                                     ) : null}
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                    <label htmlFor="message" className='text-left pb-2'>Je souhaite référencer mon établissement</label>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <label htmlFor="message" className='text-left pb-2'>description</label>
                                     <Field name="message" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.message && touched.message ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                     ) : null}
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Statut</label>
                                     <Field
                                         as="select"

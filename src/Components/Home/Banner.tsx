@@ -45,10 +45,22 @@ const Banner = () => {
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [locationName, setLocationName] = useState<any | null>(null);
 
+    console.log(locationName);
+
+
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
-        dispatch(GetAllCity({ type: "website" }));
+        // dispatch(GetAllCity({ type: "website" }));
     }, [dispatch])
+
+    const handleInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            // setSearchValue(inputValue);
+            console.log("Search Value:", inputValue);
+            dispatch(GetAllCity({ type: "website", search:inputValue }));
+
+        }
+    };
 
     useEffect(() => {
         if (CustomerCategoryList?.data?.category) {
@@ -87,7 +99,7 @@ const Banner = () => {
             localStorage.setItem('categoryName', categoryName?.value)
         }
         if (locationName) {
-            localStorage.setItem('locationName', locationName)
+            localStorage.setItem('locationName', locationName?.value)
         }
         if (phoneNumber) {
             localStorage.setItem('phoneNumber', phoneNumber)
@@ -179,6 +191,8 @@ const Banner = () => {
                                             <Select
                                                 options={cityType}
                                                 value={locationName}
+                                                isSearchable
+                                                onInputChange={handleInputChange}
                                                 onChange={(value) => { setLocationName(value) }}
                                                 placeholder="Où: France..."
                                                 className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"

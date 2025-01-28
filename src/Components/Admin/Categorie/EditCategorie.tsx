@@ -15,14 +15,12 @@ import { UpdateCategoryForAdmin, GetAllCategoryListForAdmin } from '@/store/slic
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
-import { Button, Modal } from "flowbite-react";
-
-import { Formik, Form, Field, useFormikContext } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
 
 const CategorySchema = Yup.object().shape({
-    categoryname: Yup.string().required('Enter a category name'),
+    categoryname: Yup.string().required('Entrez un nom de catégorie'),
 });
 
 const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
@@ -46,7 +44,7 @@ const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(''));
@@ -62,7 +60,7 @@ const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(''));

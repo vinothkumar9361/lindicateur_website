@@ -50,11 +50,11 @@ const SearchMaps = ({ place }: any) => {
 
     const getMapMarker = async (city: any, i: number) => {
         console.log("city", city);
-        
+
         const url = `https://api.xn--lindicateur-rfrencement-nccb.fr/admin/getMap?q=${city}`;
         const response = await fetch(url);
         console.log("res", response);
-        
+
         const data = await response.json();
 
         // const { data }: any = response;
@@ -99,9 +99,9 @@ const SearchMaps = ({ place }: any) => {
                 )
             )
                 .then((positions) => {
-                    setMarkerValue((prevMarkers:any) => {
+                    setMarkerValue((prevMarkers: any) => {
                         const uniquePositions = positions.filter(
-                            (pos) => !prevMarkers.some((m:any) => JSON.stringify(m) === JSON.stringify(pos))
+                            (pos) => !prevMarkers.some((m: any) => JSON.stringify(m) === JSON.stringify(pos))
                         );
                         return [...prevMarkers, ...uniquePositions];
                     });
@@ -120,9 +120,9 @@ const SearchMaps = ({ place }: any) => {
                 )
             )
                 .then((positions) => {
-                    setMarkerValue((prevMarkers:any) => {
+                    setMarkerValue((prevMarkers: any) => {
                         const uniquePositions = positions.filter(
-                            (pos) => !prevMarkers.some((m:any) => JSON.stringify(m) === JSON.stringify(pos))
+                            (pos) => !prevMarkers.some((m: any) => JSON.stringify(m) === JSON.stringify(pos))
                         );
                         return [...prevMarkers, ...uniquePositions];
                     });
@@ -165,21 +165,28 @@ const SearchMaps = ({ place }: any) => {
                     onLoad={onLoad}
                     onUnmount={onUnmount}
                 >
-                    {markerValue.map(({ id, name, position }: any) => {
-                        return (
-                            <Marker
-                                key={id}
-                                position={position}
-                                onClick={() => handleActiveMarker(id)}
-                            >
-                                {activeMarker === id ? (
-                                    <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-                                        <div>{name}</div>
-                                    </InfoWindow>
-                                ) : null}
-                            </Marker>
-                        )
-                    })}
+                    {
+                        markerValue?.length > 0 ?
+                            <>
+                                {markerValue?.map(({ id, name, position }: any) => {
+                                    return (
+                                        <Marker
+                                            key={id}
+                                            position={position}
+                                            onClick={() => handleActiveMarker(id)}
+                                        >
+                                            {activeMarker === id ? (
+                                                <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+                                                    <div>{name}</div>
+                                                </InfoWindow>
+                                            ) : null}
+                                        </Marker>
+                                    )
+                                })}
+                            </>
+                            : null
+                    }
+
                 </GoogleMap>
             </div>
         </>

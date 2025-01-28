@@ -78,10 +78,10 @@ const ViewOrEditBanners = () => {
                 const fileSize: any = logoUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorsMessage('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, AVIF or GIF file.');
+                    setErrorsMessage("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage('File size should be less than 2 MB.');
+                    setErrorsMessage("La taille du fichier doit être inférieure à 2 Mo.");
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -114,10 +114,10 @@ const ViewOrEditBanners = () => {
                 const fileSize: any = photosUpload?.size;
 
                 if (!supportedFormats.includes(fileType)) {
-                    setErrorMessagephoto('Unsupported image format. Please upload a JPG, JPEG, PNG, WEBP, AVIF or GIF file.');
+                    setErrorMessagephoto("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorMessagephoto('File size should be less than 2 MB.');
+                    setErrorMessagephoto("La taille du fichier doit être inférieure à 2 Mo.");
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -126,13 +126,12 @@ const ViewOrEditBanners = () => {
                         const img: any = new Image();
                         img.onload = () => {
                             const { width, height } = img;
-                            // if (width > 1050 || height > 350) {
-                            //     setErrorMessagephoto('Image dimensions should be less than 1050x350 pixels.');
-                            // }
-                            // else{
-                            handleUploadImg();
-                            // }
-
+                            if (width > 1050 || height > 350) {
+                                setErrorMessagephoto("Les dimensions de l'image doivent être inférieures à 1050x350 pixels.");
+                            }
+                            else {
+                                handleUploadImg();
+                            }
                         };
                         img.src = e.target.result;
                     };
@@ -174,7 +173,7 @@ const ViewOrEditBanners = () => {
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     if (logoUpload) {
@@ -194,11 +193,11 @@ const ViewOrEditBanners = () => {
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
-                    router.push(`/admin/voir-un-bannieres/${AdminBanners?.data?.existingBanner?.id}/`);
+                    router.push(`/admin/voir-un-bannieres/`);
                     dispatch(GetBannersForAdmin({ token, id }));
                 })
             }
@@ -254,7 +253,7 @@ const ViewOrEditBanners = () => {
             if (result?.isConfirmed) {
                 localStorage.setItem('customer-banner-id', id)
                 router.push(`/admin/modifier-un-bannieres/`)
-                window.location.reload();
+                // window.location.reload();
             }
         })
     }
@@ -377,38 +376,32 @@ const ViewOrEditBanners = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                     ) : null}
                                 </div>
-                                {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                    <label htmlFor="images" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tailles</label>
-                                    <select
-                                        id="images"
-                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                    >
-                                        <option value="1 Écran (900 x 580 px)">1 Écran (900 x 580 px)</option>
-                                        <option value="1/2 Écran (700 x 450 px)">1/2 Écran (700 x 450 px)</option>
-                                        <option value="1/4 Écran (500 x 370 px)">1/4 Écran (500 x 370 px)</option>
-                                    </select>
-                                    {errors.images && touched.images ? (
-                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.images}</div>
-                                    ) : null}
-                                </div> */}
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                     {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
-                                        <label htmlFor="logo-upload" className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                        <label htmlFor="logo-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
                                             {
                                                 logoUrl || values?.logo ?
-                                                    <p className="w-full text-wrap break-words px-4 text-black">{logoUrl || values?.logo}</p>
-                                                    :
-                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                        </svg>
-                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 150x150px)</p>
+                                                    <div className="flex w-full text-wrap break-words text-black">
+                                                        <div className="w-full">
+                                                            <p className="w-full px-4">{logoUrl || values?.logo}</p>
+                                                        </div>
+                                                        {/* <div className="w-1/12 flex justify-end pr-4 z-10">
+                                                            <MdDelete onClick={ () => setLogoUpload("")} className="z-10 w-5 h-5" />
+                                                        </div> */}
                                                     </div>
+                                                    :
+                                                    null
                                             }
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                </svg>
+                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
+                                            </div>
 
                                             <input
                                                 id="logo-upload"
@@ -432,19 +425,20 @@ const ViewOrEditBanners = () => {
                                     {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
 
-                                        <label htmlFor="photos-upload" className="flex flex-col items-center justify-center w-full h-32 md:h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
                                             {
                                                 photosUrl || values?.photos ?
                                                     <p className="w-full text-wrap break-words px-4 text-black">{photosUrl || values?.photos}</p>
                                                     :
-                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                        </svg>
-                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 1050x350px)</p>
-                                                    </div>
+                                                    null
                                             }
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                </svg>
+                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (MAX. 1050x350px)</p>
+                                            </div>
                                             <input
                                                 id="photos-upload"
                                                 name="photos-upload"

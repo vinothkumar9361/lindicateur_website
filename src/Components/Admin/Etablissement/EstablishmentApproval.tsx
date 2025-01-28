@@ -1,13 +1,10 @@
 `use client`;
 
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
 
 import { IoSearchOutline } from "react-icons/io5";
-import { CiFilter } from "react-icons/ci";
-import { BiSort } from "react-icons/bi";
 import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc";
 import Swal from 'sweetalert2';
 
@@ -96,7 +93,7 @@ const EstablishmentApproval = () => {
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
@@ -109,7 +106,7 @@ const EstablishmentApproval = () => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""));

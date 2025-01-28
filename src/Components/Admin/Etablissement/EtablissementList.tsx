@@ -1,14 +1,11 @@
 `use client`;
 
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 
 import { IoSearchOutline } from "react-icons/io5";
-import { CiFilter } from "react-icons/ci";
-import { BiSort } from "react-icons/bi";
 import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc";
 
 
@@ -31,14 +28,10 @@ const EstablishmentList = () => {
         dispatch(GetAllEtablissementListForAdmin({ token, page: 1, search: value }));
     }
 
-    // const handleSort = (value: any) => {
-    //     dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
-    // }
     useEffect(() => {
         if (token) {
             dispatch(GetAllEtablissementListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
         }
-
     }, [sortAsc]);
 
     useEffect(() => {
@@ -61,7 +54,7 @@ const EstablishmentList = () => {
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
@@ -76,9 +69,10 @@ const EstablishmentList = () => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
+                dispatch(errorMessage(""));
             })
         }
     }, [dispatch, success, errors]);
@@ -112,7 +106,11 @@ const EstablishmentList = () => {
                             <div className="p-1 h-8 border-2 border-gray-500">
                                 <IoSearchOutline className="w-6 h-6" />
                             </div>
-                            <input className="h-8 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
+                            <input
+                                className="h-8 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent"
+                                placeholder="Recherche"
+                                onChange={(e) => { handleSearch(e.target.value) }}
+                            />
                         </div>
                         <div
                             onClick={() => {
@@ -137,85 +135,92 @@ const EstablishmentList = () => {
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-                            <tr className="border-2">
-                                <th scope="col" className="p-4 border-2">
-                                    <div className="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label className="sr-only">checkbox</label>
-                                    </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    No.
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Société ID
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Nom de la société
-                                </th>
-                                {/* <th scope="col" className="px-6 py-3 border-2">
+                    {
+                        AdminEtabliselist?.data?.data?.length > 0 ?
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
+                                <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                                    <tr className="border-2">
+                                        <th scope="col" className="p-4 border-2">
+                                            <div className="flex items-center">
+                                                <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                <label className="sr-only">checkbox</label>
+                                            </div>
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            No.
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Société ID
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Nom de la société
+                                        </th>
+                                        {/* <th scope="col" className="px-6 py-3 border-2">
                                     Publicité
                                 </th> */}
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Statut
-                                </th>
-                                <th scope="col" className="px-6 py-3 border-2">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                AdminEtabliselist?.data?.data?.map((data: any, i: number) => {
-                                    return (
-                                        <>
-                                            <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                <td className="w-4 p-4 border-2">
-                                                    <div className="flex items-center">
-                                                        <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                        <label className="sr-only">checkbox</label>
-                                                    </div>
-                                                </td>
-                                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
-                                                    {i + 1}
-                                                </th>
-                                                <td className="px-6 py-4 border-2">
-                                                    {"I00" + data?.id}
-                                                </td>
-                                                <td className="px-6 py-4 border-2">
-                                                    {data?.companyName}
-                                                </td>
-                                                {/* <td className="px-6 py-4 border-2">
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Statut
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 border-2">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        AdminEtabliselist?.data?.data?.map((data: any, i: number) => {
+                                            return (
+                                                <>
+                                                    <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td className="w-4 p-4 border-2">
+                                                            <div className="flex items-center">
+                                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                <label className="sr-only">checkbox</label>
+                                                            </div>
+                                                        </td>
+                                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
+                                                            {i + 1}
+                                                        </th>
+                                                        <td className="px-6 py-4 border-2">
+                                                            {"I00" + data?.id}
+                                                        </td>
+                                                        <td className="px-6 py-4 border-2">
+                                                            {data?.companyName}
+                                                        </td>
+                                                        {/* <td className="px-6 py-4 border-2">
                                                     oui
                                                 </td> */}
-                                                <td className="px-6 py-4 border-2">
-                                                    {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
-                                                </td>
-                                                <td className="flex items-center px-6 py-4 ">
-                                                    <a
-                                                        onClick={() => {
-                                                            localStorage.setItem('admin-estab-id', data?.id)
-                                                            router.push(`/admin/voir-un-etablissement/`)
-                                                        }}
-                                                        className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4"
-                                                    >Voir</a>
-                                                    <a onClick={() => {
-                                                        localStorage.setItem('admin-estab-id', data?.id)
-                                                        router.push(`/admin/modifier-an-etablissement/`)
-                                                    }}
-                                                        className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                    >Modifier</a>
-                                                    <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
-                                                </td>
-                                            </tr>
-                                        </>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                                        <td className="px-6 py-4 border-2">
+                                                            {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
+                                                        </td>
+                                                        <td className="flex items-center px-6 py-4 ">
+                                                            <a
+                                                                onClick={() => {
+                                                                    localStorage.setItem('admin-estab-id', data?.id)
+                                                                    router.push(`/admin/voir-un-etablissement/`)
+                                                                }}
+                                                                className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4"
+                                                            >Voir</a>
+                                                            <a onClick={() => {
+                                                                localStorage.setItem('admin-estab-id', data?.id)
+                                                                router.push(`/admin/modifier-an-etablissement/`)
+                                                            }}
+                                                                className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                            >Modifier</a>
+                                                            <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
+                                                        </td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            :
+                            <div className="py-20 text-center">
+                                <h3 className="text-gray-500 font bold">aucune donnée</h3>
+                            </div>
+                    }
                 </div>
             </div>
         </>

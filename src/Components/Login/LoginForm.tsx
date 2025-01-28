@@ -86,7 +86,7 @@ const LoginForm = () => {
         <>
             <div className="container mx-auto lg:pb-14">
                 <div className="bg-gray-200 d-flex justify-center content-center item-center lg:mx-40">
-                    <a href="#" className="flex justify-center content-center item-center space-x-3 rtl:space-x-reverse py-4">
+                    <a href="/" className="flex justify-center content-center item-center space-x-3 rtl:space-x-reverse py-4">
                         <Image src={Logo} alt="logo" width={300} height={100} className="w-64" />
                     </a>
                 </div>

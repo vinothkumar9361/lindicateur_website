@@ -1,8 +1,6 @@
 `use client`;
 
-import Image from "next/image";
-
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from 'next/router';
 
 import Slider from "react-slick";
@@ -13,12 +11,9 @@ import SlideImg1 from '@/Images/Home/slider-img-1.avif';
 import SlideImg2 from '@/Images/Home/slider-img-2.avif';
 import SlideImg3 from '@/Images/Home/slider-img-3.avif';
 
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
-
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { GetAllBannerList } from '@/store/slices/customerAction';
-import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
 const data: any = [

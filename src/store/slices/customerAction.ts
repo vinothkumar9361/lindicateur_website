@@ -68,7 +68,7 @@ export const UpdateCustomerProfile = createAsyncThunk(
         }
         try {
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/updateUser`, val.userData,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/customer/updateUser`, val.updateData,
                 { headers: headers });
             if (response.status === 200 || response.status === 201) {
                 return response;
@@ -178,7 +178,7 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
         try {
             if (val?.search != "companyName" && val?.search != null && val?.categoryName != "categoryName" && val?.categoryName != null && val?.city != "locationName" && val?.city != null) {
                 console.log("testing");
-                
+
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}&city=${val?.city}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
@@ -202,7 +202,7 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
                     return response;
                 }
             }
-             else {
+            else {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
@@ -283,10 +283,19 @@ export const GetAllCity = createAsyncThunk(
         console.log(val);
 
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllFranchState?type=${val?.type}`);
-            if (response.status === 200 || response.status === 201) {
-                return response;
+            if (val?.search) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllFranchState?type=${val?.type}&stateName=${val?.search}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
             }
+            else {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllFranchState?type=${val?.type}&stateName=${val?.search}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+
         } catch (error) {
             return rejectWithValue(error);
         }

@@ -107,14 +107,14 @@ const ContactForm = () => {
                             {({ errors, touched }) => (
                                 <Form className="lg:flex lg:flex-wrap lg:w-full">
                                     <div className='flex flex-col pt-4 lg:w-1/2 lg:pr-4'>
-                                        <label htmlFor="firstName" className='text-left'>Nom *</label>
+                                        <label htmlFor="firstName" className='text-left'>Prénom*</label>
                                         <Field name="firstName" className='h-10 border-b-2 border-gray-400 bg-transparent outline-none focus:border-gray-700' />
                                         {errors.firstName && touched.firstName ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.firstName}</div>
                                         ) : null}
                                     </div>
                                     <div className='flex flex-col pt-4 lg:w-1/2 lg:pl-4'>
-                                        <label htmlFor="lastName" className='text-left'>Prénom</label>
+                                        <label htmlFor="lastName" className='text-left'>Nom </label>
                                         <Field name="lastName" className='h-10 border-b-2 border-gray-400 bg-transparent outline-none focus:border-gray-700' />
                                         {errors.lastName && touched.lastName ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.lastName}</div>

@@ -203,7 +203,7 @@ export const GetAllEstablishmentPhoneNumberSearch = createAsyncThunk(
         console.log(val);
 
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getlAllCompanyProfileUsersSearchPhoneNumber?phoneNumber=${val?.phoneNumber}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearchPhoneNumber?phoneNumber=${val?.phoneNumber}`);
             if (response.status === 200 || response.status === 201) {
                 return response;
             }

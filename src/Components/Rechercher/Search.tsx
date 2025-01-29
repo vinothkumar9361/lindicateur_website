@@ -155,6 +155,8 @@ const Search = () => {
     }
 
     const handlePhoneSearch = () => {
+        console.log("test", sphoneNumber);
+        
         dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber: sphoneNumber }))
     }
 
@@ -207,7 +209,7 @@ const Search = () => {
                                             value={sphoneNumber}
                                             onChange={(value) => { setSphoneNumber(value) }}
                                         />
-                                        <button onClick={() => handlePhoneSearch()} disabled={!phoneNumber} className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
+                                        <button onClick={() => handlePhoneSearch()} className="cursor-pointer border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
                                     </div>
                                 </div>
                             </div>

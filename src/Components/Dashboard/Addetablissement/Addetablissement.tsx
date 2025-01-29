@@ -222,6 +222,8 @@ const Addetablissement = () => {
                             name: '',
                             category: '',
                             company: '',
+                            address: '',
+                            departmentcode: '',
                             postcode: '',
                             city: '',
                             email: '',
@@ -247,6 +249,9 @@ const Addetablissement = () => {
                                 city: values?.city,
                                 message: values?.message,
                                 websiteURL: values?.websiteURL,
+                                address: values?.address,
+                                departmentCode: values?.departmentcode,
+
                             }
 
                             dispatch(AddEtablissementForAdmin({ token, data }))
@@ -299,6 +304,20 @@ const Addetablissement = () => {
                                         <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                         {errors.company && touched.company ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
+                                        ) : null}
+                                    </div>
+                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                        <label htmlFor="address" className='text-left pb-2'>Adresse</label>
+                                        <Field name="address" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        {errors.address && touched.address ? (
+                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
+                                        ) : null}
+                                    </div>
+                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                        <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
+                                        <Field name="departmentcode" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        {errors.departmentcode && touched.departmentcode ? (
+                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                         ) : null}
                                     </div>
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>

@@ -65,6 +65,7 @@ const Search = () => {
     const [scategoryName, setScategoryName] = useState<any | null>(null);
     const [scompanyName, setScompanyName] = useState<any | null>(null);
     const [slocationName, setSlocationName] = useState<any | null>(null);
+    const [serrorMessage, setSerrorMessage] = useState<any | null>(null);
 
 
     useEffect(() => {
@@ -74,7 +75,6 @@ const Search = () => {
             const categoryNameString = localStorage.getItem('categoryName');
             const locationNameString = localStorage.getItem('locationName');
             const phoneNumberString = localStorage.getItem('phoneNumber');
-
 
             setToken(tokenString);
             setCompanyName(companyNameString);
@@ -89,26 +89,9 @@ const Search = () => {
             dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName, city: locationName }));
             dispatch(GetAllPublicitesList({ categoryName: categoryName }))
         }
-        else if (companyName && categoryName) {
-            dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName }));
-            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
-        }
-        else if (companyName && locationName) {
-            dispatch(GetAllEstablishmentProfileSearch({ search: companyName, city: locationName }));
-        }
         else if (categoryName && locationName) {
             dispatch(GetAllEstablishmentProfileSearch({ categoryName: categoryName, city: locationName }));
             dispatch(GetAllPublicitesList({ categoryName: categoryName }))
-        }
-        else if (categoryName) {
-            dispatch(GetAllEstablishmentProfileSearch({ categoryName: categoryName }));
-            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
-        }
-        else if (companyName) {
-            dispatch(GetAllEstablishmentProfileSearch({ search: companyName }));
-        }
-        else if (locationName) {
-            dispatch(GetAllEstablishmentProfileSearch({ city: locationName }));
         }
         else if (phoneNumber) {
             dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
@@ -142,8 +125,8 @@ const Search = () => {
     useEffect(() => {
         if (CustomerCityList?.data?.states) {
             const options = CustomerCityList?.data?.states?.map((value: any) => ({
-                value: value?.name,
-                label: value?.name
+                value: `${value?.name}(${value?.insee_id.slice(0, 2)})`,
+                label: `${value?.name}(${value?.insee_id.slice(0, 2)})`
             }));
             setCityType(options)
         }
@@ -181,9 +164,14 @@ const Search = () => {
         localStorage.removeItem('locationName');
         localStorage.removeItem('phoneNumber');
 
-        dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city: slocationName?.value }));
-        dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
-
+        if (!scategoryName?.value || !slocationName?.value) {
+            setSerrorMessage("La catégorie et la ville sont obligatoires.");
+        }
+        else {
+            setSerrorMessage("")
+            dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city: slocationName?.value }));
+            dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
+        }
     }
 
     return (
@@ -225,9 +213,10 @@ const Search = () => {
                             </div>
                             :
                             <div className="lg:bg-white xl:h-32">
-                                {/* <div className="px-2 sm:px-10 pt-4">
-                                    <label htmlFor="">À qui appartient ce numéro ?</label>
-                                </div> */}
+                                <div className="px-2 sm:px-10 pt-4">
+                                    <p className="text-red-500 ">{serrorMessage}</p>
+                                    {/* <label htmlFor="">À qui appartient ce numéro ?</label> */}
+                                </div>
                                 <div className="px-2 sm:px-10 pt-8 sm:flex sm:flex-col sm:item-center xl:grid xl:grid-cols-4 xl:gap-4 xl:px-2 xl:pb-8">
                                     {/* <MultiSelect
 

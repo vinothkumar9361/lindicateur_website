@@ -57,7 +57,9 @@ const ResultData = ({ handlePlace }: any) => {
                                             {
                                                 item?.adBgType == "poster" ?
                                                     <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card cursor-pointer">
-                                                        <img src={item?.photos} alt="img" className="w-full h-full" />
+                                                        <a href={item?.websiteURL} target="_blank">
+                                                            <img src={item?.photos} alt="img" className="w-full h-full" />
+                                                        </a>
                                                         {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                     </div>
                                                     :
@@ -119,7 +121,7 @@ const ResultData = ({ handlePlace }: any) => {
                         </>
                         :
                         <div className="py-20 text-center">
-                            <h3 className="text-gray-500 font bold">aucune donnée</h3>
+                            <h3 className="text-gray-500 font bold">Aucune donnée trouvée</h3>
                         </div>
                 }
 

@@ -235,6 +235,7 @@ const AddBannieres = () => {
                             company: '',
                             startdate: '',
                             enddate: '',
+                            address: '',
                             postcode: '',
                             city: '',
                             email: '',
@@ -254,6 +255,7 @@ const AddBannieres = () => {
                                 // categoryName: values?.category,
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
+                                address: values?.address,
                                 postalCode: values?.postcode,
                                 city: values?.city,
                                 email: values?.email,
@@ -325,6 +327,13 @@ const AddBannieres = () => {
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    <label htmlFor="address" className='text-left pb-2'>Adresse</label>
+                                    <Field name="address" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    {errors.address && touched.address ? (
+                                        <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="city" className='text-left pb-2'>Ville</label>
                                     <Field name="city" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.city && touched.city ? (
@@ -332,12 +341,22 @@ const AddBannieres = () => {
                                     ) : null}
                                 </div>
 
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="email" className='text-left pb-2'>Courriel</label>
                                     <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.email && touched.email ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                     ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4 phone-input'>
+                                    <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
+                                    <PhoneInput
+                                        country={'fr'}
+                                        placeholder="N° de téléphone"
+                                        value={phoneNumber}
+                                        onChange={(value) => { setPhoneNumber(value) }}
+                                    />
+                                    {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
@@ -417,30 +436,19 @@ const AddBannieres = () => {
                                     ) : null}
                                 </div>
 
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
-                                    <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                    <PhoneInput
-                                        country={'fr'}
-                                        placeholder="N° de téléphone"
-                                        value={phoneNumber}
-                                        onChange={(value) => { setPhoneNumber(value) }}
-                                    />
-                                    {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
-                                </div>
-
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="message" className='text-left pb-2'>Je souhaite référencer mon établissement</label>
                                     <Field name="message" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
                                     {errors.message && touched.message ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                     ) : null}
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
                                     <Field name="websiteURL" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
 
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Statut</label>
                                     <Field
                                         as="select"

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import TestImg from '@/Images/Home/Exhibition (1).avif';
+import TestImg from '@/Images/Home/handshake.avif';
 
 import { useState } from "react";
 
@@ -16,11 +16,11 @@ const Visitors = () => {
         <>
             <div className="bg-white pt-14">
                 <div className="container mx-auto lg:flex">
-                    <div className="text-center px-4 lg:w-1/3">
+                    <div className="text-center px-4 py-4 lg:w-1/3">
                         <div className="visitor-left-content">
-                            <h4 className="txt_green font-medium">Augmentez votre visibilité</h4>
-                            <h3 className="text-black font-normal mb-2">Des visiteurs, mais de quelle manière?</h3>
-                            <p><b>Objectif professionnel :</b> stimuler l'engagement et les interactions grâce à nos campagnes publicitaires. Nous vous assurons une visibilité optimale sur les moteurs de recherche les plus utilisés (Google, Bing, etc.).</p>
+                            {/* <h4 className="txt_green font-medium">Augmentez votre visibilité</h4> */}
+                            <h3 className="text-black font-normal mb-2 px-10">Partenaire solidaire de votre visibilité, avec une expertise sectorielle dédiée</h3>
+                            {/* <p><b>Objectif professionnel :</b> stimuler l'engagement et les interactions grâce à nos campagnes publicitaires. Nous vous assurons une visibilité optimale sur les moteurs de recherche les plus utilisés (Google, Bing, etc.).</p> */}
                             <a href="/contact/">
                                 <button className="text-black font-medium border_black p-3 w-60 mt-5 mb-5 lg:mb-3 search-btn">Nous contacter</button>
                             </a>

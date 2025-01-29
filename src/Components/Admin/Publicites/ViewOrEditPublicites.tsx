@@ -127,12 +127,13 @@ const ViewOrEditPublicites = () => {
                         const img: any = new Image();
                         img.onload = () => {
                             const { width, height } = img;
-                            if (width > 905 || height > 585) {
-                                setErrorMessagephoto("Les dimensions de l'image doivent être inférieures à 900x580 pixels.");
-                            }
-                            else {
-                                handleUploadImg();
-                            }
+                            // if (width > 905 || height > 585) {
+                            //     setErrorMessagephoto("Les dimensions de l'image doivent être inférieures à 900x580 pixels.");
+                            // }
+                            // else {
+                            handleUploadImg();
+                            setErrorMessagephoto(null);
+                            // }
 
                         };
                         img.src = e.target.result;
@@ -199,7 +200,7 @@ const ViewOrEditPublicites = () => {
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
-                    router.push(`/admin/voir-un-publicite/${AdminPublicites?.data?.existingAds?.id}/`)
+                    router.push(`/admin/voir-un-publicite/`)
                     dispatch(GetPublicitesForAdmin({ token, id }));
                 })
             }
@@ -290,6 +291,8 @@ const ViewOrEditPublicites = () => {
                             company: AdminPublicites?.data?.existingAds?.companyName || '',
                             startdate: AdminPublicites?.data?.existingAds?.startDate || '',
                             enddate: AdminPublicites?.data?.existingAds?.endDate || '',
+                            address: AdminPublicites?.data?.existingAds?.address || '',
+                            departmentcode: AdminPublicites?.data?.existingAds?.departmentCode || '',
                             postcode: AdminPublicites?.data?.existingAds?.postalCode || '',
                             city: AdminPublicites?.data?.existingAds?.city || '',
                             email: AdminPublicites?.data?.existingAds?.email || '',
@@ -300,6 +303,8 @@ const ViewOrEditPublicites = () => {
                             images: AdminPublicites?.data?.existingAds?.imageSize || '',
                             photoType: AdminPublicites?.data?.existingAds?.adBgType || 'blank',
                             status: AdminPublicites?.data?.existingAds?.isPublished ? "1" : "0",
+                            websiteURL: AdminPublicites?.data?.existingAds?.websiteURL || '',
+
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
@@ -309,6 +314,8 @@ const ViewOrEditPublicites = () => {
                                 categoryName: values?.category,
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
+                                address: values?.address,
+                                departmentCode: values?.departmentcode,
                                 postalCode: values?.postcode,
                                 city: values?.city,
                                 email: values?.email,
@@ -318,6 +325,7 @@ const ViewOrEditPublicites = () => {
                                 description: values?.message,
                                 imageSize: values?.images,
                                 adBgType: values?.photoType,
+                                websiteURL: values?.websiteURL,
                                 isPublished: values?.status === "1" ? true : false,
                                 id: AdminPublicites?.data?.existingAds?.id,
                             }
@@ -353,6 +361,20 @@ const ViewOrEditPublicites = () => {
                                     <Field name="enddate" disabled={currentPathname.includes("/voir-un-publicite/")} type="date" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.enddate && touched.enddate ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    <label htmlFor="address" className='text-left pb-2'>Adresse</label>
+                                    <Field name="address" disabled={currentPathname.includes("/voir-un-publicite/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    {errors.address && touched.address ? (
+                                        <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
+                                    <Field name="departmentcode" disabled={currentPathname.includes("/voir-un-publicite/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    {errors.departmentcode && touched.departmentcode ? (
+                                        <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
@@ -397,15 +419,15 @@ const ViewOrEditPublicites = () => {
                                         disabled={currentPathname.includes("/voir-un-publicite/")}
                                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     >
-                                        <option value="1 Écran (900 x 580 px)">1 Écran (900 x 580 px)</option>
-                                        <option value="1/2 Écran (700 x 450 px)">1/2 Écran (700 x 450 px)</option>
-                                        <option value="1/4 Écran (500 x 370 px)">1/4 Écran (500 x 370 px)</option>
+                                        <option value="1 Écran">1 Écran</option>
+                                        <option value="1/2 Écran">1/2 Écran</option>
+                                        <option value="1/4 Écran">1/4 Écran</option>
                                     </select>
                                     {errors.images && touched.images ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.images}</div>
                                     ) : null}
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="photoType" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">type de photo</label>
                                     <select id="photoType" className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="blank">image de fond</option>
@@ -414,18 +436,8 @@ const ViewOrEditPublicites = () => {
                                     {errors.images && touched.images ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.images}</div>
                                     ) : null}
-                                </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                    <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                    <Field
-                                        name="phone"
-                                        disabled={currentPathname.includes("/voir-un-publicite/")}
-                                        className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
-                                    />
-                                    {errors.phone && touched.phone ? (
-                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
-                                    ) : null}
-                                </div>
+                                </div> */}
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                     {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
@@ -507,9 +519,20 @@ const ViewOrEditPublicites = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
                                     ) : null}
                                 </div>
-                                
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                    <label htmlFor="message" className='text-left pb-2'>description</label>
+                                    <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
+                                    <Field
+                                        name="phone"
+                                        disabled={currentPathname.includes("/voir-un-publicite/")}
+                                        className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                    />
+                                    {errors.phone && touched.phone ? (
+                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <label htmlFor="message" className='text-left pb-2'>Description</label>
                                     <Field
                                         name="message"
                                         disabled={currentPathname.includes("/voir-un-publicite/")}
@@ -517,6 +540,13 @@ const ViewOrEditPublicites = () => {
                                     />
                                     {errors.message && touched.message ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
+                                    <Field name="websiteURL" disabled={currentPathname.includes("/voir-un-publicite/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    {errors.websiteURL && touched.websiteURL ? (
+                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.websiteURL}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>

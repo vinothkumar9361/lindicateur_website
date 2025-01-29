@@ -184,26 +184,8 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
                     return response;
                 }
             }
-            else if (val?.search != "companyName" && val?.search != null && val?.categoryName != "categoryName" && val?.categoryName != null) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
-                if (response.status === 200 || response.status === 201) {
-                    return response;
-                }
-            }
-            else if (val?.categoryName) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?categoryName=${val?.categoryName}`);
-                if (response.status === 200 || response.status === 201) {
-                    return response;
-                }
-            }
-            else if (val?.city) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?city=${val?.city}`);
-                if (response.status === 200 || response.status === 201) {
-                    return response;
-                }
-            }
-            else {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?search=${val?.search}&categoryName=${val?.categoryName}`);
+            else if (val?.city != "locationName" && val?.city != null && val?.categoryName != "categoryName" && val?.categoryName != null) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?categoryName=${val?.categoryName}&city=${val?.city}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }

@@ -44,8 +44,9 @@ const Banner = () => {
     const [categoryName, setCategoryName] = useState<any | null>(null);
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [locationName, setLocationName] = useState<any | null>(null);
+    const [serrorMessage, setSerrorMessage] = useState<any | null>(null);
 
-    console.log(locationName);
+    console.log(CustomerCityList);
 
 
     useEffect(() => {
@@ -57,7 +58,7 @@ const Banner = () => {
         if (action === "input-change") {
             // setSearchValue(inputValue);
             console.log("Search Value:", inputValue);
-            dispatch(GetAllCity({ type: "website", search:inputValue }));
+            dispatch(GetAllCity({ type: "website", search: inputValue }));
 
         }
     };
@@ -75,8 +76,8 @@ const Banner = () => {
     useEffect(() => {
         if (CustomerCityList?.data?.states) {
             const options = CustomerCityList?.data?.states?.map((value: any) => ({
-                value: value?.name,
-                label: value?.name
+                value: `${value?.name}(${value?.insee_id.slice(0, 2)})`,
+                label:  `${value?.name}(${value?.insee_id.slice(0, 2)})`
             }));
             setCityType(options)
         }
@@ -92,19 +93,27 @@ const Banner = () => {
     }
 
     const handleProfileSearch = () => {
-        if (companyName) {
-            localStorage.setItem('companyName', companyName)
+        if (!categoryName?.value || !locationName?.value) {
+            setSerrorMessage("La catégorie et la ville sont obligatoires.");
         }
-        if (categoryName?.value) {
-            localStorage.setItem('categoryName', categoryName?.value)
+        else {
+            setSerrorMessage("")
+            if (companyName) {
+                localStorage.setItem('companyName', companyName)
+            }
+            if (categoryName?.value) {
+                localStorage.setItem('categoryName', categoryName?.value)
+            }
+            if (locationName?.value) {
+                localStorage.setItem('locationName', locationName?.value)
+            }
+            if (phoneNumber) {
+                localStorage.setItem('phoneNumber', phoneNumber)
+            }
+            router.push(`/rechercher/`);
+
         }
-        if (locationName) {
-            localStorage.setItem('locationName', locationName?.value)
-        }
-        if (phoneNumber) {
-            localStorage.setItem('phoneNumber', phoneNumber)
-        }
-        router.push(`/rechercher/`);
+
 
         // router.push(`/rechercher/${companyName ? companyName : "companyName"}/${categoryName?.value ? categoryName?.value : "categoryName"}/${locationName?.value ? locationName?.value : "locationName"}/${phoneNumber ? phoneNumber : "phoneNumber"}`)
         // dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName?.value }));
@@ -130,7 +139,7 @@ const Banner = () => {
             <div className="home_banner px-6 flex flex-col content-center items-center justify-center h-full">
                 <div className="container mx-auto banner-text">
                     <div className="flex flex-col content-center items-center text-center">
-                        <h1 className="pt-4">Tous les experts à proximité de chez vous !</h1>
+                        <h1 className="pt-4">Trouver un professionnel</h1>
                     </div>
                     <div className="pt-8">
                         <div className="bg-white lg:bg-transparent">
@@ -168,9 +177,10 @@ const Banner = () => {
                                         </div>
                                     </div>
                                     :
-                                    <div className="lg:bg-white lg:h-32">
+                                    <div className="lg:bg-white lg:h-36">
                                         <div className="px-10 pt-3">
                                             <label htmlFor="">À qui appartient ce numéro ?</label>
+                                            <p className="text-red-500 ">{serrorMessage}</p>
                                         </div>
                                         <div className="px-10 pt-3 sm:flex sm:flex-col sm:item-center lg:grid lg:grid-cols-4 lg:gap-5 lg:px-8 lg:pb-8">
                                             <Select

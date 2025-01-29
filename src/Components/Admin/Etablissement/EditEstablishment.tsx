@@ -221,7 +221,7 @@ const EditEstablishment = () => {
         <>
             <div className="w-full lg:w-auto">
                 <div>
-                    <h3 className="pb-4" >Modifier an établissement</h3>
+                    <h3 className="pb-4" > { currentPathname.includes("/voir-un-etablissement/") ? "Voir un etablissement" : "Modifier an établissement"}</h3>
                     <hr className="" />
                 </div>
                 <div className='sm:px-16 md:px-4'>
@@ -231,6 +231,8 @@ const EditEstablishment = () => {
                             name: AdminEtablise?.data?.existingCompanyProfile?.fullName || '',
                             category: AdminEtablise?.data?.existingCompanyProfile?.categoryName || '',
                             company: AdminEtablise?.data?.existingCompanyProfile?.companyName || '',
+                            address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
+                            departmentcode: AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '',
                             postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
                             city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
                             email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
@@ -246,6 +248,8 @@ const EditEstablishment = () => {
                                 fullName: values?.name,
                                 categoryName: values?.category,
                                 companyName: values?.company,
+                                address: values?.address,
+                                departmentCode: values?.departmentcode,
                                 postalCode: values?.postcode,
                                 email: values?.email,
                                 logo: logoUrl ? logoUrl : values?.logo,
@@ -296,6 +300,20 @@ const EditEstablishment = () => {
                                     <Field name="company" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.company && touched.company ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <label htmlFor="address" className='text-left pb-2'>Adresse</label>
+                                    <Field name="address" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    {errors.address && touched.address ? (
+                                        <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
+                                    ) : null}
+                                </div>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
+                                    <Field name="departmentcode" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    {errors.departmentcode && touched.departmentcode ? (
+                                        <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>

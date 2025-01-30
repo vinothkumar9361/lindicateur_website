@@ -58,6 +58,28 @@ li {
   font-family: "Poppins-extralight", "Poppins", serif;
 }
 
+
+::-webkit-scrollbar {
+  width: 10px;
+  /* Adjust width */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  /* Scrollbar color */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  /* Darker on hover */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Track color */
+}
+
 @media (min-width: 1280px) and (max-width:1536px) {
   .container {
     max-width: 1100px;
@@ -362,7 +384,8 @@ li {
 } */
 
 
-.custom-prev-arrow {
+.custom-prev-arrow,
+.ad-custom-prev-arrow {
   background: url("../Images/Home/Chevron_left.png") no-repeat center;
   background-size: contain;
   width: 40px;
@@ -371,11 +394,11 @@ li {
   position: absolute;
   top: 45%;
   left: 20px;
-  filter: invert(1);
   z-index: 1;
 }
 
-.custom-next-arrow {
+.custom-next-arrow,
+.ad-custom-next-arrow {
   background: url("../Images/Home/Chevron_right.png") no-repeat center;
   background-size: contain;
   width: 40px;
@@ -384,12 +407,19 @@ li {
   position: absolute;
   top: 45%;
   right: 20px;
-  filter: invert(1);
   z-index: 1;
 }
 
+.custom-next-arrow,
+.custom-prev-arrow {
+  filter: invert(1);
+
+}
 .custom-next-arrow:hover,
-.custom-prev-arrow:hover {
+.custom-prev-arrow:hover,
+.ad-custom-next-arrow:hover,
+.ad-custom-prev-arrow:hover
+ {
   opacity: 1;
   cursor: pointer;
 }
@@ -397,7 +427,9 @@ li {
 @media (max-width:550px) {
 
   .custom-next-arrow,
-  .custom-prev-arrow {
+  .custom-prev-arrow,
+  .ad-custom-next-arrow,
+  .ad-custom-prev-arrow {
     width: 25px;
     height: 25px;
   }
@@ -406,6 +438,7 @@ li {
 .ad-slider .ad-card {
   height: 400px;
 }
+
 .ad-slider .overlay-content {
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
   position: absolute;
@@ -438,6 +471,7 @@ li {
     height: 200px;
   }
 }
+
 /* Research */
 .search-box {
   height: 100vh !important;
@@ -503,6 +537,13 @@ li {
   width: 100%;
   height: 580px;
   background-color: #ffffff;
+  overflow: hidden;
+}
+
+.ad-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .ad-banner,
@@ -553,7 +594,7 @@ li {
 @media (max-width:650px) {
   .ad-card {
     width: 100%;
-    height: 350px;
+    height: 250px;
   }
 }
 
@@ -606,8 +647,8 @@ li {
 
 @media only screen and (max-width: 47.9375rem) {
   .custom-pagination li a {
-      width: 25px;
-      height: 25px;
-      font-size: 12px;
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
   }
 }

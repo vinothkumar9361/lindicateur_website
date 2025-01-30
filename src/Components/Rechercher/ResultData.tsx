@@ -35,14 +35,14 @@ const data: any = [
 const SamplePrevArrow = (props: any) => {
     const { className, style, onClick } = props;
     return (
-        <div onClick={onClick} className="custom-prev-arrow" />
+        <div onClick={onClick} className="ad-custom-prev-arrow" />
     )
 }
 
 function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
-        <div onClick={onClick} className="custom-next-arrow" />
+        <div onClick={onClick} className="ad-custom-next-arrow" />
     )
 }
 
@@ -90,8 +90,8 @@ const ResultData = ({ handlePlace }: any) => {
                                                         {
                                                             item?.adBgType == "poster" ?
                                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card cursor-pointer">
-                                                                    <a href={item?.websiteURL} className="w-full h-full" target="_blank">
-                                                                        <img src={item?.photos} alt="img" className="w-full h-full" />
+                                                                    <a href={item?.websiteURL} className="" target="_blank">
+                                                                        <img src={item?.photos} alt="img" className="" />
                                                                     </a>
                                                                     {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                 </div>

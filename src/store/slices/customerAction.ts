@@ -190,6 +190,12 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
                     return response;
                 }
             }
+            else if (val?.search != "companyName" && val?.search != null) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearch?search=${val?.search}`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
 
         } catch (error) {
             return rejectWithValue(error);
@@ -217,10 +223,25 @@ export const GetAllPublicitesList = createAsyncThunk(
     'lindicateur/GetAllPublicitesList',
     async (val: any, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}&imageSize=1 Écran`);
-            if (response.status === 200 || response.status === 201) {
-                return response;
+            if (val?.search != "companyName" && val?.search != null && val?.categoryName != "categoryName" && val?.categoryName != null && val?.city != "locationName" && val?.city != null) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}&companyName=${val?.search}&imageSize=1 Écran`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
             }
+            else if (val?.categoryName != "categoryName" && val?.categoryName != null && val?.city != "locationName" && val?.city != null) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}&imageSize=1 Écran`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+            else if(val?.search != "companyName" && val?.search != null) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?companyName=${val?.search}&imageSize=1 Écran`);
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+
         } catch (error) {
             return rejectWithValue(error);
         }

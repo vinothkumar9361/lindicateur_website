@@ -92,6 +92,10 @@ const Search = () => {
             dispatch(GetAllEstablishmentProfileSearch({ categoryName: categoryName, city: locationName }));
             dispatch(GetAllPublicitesList({ categoryName: categoryName, city: locationName }))
         }
+        else if (companyName) {
+            dispatch(GetAllEstablishmentProfileSearch({ search: companyName }));
+            dispatch(GetAllPublicitesList({ search: companyName }))
+        }
         else if (phoneNumber) {
             dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
             dispatch(GetAllPublicitesPhoneNumberSearch({ phoneNumber }))
@@ -169,7 +173,13 @@ const Search = () => {
         localStorage.removeItem('locationName');
         localStorage.removeItem('phoneNumber');
 
-        if (!scategoryName?.value || !slocationName?.value) {
+        if (companyName && !scategoryName?.value && !slocationName?.value) {
+            setSerrorMessage("")
+            dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName }));
+            dispatch(GetAllPublicitesList({ search: scompanyName }))
+
+        }
+        else if (!scategoryName?.value || !slocationName?.value) {
             setSerrorMessage("La catégorie et la ville sont obligatoires.");
         }
         else {
@@ -221,7 +231,7 @@ const Search = () => {
                                                     <Spinner />
                                                     : <FaSearch className="text-black" />
                                             }
-                                            
+
                                         </button>
                                     </div>
                                 </div>
@@ -247,8 +257,9 @@ const Search = () => {
                                         options={categoryType}
                                         value={scategoryName}
                                         onChange={(value) => { setScategoryName(value) }}
+                                        isClearable={true}
                                         placeholder="Quoi:Un restaurant..."
-                                        className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 serarch-input focus:ring-transparent"
+                                        className="cursor-pointer border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 serarch-input focus:ring-transparent"
                                     />
                                     {/* <input type="text" placeholder="Quoi: Un restaurant, un dentiste..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500" /> */}
                                     <input
@@ -264,8 +275,10 @@ const Search = () => {
                                         isSearchable
                                         onInputChange={handleInputChange}
                                         onChange={(value) => { setSlocationName(value) }}
+                                        isClearable={true}
                                         placeholder="Où: France..."
-                                        className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                        className="cursor-pointer border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                        noOptionsMessage={() => " Saisir..."}
                                     />
                                     {/* <input
                                         type="text"

@@ -191,8 +191,9 @@ const Banner = () => {
                                                 options={categoryType}
                                                 value={categoryName}
                                                 onChange={(value) => { setCategoryName(value) }}
+                                                isClearable={true}
                                                 placeholder="Quoi:Un restaurant..."
-                                                className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                                className="cursor-pointer border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
                                             />
                                             {/* <input type="text" placeholder="Quoi: Un restaurant, un dentiste..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500" /> */}
                                             <input
@@ -208,8 +209,10 @@ const Banner = () => {
                                                 isSearchable
                                                 onInputChange={handleInputChange}
                                                 onChange={(value) => { setLocationName(value) }}
+                                                isClearable={true}
                                                 placeholder="Où: France..."
-                                                className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                                className="cursor-pointer border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
+                                                noOptionsMessage={() => " Saisir..."}
                                             />
                                             {/* <input
                                                 type="text"

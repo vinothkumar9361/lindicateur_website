@@ -159,7 +159,7 @@ const ViewOrEditPublicites = () => {
             showCancelButton: true,
             cancelButtonColor: "#025BFD",
             confirmButtonColor: "#CA0505",
-            confirmButtonText: `${AdminPublicites?.data?.existingAds?.isPublished ? "publier" : "annuler la publication"}`
+            confirmButtonText: `${AdminPublicites?.data?.existingAds?.isPublished ?  "annuler la publication" : "publier"}`
         }).then((result) => {
             if (result?.isConfirmed) {
                 let publishData: any = {
@@ -463,7 +463,7 @@ const ViewOrEditPublicites = () => {
                                                             logoUrl || values?.logo ?
                                                                 <div className="flex w-full text-wrap break-words text-black">
                                                                     <div className="w-full">
-                                                                        <p className="w-full px-4">{logoUrl || values?.logo}</p>
+                                                                        <p className="w-full px-4 line-clamp-2">{logoUrl || values?.logo}</p>
                                                                     </div>
                                                                     {/* <div className="w-1/12 flex justify-end pr-4 z-10">
                                                             <MdDelete onClick={ () => setLogoUpload("")} className="z-10 w-5 h-5" />
@@ -506,7 +506,7 @@ const ViewOrEditPublicites = () => {
                                     {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
 
-                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
+                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${photosUrl || values?.photos ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
                                             {
                                                 Loading && photosUpload ?
                                                     <Spinner />
@@ -514,7 +514,7 @@ const ViewOrEditPublicites = () => {
                                                     <>
                                                         {
                                                             photosUrl || values?.photos ?
-                                                                <p className="w-full text-wrap break-words px-4 text-black">{photosUrl || values?.photos}</p>
+                                                                <p className="w-full text-wrap break-words px-4 text-black line-clamp-3">{photosUrl || values?.photos}</p>
                                                                 :
                                                                 null
                                                         }

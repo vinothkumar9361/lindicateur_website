@@ -68,9 +68,11 @@ const Addetablissement = () => {
 
                 if (!supportedFormats.includes(fileType)) {
                     setErrorsMessage("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
+                    setLogoUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
                     setErrorsMessage('La taille du fichier doit être inférieure à 2 Mo.');
+                    setLogoUpload(null);
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -93,6 +95,7 @@ const Addetablissement = () => {
             }
             else {
                 setErrorsMessage(null);
+                setLogoUpload(null);
             }
         }
         else if (photosUpload) {
@@ -105,9 +108,11 @@ const Addetablissement = () => {
 
                 if (!supportedFormats.includes(fileType)) {
                     setErrorMessagephoto("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
+                    setPhotosUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
                     setErrorMessagephoto('La taille du fichier doit être inférieure à 2 Mo.');
+                    setPhotosUpload(null);
                 }
                 else {
                     // Create a FileReader to read the image file
@@ -132,6 +137,7 @@ const Addetablissement = () => {
             }
             else {
                 setErrorMessagephoto(null);
+                setPhotosUpload(null);
             }
         }
 
@@ -182,6 +188,12 @@ const Addetablissement = () => {
                 confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
+                if (logoUpload) {
+                    setLogoUpload(null)
+                }
+                else if (photosUpload) {
+                    setPhotosUpload(null)
+                }
                 dispatch(errorMessage(""));
             })
         }
@@ -348,31 +360,39 @@ const Addetablissement = () => {
                                             <label
                                                 htmlFor="logo-upload"
                                                 className={`flex flex-col items-center justify-center w-full ${logoUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
+
                                                 {
-                                                    logoUrl ?
-                                                        <div className="flex flex-col items-center justify-center w-full">
-                                                            <a href="" className="w-full text-wrap break-words px-4">{logoUrl}</a>
-                                                        </div>
+                                                    Loading && logoUpload ?
+                                                        <Spinner />
                                                         :
-                                                        null
+                                                        <>
+                                                            {
+                                                                logoUrl ?
+                                                                    <div className="flex flex-col items-center justify-center w-full">
+                                                                        <a href="" className="w-full text-wrap break-words px-4">{logoUrl}</a>
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                                </svg>
+                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
+                                                            </div>
+                                                            <input
+                                                                id="logo-upload"
+                                                                name="logo-upload"
+                                                                type="file"
+                                                                className="hidden"
+                                                                onChange={(e: any) => {
+                                                                    setLogoUpload(e.target.files[0])
+                                                                }}
+                                                                multiple
+                                                            />
+                                                        </>
                                                 }
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                    </svg>
-                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
-                                                </div>
-                                                <input
-                                                    id="logo-upload"
-                                                    name="logo-upload"
-                                                    type="file"
-                                                    className="hidden"
-                                                    onChange={(e: any) => {
-                                                        setLogoUpload(e.target.files[0])
-                                                    }}
-                                                    multiple
-                                                />
                                             </label>
                                         </div>
                                         {errorsMessage ? (
@@ -388,32 +408,42 @@ const Addetablissement = () => {
                                                 className={`flex flex-col items-center justify-center w-full ${photosUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}
                                             >
                                                 {
-                                                    photosUrl ?
-                                                        <div className="flex flex-col items-center justify-center w-full">
-                                                            <a href={photosUrl} className="w-full text-wrap break-words px-4">{photosUrl}</a>
-                                                        </div>
+                                                    Loading && photosUpload ?
+                                                        <Spinner />
                                                         :
-                                                        null
+                                                        <>
+                                                            {
+                                                                photosUrl ?
+                                                                    <div className="flex flex-col items-center justify-center w-full">
+                                                                        <a href={photosUrl} className="w-full text-wrap break-words px-4">{photosUrl}</a>
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                                </svg>
+                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (Max 400x250px)</p>
+                                                            </div>
+                                                            <input
+                                                                id="photos-upload"
+                                                                name="photos-upload"
+                                                                type="file"
+                                                                className="hidden"
+                                                                onChange={(e: any) => {
+                                                                    setPhotosUpload(e.target.files[0])
+                                                                }}
+                                                                multiple
+                                                            />
+                                                        </>
                                                 }
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                    </svg>
-                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (Max 400x250px)</p>
-                                                </div>
-                                                <input
-                                                    id="photos-upload"
-                                                    name="photos-upload"
-                                                    type="file"
-                                                    className="hidden"
-                                                    onChange={(e: any) => {
-                                                        setPhotosUpload(e.target.files[0])
-                                                    }}
-                                                    multiple
-                                                />
                                             </label>
                                         </div>
+                                        {errorMessagephoto ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
+                                        ) : null}
                                     </div>
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>

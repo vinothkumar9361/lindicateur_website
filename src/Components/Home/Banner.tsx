@@ -172,7 +172,11 @@ const Banner = () => {
                                                     value={phoneNumber}
                                                     onChange={(value) => { setPhoneNumber(value) }}
                                                 />
-                                                <button onClick={() => handlePhoneSearch()} className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
+                                                <button 
+                                                onClick={() => handlePhoneSearch()}
+                                                 className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800">
+                                                    <FaSearch className="text-black" />
+                                                    </button>
                                             </div>
                                         </div>
                                     </div>

@@ -231,7 +231,7 @@ export const GetAllPublicitesPhoneNumberSearch = createAsyncThunk(
     'lindicateur/GetAllPublicitesPhoneNumberSearch',
     async (val: any, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyProfileUsersSearchPhoneNumber?phoneNumber=${val?.phoneNumber}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomerPhoneNumber?phoneNumber=${val?.phoneNumber}`);
             if (response.status === 200 || response.status === 201) {
                 return response;
             }

@@ -18,7 +18,7 @@ import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList, GetAllCity } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList, GetAllCity } from '@/store/slices/customerAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -94,6 +94,7 @@ const Search = () => {
         }
         else if (phoneNumber) {
             dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
+            dispatch(GetAllPublicitesPhoneNumberSearch({ phoneNumber }))
         }
     }, [companyName, categoryName, locationName, phoneNumber]);
 
@@ -152,8 +153,14 @@ const Search = () => {
         return false
     }
 
-    const handlePhoneSearch = () => {        
-        dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber: sphoneNumber }))
+    const handlePhoneSearch = () => {
+        localStorage.removeItem('companyName');
+        localStorage.removeItem('categoryName');
+        localStorage.removeItem('locationName');
+        localStorage.removeItem('phoneNumber');
+
+        dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber: sphoneNumber }));
+        dispatch(GetAllPublicitesPhoneNumberSearch({ phoneNumber: sphoneNumber }))
     }
 
     const handleProfileSearch = () => {
@@ -205,7 +212,17 @@ const Search = () => {
                                             value={sphoneNumber}
                                             onChange={(value) => { setSphoneNumber(value) }}
                                         />
-                                        <button onClick={() => handlePhoneSearch()} className="cursor-pointer border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"><FaSearch className="text-black" /></button>
+                                        <button
+                                            onClick={() => handlePhoneSearch()}
+                                            className="cursor-pointer border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800"
+                                        >
+                                            {
+                                                Loading ?
+                                                    <Spinner />
+                                                    : <FaSearch className="text-black" />
+                                            }
+                                            
+                                        </button>
                                     </div>
                                 </div>
                             </div>

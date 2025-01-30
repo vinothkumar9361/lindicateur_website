@@ -77,7 +77,7 @@ const Banner = () => {
         if (CustomerCityList?.data?.states) {
             const options = CustomerCityList?.data?.states?.map((value: any) => ({
                 value: `${value?.insee_id.slice(0, 2)}`,
-                label:  `${value?.name}(${value?.insee_id.slice(0, 2)})`
+                label: `${value?.name}(${value?.insee_id.slice(0, 2)})`
             }));
             setCityType(options)
         }
@@ -93,7 +93,13 @@ const Banner = () => {
     }
 
     const handleProfileSearch = () => {
-        if (!categoryName?.value || !locationName?.value) {
+        if (companyName && !categoryName?.value && !locationName?.value) {
+            if (companyName) {
+                localStorage.setItem('companyName', companyName)
+            }
+            router.push(`/rechercher/`);
+        }
+        else if (!categoryName?.value || !locationName?.value) {
             setSerrorMessage("La catégorie et la ville sont obligatoires.");
         }
         else {
@@ -172,11 +178,11 @@ const Banner = () => {
                                                     value={phoneNumber}
                                                     onChange={(value) => { setPhoneNumber(value) }}
                                                 />
-                                                <button 
-                                                onClick={() => handlePhoneSearch()}
-                                                 className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800">
+                                                <button
+                                                    onClick={() => handlePhoneSearch()}
+                                                    className="border-2 px-4 border-gray-400 hover:border-3 hover:border-gray-800">
                                                     <FaSearch className="text-black" />
-                                                    </button>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

@@ -89,7 +89,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card cursor-pointer">
+                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search cursor-pointer">
                                                                     <a href={item?.websiteURL} className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>

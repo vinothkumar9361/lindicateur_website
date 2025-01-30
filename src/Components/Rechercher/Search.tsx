@@ -173,7 +173,7 @@ const Search = () => {
         localStorage.removeItem('locationName');
         localStorage.removeItem('phoneNumber');
 
-        if (companyName && !scategoryName?.value && !slocationName?.value) {
+        if (scompanyName && !scategoryName?.value && !slocationName?.value) {
             setSerrorMessage("")
             dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName }));
             dispatch(GetAllPublicitesList({ search: scompanyName }))

@@ -13,7 +13,7 @@ import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, Updat
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllBannerList, GetAllCategoryList, GetAllCity } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity } from '@/store/slices/customerAction';
 
 import { ForgotPassword, ImageUpload, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
 
@@ -62,10 +62,10 @@ const initialState: InitialState = {
     AdminBanners: null,
     Customer: null,
     CustomerEtabliselist: null,
-    CustomerResearchData : null,
-    CustomerBannerList : null,
-    CustomerPublicitesList : null,
-    CustomerCategoryList : null,
+    CustomerResearchData: null,
+    CustomerBannerList: null,
+    CustomerPublicitesList: null,
+    CustomerCategoryList: null,
     CustomerCityList: null
 };
 
@@ -131,8 +131,8 @@ const ReduxSlice = createSlice({
                 state.success = null;
             })
 
-              // Contact Us
-              .addCase(ContactUsForm.pending, (state) => {
+            // Contact Us
+            .addCase(ContactUsForm.pending, (state) => {
                 state.Loading = true;
             })
             .addCase(ContactUsForm.fulfilled, (state, action) => {
@@ -387,8 +387,8 @@ const ReduxSlice = createSlice({
                 state.success = null;
             })
 
-             // Get All Publicites List for admin
-             .addCase(GetAllPublicitesListForAdmin.pending, (state) => {
+            // Get All Publicites List for admin
+            .addCase(GetAllPublicitesListForAdmin.pending, (state) => {
                 state.Loading = true;
             })
             .addCase(GetAllPublicitesListForAdmin.fulfilled, (state, action) => {
@@ -417,8 +417,8 @@ const ReduxSlice = createSlice({
                 state.AdminPublicites = null;
             })
 
-             // Update Publicites for admin
-             .addCase(UpdatePublicitesForAdmin.pending, (state) => {
+            // Update Publicites for admin
+            .addCase(UpdatePublicitesForAdmin.pending, (state) => {
                 state.Loading = true;
             })
             .addCase(UpdatePublicitesForAdmin.fulfilled, (state, action) => {
@@ -477,8 +477,8 @@ const ReduxSlice = createSlice({
                 state.success = null;
             })
 
-             // Get All Banner List for admin
-             .addCase(GetAllBannerListForAdmin.pending, (state) => {
+            // Get All Banner List for admin
+            .addCase(GetAllBannerListForAdmin.pending, (state) => {
                 state.Loading = true;
             })
             .addCase(GetAllBannerListForAdmin.fulfilled, (state, action) => {
@@ -507,8 +507,8 @@ const ReduxSlice = createSlice({
                 state.AdminBanners = null;
             })
 
-             // Update Banner for admin
-             .addCase(UpdateBannersForAdmin.pending, (state) => {
+            // Update Banner for admin
+            .addCase(UpdateBannersForAdmin.pending, (state) => {
                 state.Loading = true;
             })
             .addCase(UpdateBannersForAdmin.fulfilled, (state, action) => {
@@ -673,6 +673,21 @@ const ReduxSlice = createSlice({
                 state.CustomerPublicitesList = null;
             })
 
+            // Get All Publicites Phone Number Search
+            .addCase(GetAllPublicitesPhoneNumberSearch.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllPublicitesPhoneNumberSearch.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerPublicitesList = action.payload;
+            })
+            .addCase(GetAllPublicitesPhoneNumberSearch.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerPublicitesList = null;
+            })
+
             // Get All Banners List
             .addCase(GetAllBannerList.pending, (state) => {
                 state.Loading = true;
@@ -703,8 +718,8 @@ const ReduxSlice = createSlice({
                 state.CustomerCategoryList = null;
             })
 
-             // Get All City List
-             .addCase(GetAllCity.pending, (state) => {
+            // Get All City List
+            .addCase(GetAllCity.pending, (state) => {
                 state.Loading = true;
             })
             .addCase(GetAllCity.fulfilled, (state, action) => {

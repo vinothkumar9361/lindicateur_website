@@ -21,14 +21,11 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 const AddetablishmentSchema = Yup.object().shape({
-    name: Yup.string()
-        .min(2, 'Too Short!')
-        .max(50, 'Too Long!')
-        .required('Enter a first name.'),
-    email: Yup.string().email('Invalid email').required('Enter an email address like example@mysite.com.'),
-    phone: Yup.number().required('Enter a phone number.'),
+    departmentcode: Yup.string()
+        .required('Entrez un départemental code')
+        .min(2, 'Trop court !')
+        .max(3, 'rop longtemps !')
 });
-
 
 const EditEstablishment = () => {
     const router = useRouter();
@@ -240,7 +237,7 @@ const EditEstablishment = () => {
                             phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
                             websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
                         }}
-                        // validationSchema={AddetablishmentSchema}
+                        validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             console.log(values);
                             let updateData = {
@@ -302,14 +299,14 @@ const EditEstablishment = () => {
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
-                                    <Field name="departmentcode" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field name="departmentcode" type="number" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.departmentcode && touched.departmentcode ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                    <Field name="postcode" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field name="postcode" type="number" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.postcode && touched.postcode ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
                                     ) : null}

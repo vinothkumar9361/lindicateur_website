@@ -23,14 +23,11 @@ import * as Yup from 'yup';
 import { PiWarningCircleBold } from "react-icons/pi";
 
 const AddetablishmentSchema = Yup.object().shape({
-    company: Yup.string()
+    departmentcode: Yup.string()
+        .required('Entrez un départemental code')
         .min(2, 'Trop court !')
-        .max(50, 'rop longtemps !')
-        .required("Entrez un nom d'entreprise."),
-    email: Yup.string().email('E-mail invalide').required('Saisissez une adresse e-mail telle que exemple@monsite.com.'),
-    phone: Yup.number().required('Enter a phone number.'),
+        .max(3, 'rop longtemps !')
 });
-
 
 const Addetablissement = () => {
     const router = useRouter();
@@ -242,7 +239,7 @@ const Addetablissement = () => {
                             status: '',
                             websiteURL: ''
                         }}
-                        // validationSchema={AddetablishmentSchema}
+                        validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             console.log(values);
 
@@ -327,14 +324,14 @@ const Addetablissement = () => {
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
-                                    <Field name="departmentcode" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field name="departmentcode" type="number" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.departmentcode && touched.departmentcode ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                    <Field name="postcode" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field name="postcode" type="number" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
                                     {errors.postcode && touched.postcode ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
                                     ) : null}

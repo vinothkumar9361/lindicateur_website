@@ -27,8 +27,6 @@ export const LoginForAdmin = createAsyncThunk(
 export const ValitateOtpForAdmin = createAsyncThunk(
     'astromind/ValitateOtpForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             'Content-Type': 'application/json',
             authorization: 'Bearer ' + val?.token,
@@ -93,8 +91,6 @@ export const UpdateAdminProfile = createAsyncThunk(
 export const AddEtablissementForAdmin = createAsyncThunk(
     'lindicateur/AddEtablissementForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -114,8 +110,6 @@ export const AddEtablissementForAdmin = createAsyncThunk(
 export const GetAllEtablissementListForAdmin = createAsyncThunk(
     'lindicateur/GetAllEtablissementListForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -152,8 +146,6 @@ export const GetAllEtablissementListForAdmin = createAsyncThunk(
 export const GetEtablissementForAdmin = createAsyncThunk(
     'lindicateur/GetEtablissementForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -173,8 +165,6 @@ export const GetEtablissementForAdmin = createAsyncThunk(
 export const GetAllEtablissementApprovalForAdmin = createAsyncThunk(
     'lindicateur/GetAllEtablissementApprovalForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -218,8 +208,6 @@ export const GetAllEtablissementApprovalForAdmin = createAsyncThunk(
 export const UpdateEtablissementForAdmin = createAsyncThunk(
     'lindicateur/UpdateEtablissementForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -239,8 +227,6 @@ export const UpdateEtablissementForAdmin = createAsyncThunk(
 export const DeleteEtablissementForAdmin = createAsyncThunk(
     'lindicateur/DeleteEtablissementForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -260,8 +246,6 @@ export const DeleteEtablissementForAdmin = createAsyncThunk(
 export const ApprovedOrUnApprovalEtablissementForAdmin = createAsyncThunk(
     'lindicateur/ApprovedOrUnApprovalEtablissementForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -282,8 +266,6 @@ export const ApprovedOrUnApprovalEtablissementForAdmin = createAsyncThunk(
 export const GetAllPublicitesListForAdmin = createAsyncThunk(
     'lindicateur/GetAllPublicitesListForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -322,8 +304,6 @@ export const GetAllPublicitesListForAdmin = createAsyncThunk(
 export const AddPublicitesForAdmin = createAsyncThunk(
     'lindicateur/AddPublicitesForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -343,8 +323,6 @@ export const AddPublicitesForAdmin = createAsyncThunk(
 export const GetPublicitesForAdmin = createAsyncThunk(
     'lindicateur/GetPublicitesForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -364,8 +342,6 @@ export const GetPublicitesForAdmin = createAsyncThunk(
 export const UpdatePublicitesForAdmin = createAsyncThunk(
     'lindicateur/UpdatePublicitesForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -385,8 +361,6 @@ export const UpdatePublicitesForAdmin = createAsyncThunk(
 export const DeletePublicitesForAdmin = createAsyncThunk(
     'lindicateur/DeletePublicitesForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -406,8 +380,6 @@ export const DeletePublicitesForAdmin = createAsyncThunk(
 export const PublishPublicitesForAdmin = createAsyncThunk(
     'lindicateur/PublishPublicitesForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -428,8 +400,6 @@ export const PublishPublicitesForAdmin = createAsyncThunk(
 export const GetAllBannerListForAdmin = createAsyncThunk(
     'lindicateur/GetAllBannerListForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -468,8 +438,6 @@ export const GetAllBannerListForAdmin = createAsyncThunk(
 export const AddBannersForAdmin = createAsyncThunk(
     'lindicateur/AddBannersForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -489,8 +457,6 @@ export const AddBannersForAdmin = createAsyncThunk(
 export const GetBannersForAdmin = createAsyncThunk(
     'lindicateur/GetBannersForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -510,8 +476,6 @@ export const GetBannersForAdmin = createAsyncThunk(
 export const UpdateBannersForAdmin = createAsyncThunk(
     'lindicateur/UpdateBannersForAdmin',
     async (val: any, { rejectWithValue }) => {
-        console.log(val);
-
         const headers = new AxiosHeaders({
             authorization: 'Bearer ' + val.token,
             'Content-Type': 'application/json',
@@ -603,25 +567,25 @@ export const GetAllCategoryListForAdmin = createAsyncThunk(
         })
         try {
             if (val?.search && val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?type=${val?.type}&search=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&search=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.search) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?type=${val?.type}&search=${val?.search}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&search=${val?.search}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?type=${val?.type}&alphabetOrder=${val?.sort}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&alphabetOrder=${val?.sort}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?type=${val?.type}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }

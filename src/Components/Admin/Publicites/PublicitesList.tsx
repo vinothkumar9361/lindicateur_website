@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { IoSearchOutline } from "react-icons/io5";
 import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc";
 
+import ReactPaginate from 'react-paginate';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -91,6 +92,13 @@ const PublicitesList = () => {
         })
     }
 
+    const handlePageClick = (event: any) => {
+        const newOffset = Number(event.selected) + 1;
+
+        dispatch(GetAllPublicitesListForAdmin({ token, page: newOffset }));
+
+    }
+
     return (
         <>
             <div className="w-full lg:w-auto">
@@ -136,85 +144,99 @@ const PublicitesList = () => {
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
                     {
                         AdminPublicitesList?.data?.data?.length > 0 ?
-                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-                                    <tr className="border-2">
-                                        <th scope="col" className="p-4 border-2">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label className="sr-only">checkbox</label>
-                                            </div>
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            No.
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            Société ID
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            Nom de la société
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            Code postal
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            Date de début / de fin
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            Statut
-                                        </th>
-                                        <th scope="col" className="px-6 py-3 border-2">
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        AdminPublicitesList?.data?.data?.map((data: any, i: number) => {
-                                            return (
-                                                <>
-                                                    <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                        <td className="w-4 p-4 border-2">
-                                                            <div className="flex items-center">
-                                                                <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                <label className="sr-only">checkbox</label>
-                                                            </div>
-                                                        </td>
-                                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
-                                                            {i + 1}
-                                                        </th>
-                                                        <td className="px-6 py-4 border-2">
-                                                            {"I00" + data?.id}
-                                                        </td>
-                                                        <td className="px-6 py-4 border-2">
-                                                            {data?.companyName}
-                                                        </td>
-                                                        <td className="px-6 py-4 border-2">
-                                                            {data?.postalCode}
-                                                        </td>
-                                                        <td className="px-6 py-4 border-2">
-                                                            {data?.startDate + " / " + data?.endDate}
-                                                        </td>
-                                                        <td className="px-6 py-4 border-2">
-                                                            {data?.isPublished ? "publié" : "inédite"}
-                                                        </td>
-                                                        <td className="flex items-center px-6 py-4 ">
-                                                            <a
-                                                                onClick={() => {
-                                                                    localStorage.setItem('admin-publicite-id', data?.id)
-                                                                    router.push(`/admin/voir-un-publicite/`)
-                                                                }}
-                                                                className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                            >Voir</a>
-                                                            <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
-                                                        </td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table>
+                            <>
+                                <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                                        <tr className="border-2">
+                                            <th scope="col" className="p-4 border-2">
+                                                <div className="flex items-center">
+                                                    <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                    <label className="sr-only">checkbox</label>
+                                                </div>
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                No.
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                Société ID
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                Nom de la société
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                Code postal
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                Date de début / de fin
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                Statut
+                                            </th>
+                                            <th scope="col" className="px-6 py-3 border-2">
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            AdminPublicitesList?.data?.data?.map((data: any, i: number) => {
+                                                return (
+                                                    <>
+                                                        <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                            <td className="w-4 p-4 border-2">
+                                                                <div className="flex items-center">
+                                                                    <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                                    <label className="sr-only">checkbox</label>
+                                                                </div>
+                                                            </td>
+                                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
+                                                                {i + 1}
+                                                            </th>
+                                                            <td className="px-6 py-4 border-2">
+                                                                {"I00" + data?.id}
+                                                            </td>
+                                                            <td className="px-6 py-4 border-2">
+                                                                {data?.companyName}
+                                                            </td>
+                                                            <td className="px-6 py-4 border-2">
+                                                                {data?.postalCode}
+                                                            </td>
+                                                            <td className="px-6 py-4 border-2">
+                                                                {data?.startDate + " / " + data?.endDate}
+                                                            </td>
+                                                            <td className="px-6 py-4 border-2">
+                                                                {data?.isPublished ? "publié" : "inédite"}
+                                                            </td>
+                                                            <td className="flex items-center px-6 py-4 ">
+                                                                <a
+                                                                    onClick={() => {
+                                                                        localStorage.setItem('admin-publicite-id', data?.id)
+                                                                        router.push(`/admin/voir-un-publicite/`)
+                                                                    }}
+                                                                    className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                                >Voir</a>
+                                                                <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
+                                                            </td>
+                                                        </tr>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <ReactPaginate
+                                    breakLabel="..."
+                                    nextLabel=">"
+                                    onPageChange={handlePageClick}
+                                    pageRangeDisplayed={3}
+                                    pageCount={AdminPublicitesList?.data?.pagination?.totalPages}
+                                    // forcePage={AdminEtabliselist?.data?.pagination?.currentpage - 1}
+                                    previousLabel="<"
+                                    renderOnZeroPageCount={null}
+                                    className='custom-pagination'
+                                />
+                            </>
                             :
                             <div className="py-20 text-center">
                                 <h3 className="text-gray-500 font bold">aucune donnée</h3>

@@ -76,7 +76,7 @@ const Banner = () => {
     useEffect(() => {
         if (CustomerCityList?.data?.states) {
             const options = CustomerCityList?.data?.states?.map((value: any) => ({
-                value: `${value?.name}(${value?.insee_id.slice(0, 2)})`,
+                value: `${value?.insee_id.slice(0, 2)}`,
                 label:  `${value?.name}(${value?.insee_id.slice(0, 2)})`
             }));
             setCityType(options)

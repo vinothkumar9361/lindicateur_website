@@ -67,7 +67,6 @@ const Search = () => {
     const [slocationName, setSlocationName] = useState<any | null>(null);
     const [serrorMessage, setSerrorMessage] = useState<any | null>(null);
 
-
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -87,11 +86,11 @@ const Search = () => {
     useEffect(() => {
         if (companyName && categoryName && locationName) {
             dispatch(GetAllEstablishmentProfileSearch({ search: companyName, categoryName: categoryName, city: locationName }));
-            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+            dispatch(GetAllPublicitesList({ categoryName: categoryName, city: locationName }))
         }
         else if (categoryName && locationName) {
             dispatch(GetAllEstablishmentProfileSearch({ categoryName: categoryName, city: locationName }));
-            dispatch(GetAllPublicitesList({ categoryName: categoryName }))
+            dispatch(GetAllPublicitesList({ categoryName: categoryName, city: locationName }))
         }
         else if (phoneNumber) {
             dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber }))
@@ -105,7 +104,6 @@ const Search = () => {
 
     const handleInputChange = (inputValue: any, { action }: any) => {
         if (action === "input-change") {
-            // setSearchValue(inputValue);
             console.log("Search Value:", inputValue);
             dispatch(GetAllCity({ type: "website", search: inputValue }));
 
@@ -125,7 +123,7 @@ const Search = () => {
     useEffect(() => {
         if (CustomerCityList?.data?.states) {
             const options = CustomerCityList?.data?.states?.map((value: any) => ({
-                value: `${value?.name}(${value?.insee_id.slice(0, 2)})`,
+                value: `${value?.insee_id.slice(0, 2)}`,
                 label: `${value?.name}(${value?.insee_id.slice(0, 2)})`
             }));
             setCityType(options)
@@ -154,9 +152,7 @@ const Search = () => {
         return false
     }
 
-    const handlePhoneSearch = () => {
-        console.log("test", sphoneNumber);
-        
+    const handlePhoneSearch = () => {        
         dispatch(GetAllEstablishmentPhoneNumberSearch({ phoneNumber: sphoneNumber }))
     }
 
@@ -172,7 +168,7 @@ const Search = () => {
         else {
             setSerrorMessage("")
             dispatch(GetAllEstablishmentProfileSearch({ search: scompanyName, categoryName: scategoryName?.value, city: slocationName?.value }));
-            dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value }))
+            dispatch(GetAllPublicitesList({ categoryName: scategoryName?.value, city: slocationName?.value }))
         }
     }
 

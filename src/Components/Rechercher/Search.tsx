@@ -76,10 +76,23 @@ const Search = () => {
             const phoneNumberString = localStorage.getItem('phoneNumber');
 
             setToken(tokenString);
-            setCompanyName(companyNameString);
-            setCategoryName(categoryNameString);
-            setLocationName(locationNameString);
-            setPhoneNumber(phoneNumberString);
+
+            if(companyNameString){
+                setCompanyName(companyNameString);
+                localStorage.removeItem("companyName");
+            }
+            if(categoryNameString){
+                setCategoryName(categoryNameString);
+                localStorage.removeItem("categoryName");
+            }
+            if(locationNameString){
+                setLocationName(locationNameString);
+                localStorage.removeItem("locationName");
+            }
+            if(phoneNumberString){
+                setPhoneNumber(phoneNumberString);
+                localStorage.removeItem("phoneNumber");
+            }
         }
     }, []);
 

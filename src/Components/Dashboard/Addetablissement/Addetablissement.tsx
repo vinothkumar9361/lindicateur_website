@@ -44,6 +44,13 @@ const Addetablissement = () => {
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
+    const [otherValue, setOtherValue] = useState("");
+
+    const handleChange = (selected: any) => {
+        if (selected.value === "other") {
+            setOtherValue("");
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -166,7 +173,7 @@ const Addetablissement = () => {
                     dispatch(successMessage(""));
                 })
             }
-            else if (success?.message === 'Image supprimée avec succès'){
+            else if (success?.message === 'Image supprimée avec succès') {
                 Swal.fire({
                     title: success?.message,
                     icon: "success",
@@ -235,12 +242,12 @@ const Addetablissement = () => {
 
     const handleRemoveUrl = (value: any) => {
         if (value === 1) {
-            dispatch(ImageDelete({ id: logoUrl?.id}))
+            dispatch(ImageDelete({ id: logoUrl?.id }))
             setLogoUrl(null);
             setLogoUpload(null);
         }
         else if (value === 2) {
-            dispatch(ImageDelete({ id: photosUrl?.id}))
+            dispatch(ImageDelete({ id: photosUrl?.id }))
             setPhotosUrl(null);
             setPhotosUpload(null);
         }
@@ -257,6 +264,7 @@ const Addetablissement = () => {
                         initialValues={{
                             name: '',
                             category: '',
+                            other_category: '',
                             company: '',
                             address: '',
                             departmentcode: '',
@@ -274,7 +282,7 @@ const Addetablissement = () => {
                             console.log(values);
                             let data = {
                                 fullName: values?.name,
-                                categoryName: values?.category,
+                                categoryName: values?.category === 'Other' ? values?.other_category : values?.category,
                                 companyName: values?.company,
                                 postalCode: values?.postcode,
                                 email: values?.email,
@@ -290,10 +298,12 @@ const Addetablissement = () => {
 
                             }
 
+                            console.log(data);
+                            
                             dispatch(AddEtablissementForAdmin({ token, data }))
                         }}
                     >
-                        {({ errors, touched }) => {
+                        {({ errors, touched, values }) => {
                             console.log(errors);
 
                             return (
@@ -311,6 +321,7 @@ const Addetablissement = () => {
                                             as="select"
                                             name="category"
                                             id="category"
+                                            // onChange={handleChange}
                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
                                             <option selected>Choose a Catégorie</option>
@@ -323,7 +334,17 @@ const Addetablissement = () => {
                                                     )
                                                 })
                                             }
+                                            <option value="Other">Autre</option>
                                         </Field>
+                                        {values?.category == "Other" && (
+                                            <Field
+                                                type="text"
+                                                name="other_category"
+                                                id="other_category"
+                                                placeholder="Entrez le nom de votre catégorie"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4 mt-4'
+                                            />
+                                        )}
                                         {errors.category && touched.category ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                         ) : null}

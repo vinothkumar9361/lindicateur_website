@@ -11,7 +11,7 @@ import 'react-phone-input-2/lib/style.css';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { AddBannersForAdmin, GetAllCategoryListForAdmin } from '@/store/slices/adminAction';
-import { ImageUpload } from '@/store/slices/commonAction';
+import { ImageUpload, ImageDelete } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -22,6 +22,7 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 import { PiWarningCircleBold } from "react-icons/pi";
+import { TiDelete } from "react-icons/ti";
 
 const AddetablishmentSchema = Yup.object().shape({
     company: Yup.string()
@@ -67,7 +68,7 @@ const AddBannieres = () => {
     useEffect(() => {
         if (logoUpload) {
             const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
+            const maxFileSize = 1 * 1024 * 1024; // 1 MB in bytes
 
             if (logoUpload) {
                 const fileType: any = logoUpload?.type;
@@ -78,7 +79,7 @@ const AddBannieres = () => {
                     setLogoUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage("La taille du fichier doit être inférieure à 2 Mo.");
+                    setErrorsMessage("La taille du fichier doit être inférieure à 1 Mo.");
                     setLogoUpload(null);
                 }
                 else {
@@ -109,7 +110,7 @@ const AddBannieres = () => {
         }
         else if (photosUpload) {
             const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
-            const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
+            const maxFileSize = 1 * 1024 * 1024; // 1 MB in bytes
 
             if (photosUpload) {
                 const fileType: any = photosUpload?.type;
@@ -120,7 +121,7 @@ const AddBannieres = () => {
                     setPhotosUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorMessagephoto('La taille du fichier doit être inférieure à 2 Mo.');
+                    setErrorMessagephoto('La taille du fichier doit être inférieure à 1 Mo.');
                     setPhotosUpload(null);
                 }
                 else {
@@ -164,13 +165,25 @@ const AddBannieres = () => {
                     timer: 5000,
                 }).then(() => {
                     if (logoUpload) {
-                        setLogoUrl(success?.data?.imageUrl);
+                        setLogoUrl(success?.data);
                         setLogoUpload(null)
                     }
                     else if (photosUpload) {
-                        setPhotosUrl(success?.data?.imageUrl);
+                        setPhotosUrl(success?.data);
                         setPhotosUpload(null)
                     }
+                    dispatch(successMessage(""));
+                })
+            }
+            else if (success?.message === 'Image supprimée avec succès') {
+                Swal.fire({
+                    title: success?.message,
+                    icon: "success",
+                    iconColor: "#36AA00",
+                    confirmButtonColor: "#36AA00",
+                    confirmButtonText: "D'accord",
+                    timer: 5000,
+                }).then(() => {
                     dispatch(successMessage(""));
                 })
             }
@@ -232,6 +245,19 @@ const AddBannieres = () => {
         dispatch(ImageUpload({ imageData }));
     }
 
+    const handleRemoveUrl = (value: any) => {
+        if (value === 1) {
+            dispatch(ImageDelete({ id: logoUrl?.id }))
+            setLogoUrl(null);
+            setLogoUpload(null);
+        }
+        else if (value === 2) {
+            dispatch(ImageDelete({ id: photosUrl?.id }))
+            setPhotosUrl(null);
+            setPhotosUpload(null);
+        }
+    }
+
     return (
         <>
             <div className="w-full lg:w-auto">
@@ -251,8 +277,8 @@ const AddBannieres = () => {
                             postcode: '',
                             city: '',
                             email: '',
-                            logo: logoUrl || '',
-                            photos: photosUrl || '',
+                            logo: logoUrl?.imageUrl || '',
+                            photos: photosUrl?.imageUrl || '',
                             phone: phoneNumber,
                             message: '',
                             websiteURL: '',
@@ -271,8 +297,8 @@ const AddBannieres = () => {
                                 postalCode: values?.postcode,
                                 city: values?.city,
                                 email: values?.email,
-                                logo: logoUrl,
-                                photos: photosUrl,
+                                logo: logoUrl?.imageUrl,
+                                photos: photosUrl?.imageUrl,
                                 phoneNumber: phoneNumber,
                                 description: values?.message,
                                 websiteURL: values?.websiteURL,
@@ -371,8 +397,17 @@ const AddBannieres = () => {
                                     {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                    <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
-                                    {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
+                                    <div className="pb-2 flex justify-between">
+                                        <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
+                                        {
+                                            logoUrl ?
+                                                <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
+                                                    <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                                </div>
+                                                :
+                                                null
+                                        }
+                                    </div>                                    {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
                                         <label
                                             htmlFor="logo-upload"
@@ -385,7 +420,7 @@ const AddBannieres = () => {
                                                         {
                                                             logoUrl ?
                                                                 <div className="flex flex-col items-center justify-center w-full">
-                                                                    <a href="" className="w-full text-wrap break-words px-4">{logoUrl}</a>
+                                                                    <a href="" className="w-full text-wrap break-words px-4">{logoUrl?.imageUrl}</a>
                                                                 </div>
                                                                 :
                                                                 null
@@ -417,7 +452,17 @@ const AddBannieres = () => {
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                    <label htmlFor="photos-upload" className='text-left pb-2'>Ajouter des photos</label>
+                                    <div className="pb-2 flex justify-between">
+                                        <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
+                                        {
+                                            photosUrl ?
+                                                <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
+                                                    <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                                </div>
+                                                :
+                                                null
+                                        }
+                                    </div>
                                     {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     <div className="flex items-center justify-center w-full">
                                         <label
@@ -432,7 +477,7 @@ const AddBannieres = () => {
                                                         {
                                                             photosUrl ?
                                                                 <div className="flex flex-col items-center justify-center w-full">
-                                                                    <a href={photosUrl} className="w-full text-wrap break-words px-4">{photosUrl}</a>
+                                                                    <a href={photosUrl} className="w-full text-wrap break-words px-4">{photosUrl?.imageUrl}</a>
                                                                 </div>
                                                                 :
                                                                 null

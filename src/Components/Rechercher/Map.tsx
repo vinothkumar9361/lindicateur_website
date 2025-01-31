@@ -161,9 +161,20 @@ const SearchMaps = ({ place }: any) => {
                 <GoogleMap
                     mapContainerStyle={{ width: "100%", height: "100%" }}
                     center={{ lat: 46.603354, lng: 1.888334 }}
-                    zoom={8}
+                    zoom={6}
                     onLoad={onLoad}
                     onUnmount={onUnmount}
+                    options={{
+                        restriction: {
+                            latLngBounds: {
+                                north: 51.124199,
+                                south: 41.314199,
+                                west: -5.142222,
+                                east: 9.561556,
+                            },
+                            strictBounds: true,
+                        },
+                    }}
                 >
                     {
                         markerValue?.length > 0 ?

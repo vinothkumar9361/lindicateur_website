@@ -68,6 +68,27 @@ export const ImageUpload = createAsyncThunk(
     },
 );
 
+// Image Delete
+export const ImageDelete = createAsyncThunk(
+    'astromind/ImageDelete',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/deleteImage/${val?.id}`,
+                { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                const { data } = response;
+                return data;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
 // Image Upload
 export const ContactUsForm = createAsyncThunk(
     'astromind/ContactUsForm',

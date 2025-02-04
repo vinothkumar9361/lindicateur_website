@@ -11,7 +11,7 @@ import { TiDelete } from "react-icons/ti";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetPublicitesForAdmin, UpdatePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
+import { GetPublicitesForAdmin, UpdatePublicitesForAdmin, PublishPublicitesForAdmin, GetAllCategoryListForAdmin } from '@/store/slices/adminAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 import { ImageUpload } from '@/store/slices/commonAction';
@@ -35,7 +35,7 @@ const ViewOrEditPublicites = () => {
     // console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminPublicites } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminPublicites, AdminCategoryList } = useSelector((state: RootState) => state.lindicateur);
     console.log(AdminPublicites);
 
     const [token, setToken] = useState<string | null>(null);
@@ -58,6 +58,12 @@ const ViewOrEditPublicites = () => {
             setCurrentPathname(currentUrl.pathname);
         }
     }, []);
+
+    useEffect(() => {
+        if (token) {
+            dispatch(GetAllCategoryListForAdmin({ token, type: 'website' }));
+        }
+    }, [dispatch, token])
 
     useEffect(() => {
         if (token && id) {
@@ -298,7 +304,7 @@ const ViewOrEditPublicites = () => {
         <>
             <div className="w-full lg:w-auto">
                 <div>
-                    <h3 className="pb-4" >Voir un publicite</h3>
+                    <h3 className="pb-4" > {currentPathname.includes("/voir-un-publicite/") ? "Voir un publicite" : "Modifier an publicite"}</h3>
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
@@ -378,7 +384,26 @@ const ViewOrEditPublicites = () => {
                                     </div>
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                        <Field name="category" disabled={currentPathname.includes("/voir-un-publicite/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            as="select"
+                                            name="category"
+                                            id="category"
+                                            selected={values?.category}
+                                            disabled={currentPathname.includes("/voir-un-publicite/")}
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                            <option selected>Choose a Catégorie</option>
+                                            {
+                                                AdminCategoryList?.data?.category?.map((data: any, i: number) => {
+                                                    return (
+                                                        <>
+                                                            <option value={data?.categoryName}>{data?.categoryName}</option>
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </Field>
+                                        {/* <Field name="category" disabled={currentPathname.includes("/voir-un-publicite/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         {errors.category && touched.category ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                         ) : null}

@@ -11,7 +11,7 @@ import { TiDelete } from "react-icons/ti";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { UpdateEtablissementForAdmin, GetEtablissementForAdmin } from '@/store/slices/adminAction';
+import { UpdateEtablissementForAdmin, GetEtablissementForAdmin, GetAllCategoryListForAdmin } from '@/store/slices/adminAction';
 import { ImageUpload } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
@@ -36,7 +36,7 @@ const EditEstablishment = () => {
     // console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminEtablise, AdminCategoryList } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [id, setId] = useState<string | null>(null);
@@ -59,6 +59,12 @@ const EditEstablishment = () => {
             setCurrentPathname(currentUrl.pathname);
         }
     }, []);
+
+    useEffect(() => {
+        if (token) {
+            dispatch(GetAllCategoryListForAdmin({ token, type: 'website' }));
+        }
+    }, [dispatch, token])
 
     useEffect(() => {
         if (token && id) {
@@ -307,7 +313,26 @@ const EditEstablishment = () => {
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                    <Field name="category" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                    <Field
+                                        as="select"
+                                        name="category"
+                                        id="category"
+                                        selected={values?.category}
+                                        disabled={currentPathname.includes("/voir-un-etablissement/")}
+                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option selected>Choose a Catégorie</option>
+                                        {
+                                            AdminCategoryList?.data?.category?.map((data: any, i: number) => {
+                                                return (
+                                                    <>
+                                                        <option value={data?.categoryName}>{data?.categoryName}</option>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </Field>
+                                    {/* <Field name="category" disabled={currentPathname.includes("/voir-un-etablissement/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     {errors.category && touched.category ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                     ) : null}

@@ -547,7 +547,17 @@ li {
   overflow: hidden;
 }
 
-.ad-card-search img {
+.ad-card-search-2 {
+  height: 400px;
+}
+
+.ad-card-search-3 {
+  height: 300px;
+}
+
+.ad-card-search img,
+.ad-card-search-2 img,
+.ad-card-search-3 img {
   width: 100%;
   height: 100%;
   object-fit: contain;

@@ -23,6 +23,7 @@ import Spinner from "@/Components/Common/Loading";
 import { Formik, Form, Field } from 'formik';
 
 import * as Yup from 'yup';
+import { stringify } from "querystring";
 
 const LoginSchema = Yup.object().shape({
     userName: Yup.string().required('Enter a user name.').required('Enter an email address like example@mysite.com.'),
@@ -37,7 +38,7 @@ const LoginForm = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
-    
+
     const [token, setToken] = useState<string | null>(null);
 
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
@@ -56,36 +57,39 @@ const LoginForm = () => {
     useEffect(() => {
 
         if (success) {
-            if(success?.data?.isValidation){
+            if (success?.data?.isValidation) {
                 Swal.fire({
                     title: success?.data?.message,
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
-                    setShowVerfication(true);
-                    if (success?.token) {
-                        localStorage.setItem('admin-auth-token', success?.token);
+                    if (success?.data?.token) {
+                        localStorage.setItem('admin-auth-token', success?.data?.token);
+                        router.push(`/admin/liste-des-etablissements/`);
                     }
+                    dispatch(successMessage(""))
+                    setShowVerfication(false);
                 })
             }
             else {
                 Swal.fire({
-                    title: success?.data?.message,
+                    title: success?.message,
                     icon: "success",
                     iconColor: "#36AA00",
                     confirmButtonColor: "#36AA00",
-                    confirmButtonText: "Okay",
+                    confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
                     setShowVerfication(true);
-                    dispatch(successMessage(""))
                     if (success?.token) {
                         localStorage.setItem('admin-auth-token', success?.token);
-                        router.push(`/admin/liste-des-etablissements/`);
+                        // router.push(`/admin/liste-des-etablissements/`);
                     }
+                    dispatch(successMessage(""))
+
                 })
             }
         }
@@ -95,7 +99,7 @@ const LoginForm = () => {
                 icon: "error",
                 iconColor: "#CA0505",
                 confirmButtonColor: "#CA0505",
-                confirmButtonText: "Okay",
+                confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
                 dispatch(errorMessage(""))
@@ -105,6 +109,14 @@ const LoginForm = () => {
 
     console.log(success);
     console.log(errors);
+
+    const resendOtp = () => {
+        const tokenString:any = localStorage.getItem('admin-login-details');
+        
+        var sendOtp:any = JSON.parse(tokenString);
+        console.log("sendOtp", sendOtp);
+        dispatch(LoginForAdmin(sendOtp))
+    }
 
     return (
         <>
@@ -166,7 +178,7 @@ const LoginForm = () => {
                                                         : "S'inscrire"
                                                 }
                                             </button>
-                                            <div className="px-6 mt-8 text-center cursor-pointer">
+                                            <div onClick={() => { resendOtp()}} className="px-6 mt-8 text-center cursor-pointer">
                                                 <p className="text-sky-400 ">Vous n'avez pas reçu le code ?</p>
                                             </div>
                                         </Form>
@@ -192,6 +204,7 @@ const LoginForm = () => {
                                             password: values?.password,
                                             roleId: "1"
                                         }
+                                        localStorage.setItem('admin-login-details',JSON.stringify(sendOtp));
                                         dispatch(LoginForAdmin(sendOtp))
                                     }}
                                 >

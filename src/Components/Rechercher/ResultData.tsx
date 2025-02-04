@@ -7,6 +7,8 @@ import AdImg from '@/Images/Home/Ad_img.png';
 import BannerBackground from '@/Images/Home/banner_background.jpg';
 import Logo from '@/Images/Home/Logo.png'
 
+import { useState, useEffect } from "react";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -51,6 +53,11 @@ const ResultData = ({ handlePlace }: any) => {
 
     console.log(CustomerPublicitesList);
 
+    const [fullEcranData, setFullEcranData] = useState<any | null>(null);
+    const [halfEcranData, setHalfEcranData] = useState<any | null>(null);
+    const [quarterEcranData, setQuarterEcranData] = useState<any | null>(null);
+
+
     const handleSelectPlace = (value: any) => {
         console.log("testing");
 
@@ -70,6 +77,44 @@ const ResultData = ({ handlePlace }: any) => {
         prevArrow: <SamplePrevArrow to="prev" />,
     };
 
+    var settingstwo = {
+        dots: false,
+        arrows: true,
+        infinite: true,
+        // autoplay: true,
+        // autoplaySpeed: 5000,
+        speed: 500,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        nextArrow: <SampleNextArrow to="next" />,
+        prevArrow: <SamplePrevArrow to="prev" />,
+    };
+
+    var settingsthree = {
+        dots: false,
+        arrows: true,
+        infinite: true,
+        // autoplay: true,
+        // autoplaySpeed: 5000,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        nextArrow: <SampleNextArrow to="next" />,
+        prevArrow: <SamplePrevArrow to="prev" />,
+    };
+
+    useEffect(() => {
+
+        let firstData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1 Écran"));
+        console.log(firstData);
+        setFullEcranData(firstData);
+        let secondData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1/2 Écran"));
+        console.log(secondData);
+        setHalfEcranData(secondData);
+        let thirdData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1/4 Écran"));
+        console.log(thirdData);
+        setQuarterEcranData(thirdData);
+    }, [CustomerPublicitesList])
     return (
         <>
             <div className="result-data bg-white flex flex-col justify-center gap-5 p-4 mt-6">
@@ -79,10 +124,10 @@ const ResultData = ({ handlePlace }: any) => {
                     CustomerPublicitesList?.data?.data?.length > 0 || CustomerResearchData?.data?.data?.length > 0 ?
                         <>
                             {
-                                CustomerPublicitesList?.data?.data?.length === 1 ?
+                                fullEcranData?.length === 1 ?
                                     <>
                                         {
-                                            CustomerPublicitesList?.data?.data?.map((item: any, i: number) => {
+                                            fullEcranData?.map((item: any, i: number) => {
                                                 console.log(item?.photos);
 
                                                 return (
@@ -90,7 +135,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         {
                                                             item?.adBgType == "poster" ?
                                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search cursor-pointer">
-                                                                    <a href={item?.websiteURL} className="" target="_blank">
+                                                                    <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
                                                                     {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
@@ -130,51 +175,135 @@ const ResultData = ({ handlePlace }: any) => {
                                     :
                                     <>
                                         <Slider {...settings} className="">
+                                            {
+                                                fullEcranData?.map((item: any, i: number) => {
+                                                    console.log(item?.photos);
+
+                                                    return (
+                                                        <>
+                                                            {
+                                                                item?.adBgType == "poster" ?
+                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search cursor-pointer">
+                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                            <img src={item?.photos} alt="img" className="" />
+                                                                        </a>
+                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </Slider>
+                                    </>
+                            }
+
+                            {
+                                halfEcranData?.length === 1 ?
+                                    <>
                                         {
-                                            CustomerPublicitesList?.data?.data?.map((item: any, i: number) => {
+                                            halfEcranData?.map((item: any, i: number) => {
                                                 console.log(item?.photos);
 
                                                 return (
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card cursor-pointer">
-                                                                    <a href={item?.websiteURL} className="" target="_blank">
+                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 flex cursor-pointer mt-6">
+                                                                    <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
                                                                     {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                 </div>
                                                                 :
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer ad-banner cursor-pointer">
-                                                                    <div className="ad-text">
-                                                                        <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
-                                                                            <div className="pb-4">
-                                                                                <img src={item?.logo ? item?.logo : Logo} alt="" />
-                                                                                {/* <Image src={Logo} alt="logo" /> */}
-                                                                            </div>
-                                                                            <div className="text-center">
-                                                                                <h3 className="pb-3">{item?.companyName}</h3>
-                                                                                <h6 className="text-lg pb-3">{item?.categoryName}</h6>
-                                                                                <p className="text-sm">{item?.description}</p>
-                                                                            </div>
-
-                                                                        </div>
-                                                                        <div className="ad-address p-2 px-6 text-xs">
-                                                                            <p className="mb-2">{item?.email}</p>
-                                                                            <p className="mb-2">{item?.phoneNumber}</p>
-                                                                            <p className="mb-2">{item?.city}</p>
-                                                                            <p className="mb-2">{item?.city}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className={`ad-background`}>
-                                                                        <Image src={item?.photos ? item?.photos : BannerBackground} alt="banner" width={900} height={580} />
-                                                                    </div>
-                                                                </div>
+                                                                null
                                                         }
                                                     </>
                                                 )
                                             })
                                         }
+                                    </>
+                                    :
+                                    <>
+                                        <Slider {...settingstwo} className="">
+                                            {
+                                                halfEcranData?.map((item: any, i: number) => {
+                                                    console.log(item?.photos);
+
+                                                    return (
+                                                        <>
+                                                            {
+                                                                item?.adBgType == "poster" ?
+                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 cursor-pointer mt-6">
+                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                            <img src={item?.photos} alt="img" className="" />
+                                                                        </a>
+                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </Slider>
+                                    </>
+                            }
+
+                            {
+                                quarterEcranData?.length <= 2 ?
+                                    <>
+                                        <div className="grid grid-cols-3 gap-4">
+                                            {
+                                                quarterEcranData?.map((item: any, i: number) => {
+                                                    console.log(item?.photos);
+
+                                                    return (
+                                                        <>
+                                                            {
+                                                                item?.adBgType == "poster" ?
+                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-3 flex cursor-pointer mt-6">
+                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                            <img src={item?.photos} alt="img" className="" />
+                                                                        </a>
+                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </>
+                                    :
+                                    <>
+                                        <Slider {...settingsthree} className="mt-6">
+                                            {
+                                                quarterEcranData?.map((item: any, i: number) => {
+                                                    console.log(item?.photos);
+
+                                                    return (
+                                                        <>
+                                                            {
+                                                                item?.adBgType == "poster" ?
+                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-3 cursor-pointer">
+                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                            <img src={item?.photos} alt="img" className="" />
+                                                                        </a>
+                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                        </>
+                                                    )
+                                                })
+                                            }
                                         </Slider>
                                     </>
                             }
@@ -188,7 +317,9 @@ const ResultData = ({ handlePlace }: any) => {
                                             <>
                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
                                                     <div className="bg-gray-100 h-32 text-center flex justify-center content-center items-center">
-                                                        <Image src={TestImg} alt="img" className="w-full h-20" />
+                                                        <a href={item?.websiteURL} rel="noopener noreferrer" target="_blank" className="w-full h-20">
+                                                            <Image src={TestImg} alt="img" className="w-full h-20" />
+                                                        </a>
                                                     </div>
                                                     {/* <div >
                                             <Image src={item?.photos ? item?.photos : item?.logo ? item?.logo : TestImg} alt="img" className="w-full" />

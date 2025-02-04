@@ -302,7 +302,7 @@ const AddBannieres = () => {
                                 phoneNumber: phoneNumber,
                                 description: values?.message,
                                 websiteURL: values?.websiteURL,
-                                isPublished: values?.status === "1" ? true : false,
+                                isPublished: values?.status === "1" ? "true" : "false",
                             }
 
                             console.log(bannerData);

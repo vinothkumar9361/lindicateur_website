@@ -301,7 +301,7 @@ const Addetablissement = () => {
                                 imageSize: values?.images,
                                 adBgType: values?.photoType,
                                 websiteURL: values?.websiteURL,
-                                isPublished: values?.status === "1" ? true : false,
+                                isPublished: values?.status === "1" ? "true" : "false",
                             }
 
                             console.log(publicitesData);

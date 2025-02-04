@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 
 import { PiWarningCircleBold } from "react-icons/pi";
+import { TiDelete } from "react-icons/ti";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -225,6 +226,29 @@ const EditEstablishment = () => {
         dispatch(ImageUpload({ imageData }));
     }
 
+    const handleRemoveUrl = (value: any) => {
+        if (value === 1) {
+            let updateData = {
+                logo: '',
+                id: AdminEtablise?.data?.existingCompanyProfile?.id,
+            }
+            console.log(updateData);
+            dispatch(UpdateEtablissementForAdmin({ token, updateData }))
+            setLogoUrl(null);
+            setLogoUpload(null);
+        }
+        else if (value === 2) {
+            let updateData = {
+                photos: '',
+                id: AdminEtablise?.data?.existingCompanyProfile?.id,
+            }
+            console.log(updateData);
+            dispatch(UpdateEtablissementForAdmin({ token, updateData }))
+            setPhotosUrl(null);
+            setPhotosUpload(null);
+        }
+    }
+
     return (
         <>
             <div className="w-full lg:w-auto pb-20">
@@ -339,8 +363,17 @@ const EditEstablishment = () => {
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                    <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
-                                    {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
+                                    <div className="pb-2 flex justify-between">
+                                        <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
+                                        {
+                                            logoUrl || values?.logo ?
+                                                <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
+                                                    <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                                </div>
+                                                :
+                                                null
+                                        }
+                                    </div>
                                     <div className="flex items-center justify-center w-full">
                                         <label htmlFor="logo-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
                                             {
@@ -390,8 +423,17 @@ const EditEstablishment = () => {
                                     ) : null}
                                 </div>
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                    <label htmlFor="photos-upload" className='text-left pb-2'>Ajouter des photos</label>
-                                    {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
+                                    <div className="pb-2 flex justify-between">
+                                        <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
+                                        {
+                                            photosUrl || values?.photos ?
+                                                <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
+                                                    <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                                </div>
+                                                :
+                                                null
+                                        }
+                                    </div>
                                     <div className="flex items-center justify-center w-full">
 
                                         <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>

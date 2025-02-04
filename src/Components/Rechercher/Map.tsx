@@ -1,7 +1,7 @@
 `use client`;
 import axios from 'axios';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import { useJsApiLoader, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
 
@@ -48,6 +48,7 @@ const SearchMaps = ({ place }: any) => {
     const [map, setMap] = useState<any>(null);
     const [markerValue, setMarkerValue] = useState<any>([]);
 
+
     const getMapMarker = async (city: any, i: number) => {
         console.log("city", city);
 
@@ -74,6 +75,20 @@ const SearchMaps = ({ place }: any) => {
                     lng: longitude
                 }
             }
+
+            // const bounds = new window.google.maps.LatLngBounds();
+            // bounds.extend(marker.position);
+            // map.fitBounds(bounds);
+            // map.setZoom(12);
+
+            // if (map) {
+            //     const bounds = new window.google.maps.LatLngBounds();
+            //     bounds.extend(marker.position);
+
+            //     map.fitBounds(bounds, {
+            //         padding: 100,  // Adjust padding to control zoom
+            //     });
+            // }
             return marker;
         }
 
@@ -83,8 +98,46 @@ const SearchMaps = ({ place }: any) => {
         if (place) {
             console.log("place", place);
 
-            let position = getMapMarker(place, 1).then((position) => {
+            let position = getMapMarker(place, 1).then((position: any) => {
+                console.log("position", position);
+
                 setMarkerValue([position])
+                // if (map) {
+                //         const bounds = new window.google.maps.LatLngBounds();
+                //         bounds.extend(position?.position);
+
+                //         map.fitBounds(bounds, {
+                //             padding: 1000,  // Adjust padding to control zoom
+                //         });
+                //     }
+                if (map) {
+                    console.log("position", position.position);
+
+                    // map.setCenter(position.position);  
+                    // map.setZoom(12);
+                    // const bounds = new window.google.maps.LatLngBounds();
+                    // console.log("bounds", bounds);
+
+                    // bounds.extend(position?.position);
+                    // setTimeout(() => {
+                    //     map.fitBounds(bounds, {
+                    //         padding: 50,
+                    //     });
+
+                    //     const zoomLevel: any = map.getZoom();
+
+                    //     if (zoomLevel > 15) {
+                    //         map.setZoom(15);
+                    //     }
+
+                    //     console.log("Zoom Level After fitBounds:", map.getZoom());
+                    // }, 100);
+
+                    // Set zoom after fitBounds completes
+                    // google.maps.event.addListenerOnce(map, 'idle', () => {
+                    //     map.setZoom(12);
+                    // });
+                }
             }).catch((error) => {
                 console.error("Error fetching map marker:", error);
             });
@@ -95,7 +148,7 @@ const SearchMaps = ({ place }: any) => {
         if (CustomerPublicitesList?.data?.data) {
             Promise.all(
                 CustomerPublicitesList.data.data.map((value: any, i: number) =>
-                    getMapMarker(value?.city, i)
+                    getMapMarker(value?.address, i)
                 )
             )
                 .then((positions) => {
@@ -116,7 +169,7 @@ const SearchMaps = ({ place }: any) => {
         if (CustomerResearchData?.data?.data) {
             Promise.all(
                 CustomerResearchData.data.data.map((value: any, i: number) =>
-                    getMapMarker(value?.city, i)
+                    getMapMarker(value?.address, i)
                 )
             )
                 .then((positions) => {
@@ -143,7 +196,7 @@ const SearchMaps = ({ place }: any) => {
     const onLoad = useCallback((map: any) => {
         const bounds = new window.google.maps.LatLngBounds();
         markers.forEach(({ position }) => bounds.extend(position));
-        map.fitBounds(bounds);
+        // map.fitBounds(bounds);
         setMap(map);
     }, []);
 

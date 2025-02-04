@@ -224,19 +224,19 @@ export const GetAllPublicitesList = createAsyncThunk(
     async (val: any, { rejectWithValue }) => {
         try {
             if (val?.search != "companyName" && val?.search != null && val?.categoryName != "categoryName" && val?.categoryName != null && val?.city != "locationName" && val?.city != null) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}&companyName=${val?.search}&imageSize=1 Écran`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}&companyName=${val?.search}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.categoryName != "categoryName" && val?.categoryName != null && val?.city != "locationName" && val?.city != null) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}&imageSize=1 Écran`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?categoryName=${val?.categoryName}&departmentCode=${val?.city}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if(val?.search != "companyName" && val?.search != null) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?companyName=${val?.search}&imageSize=1 Écran`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?companyName=${val?.search}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }

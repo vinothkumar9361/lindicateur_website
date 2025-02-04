@@ -124,7 +124,7 @@ const ResultData = ({ handlePlace }: any) => {
                     CustomerPublicitesList?.data?.data?.length > 0 || CustomerResearchData?.data?.data?.length > 0 ?
                         <>
                             {
-                                fullEcranData?.length === 1 ?
+                                fullEcranData?.length <= 1 ?
                                     <>
                                         {
                                             fullEcranData?.map((item: any, i: number) => {
@@ -201,7 +201,7 @@ const ResultData = ({ handlePlace }: any) => {
                             }
 
                             {
-                                halfEcranData?.length === 1 ?
+                                halfEcranData?.length <= 1 ?
                                     <>
                                         {
                                             halfEcranData?.map((item: any, i: number) => {
@@ -211,7 +211,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 flex cursor-pointer mt-6">
+                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 w-1/2 flex cursor-pointer mt-6">
                                                                     <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>

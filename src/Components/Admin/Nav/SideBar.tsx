@@ -55,7 +55,8 @@ const SideBar = ({ showsidebar }: any) => {
                             <ul id="dropdown-example" className={`${showDropdown === 1 ? "" : "hidden"} py-2 space-y-2`}>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/etablissements-en-attente/') }}
+                                        href="/admin/etablissements-en-attente/"
+                                        // onClick={() => { router.push('/admin/etablissements-en-attente/') }}
                                         className={`${currentPathname.includes('/etablissements-en-attente/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Établissements en attente
@@ -63,7 +64,8 @@ const SideBar = ({ showsidebar }: any) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/liste-des-etablissements/') }}
+                                        href="/admin/liste-des-etablissements/"
+                                        // onClick={() => { router.push('/admin/liste-des-etablissements/') }}
                                         className={`${currentPathname.includes('/liste-des-etablissements/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Liste des établissements
@@ -71,7 +73,8 @@ const SideBar = ({ showsidebar }: any) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/ajouter-un-etablissement/') }}
+                                        href="/admin/ajouter-un-etablissement/"
+                                        // onClick={() => { router.push('/admin/ajouter-un-etablissement/') }}
                                         className={`${currentPathname.includes('/ajouter-un-etablissement/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Ajouter un établissement
@@ -97,7 +100,8 @@ const SideBar = ({ showsidebar }: any) => {
                             <ul id="dropdown-example" className={`${showDropdown === 2 ? "" : "hidden"} py-2 space-y-2`}>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/liste-des-publicites/') }}
+                                        href="/admin/liste-des-publicites/"
+                                        // onClick={() => { router.push('/admin/liste-des-publicites/') }}
                                         className={`${currentPathname.includes('/liste-des-publicites/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Liste des publicités
@@ -105,7 +109,8 @@ const SideBar = ({ showsidebar }: any) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/ajouter-un-publicite/') }}
+                                        href="/admin/ajouter-un-publicite/"
+                                        // onClick={() => { router.push('/admin/ajouter-un-publicite/') }}
                                         className={`${currentPathname.includes('/ajouter-un-publicite/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Ajouter un Publicité
@@ -131,7 +136,8 @@ const SideBar = ({ showsidebar }: any) => {
                             <ul id="dropdown-example" className={`${showDropdown === 3 ? "" : "hidden"} py-2 space-y-2`}>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/liste-des-bannieres/') }}
+                                        href="/admin/liste-des-bannieres/"
+                                        // onClick={() => { router.push('/admin/liste-des-bannieres/') }}
                                         className={`${currentPathname.includes('/liste-des-bannieres/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Liste des bannières
@@ -139,7 +145,8 @@ const SideBar = ({ showsidebar }: any) => {
                                 </li>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/ajouter-une-banniere/') }}
+                                        href="/admin/ajouter-une-banniere/"
+                                        // onClick={() => { router.push('/admin/ajouter-une-banniere/') }}
                                         className={`${currentPathname.includes('/ajouter-une-banniere/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Ajouter une bannière
@@ -165,7 +172,8 @@ const SideBar = ({ showsidebar }: any) => {
                             <ul id="dropdown-example" className={`${showDropdown === 4 ? "" : "hidden"} py-2 space-y-2`}>
                                 <li>
                                     <a
-                                        onClick={() => { router.push('/admin/liste-des-categorie/') }}
+                                        href="/admin/liste-des-categorie/"
+                                        // onClick={() => { router.push('/admin/liste-des-categorie/') }}
                                         className={`${currentPathname.includes('/liste-des-categorie/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
                                     >
                                         Liste des categorie

@@ -26,8 +26,8 @@ const Visitors = () => {
                             </a>
                         </div>
                     </div>
-                    <div className="lg:pl-6 lg:pr-0 lg:w-2/3 px-4">
-                        <Image src={TestImg} alt="img" className="lg:h-full lg:w-full" />
+                    <div className="place-items-center lg:pl-6 lg:pr-0 lg:w-2/3 px-4">
+                        <Image src={TestImg} alt="img" className="lg:h-full w-full" />
                     </div>
                 </div>
 

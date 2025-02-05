@@ -279,7 +279,7 @@ const Addetablissement = () => {
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
-                            console.log(values);
+                            
                             let data = {
                                 fullName: values?.name,
                                 categoryName: values?.category === 'Other' ? values?.other_category : values?.category,
@@ -292,7 +292,7 @@ const Addetablissement = () => {
                                 type: "website",
                                 city: values?.city,
                                 message: values?.message,
-                                websiteURL: values?.websiteURL,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 address: values?.address,
                                 departmentCode: values?.departmentcode,
 

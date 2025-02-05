@@ -301,7 +301,7 @@ const AddBannieres = () => {
                                 photos: photosUrl?.imageUrl,
                                 phoneNumber: phoneNumber,
                                 description: values?.message,
-                                websiteURL: values?.websiteURL,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 isPublished: values?.status === "1" ? "true" : "false",
                             }
 

@@ -364,7 +364,7 @@ const ViewOrEditPublicites = () => {
                                 description: values?.message,
                                 imageSize: values?.images,
                                 adBgType: values?.photoType,
-                                websiteURL: values?.websiteURL,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 isPublished: values?.status === "1" ? "true" : "false",
                                 id: AdminPublicites?.data?.existingAds?.id,
                             }

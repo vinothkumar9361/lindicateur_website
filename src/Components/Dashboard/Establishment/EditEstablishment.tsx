@@ -295,7 +295,7 @@ const EditEstablishment = () => {
                                 phoneNumber: values?.phone,
                                 type: "website",
                                 city: values?.city,
-                                websiteURL: values?.websiteURL,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 id: AdminEtablise?.data?.existingCompanyProfile?.id
                             }
                             console.log(updateData);

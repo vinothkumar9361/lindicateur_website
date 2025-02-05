@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
+
 import Logo from '@/Images/Home/Logo.png';
 
 import { CgProfile } from "react-icons/cg";
@@ -52,6 +53,7 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
         localStorage.removeItem('user-auth-token');
         router.push('/login/')
     }
+
     return (
         <>
             <nav className="fixed navbar w-full bg-gray-200 border-gray-200 z-10">

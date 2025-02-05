@@ -323,6 +323,7 @@ const ViewOrEditBanners = () => {
                             phone: AdminBanners?.data?.existingBanner?.phoneNumber || '',
                             message: AdminBanners?.data?.existingBanner?.description || '',
                             // images: AdminBanners?.data?.existingBanner?.imageSize || '',
+                            websiteURL: AdminBanners?.data?.existingBanner?.websiteURL || '',
                             status: AdminBanners?.data?.existingBanner?.isPublished ? "1" : "0",
                         }}
                         // validationSchema={AddetablishmentSchema}
@@ -342,6 +343,7 @@ const ViewOrEditBanners = () => {
                                 phoneNumber: values?.phone,
                                 description: values?.message,
                                 // imageSize: values?.images,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 isPublished: values?.status === "1" ? "true" : "false",
                                 id: AdminBanners?.data?.existingBanner?.id,
                             }
@@ -495,9 +497,9 @@ const ViewOrEditBanners = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
                                     ) : null}
                                 </div>
-                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <div className="pb-2 flex justify-between">
-                                        <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
+                                        <label htmlFor="photos-upload" className='text-left pb-2'>Ajouter des photos</label>
                                         {
                                             photosUrl || values?.photos ?
                                                 <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
@@ -559,7 +561,18 @@ const ViewOrEditBanners = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                     ) : null}
                                 </div>
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
+                                    <Field
+                                        name="websiteURL"
+                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
+                                        className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                    />
+
+                                </div>
+
+                                <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Statut</label>
                                     <Field
                                         as="select"

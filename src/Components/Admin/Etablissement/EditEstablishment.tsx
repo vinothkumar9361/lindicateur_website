@@ -298,7 +298,7 @@ const EditEstablishment = () => {
                                 type: "admin",
                                 city: values?.city,
                                 id: AdminEtablise?.data?.existingCompanyProfile?.id,
-                                websiteURL: values?.websiteURL,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 isApproved: AdminEtablise?.data?.existingCompanyProfile?.isApproved,
                             }
                             console.log(updateData);

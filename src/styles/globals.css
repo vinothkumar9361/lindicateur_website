@@ -146,7 +146,7 @@ li {
 
 @media (max-width:550px) {
   h1 {
-    font-size: 2em;
+    font-size: 1.8em;
   }
 
   h2 {
@@ -230,6 +230,8 @@ li {
   .home_banner {
     padding-top: 120px;
     padding-bottom: 60px;
+    height: 80vh;
+
   }
 
   .banner-text {
@@ -238,6 +240,10 @@ li {
 }
 
 @media (max-width:550px) {
+  .home_banner {
+    height: 100vh;
+
+  }
   .banner-text {
     padding-top: 100px;
     padding-bottom: 50px;

@@ -286,7 +286,7 @@ const Addetablissement = () => {
                                 phoneNumber: phoneNumber,
                                 type: "admin",
                                 city: values?.city,
-                                websiteURL: values?.websiteURL,
+                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                             }
 
                             dispatch(AddEtablissementForAdmin({ token, data }))

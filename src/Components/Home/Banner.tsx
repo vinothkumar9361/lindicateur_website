@@ -142,7 +142,7 @@ const Banner = () => {
 
     return (
         <>
-            <div className="home_banner px-6 flex flex-col content-center items-center justify-center h-full">
+            <div className="home_banner px-4 sm:px-10 ld:px-6 flex flex-col content-center items-center justify-center h-full">
                 <div className="container mx-auto banner-text">
                     <div className="flex flex-col content-center items-center text-center">
                         <h1 className="pt-4">Trouver un professionnel</h1>

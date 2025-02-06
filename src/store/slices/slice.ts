@@ -15,18 +15,22 @@ import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomer
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
 import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity } from '@/store/slices/customerAction';
 
-import { ForgotPassword, ImageUpload, ImageDelete, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
+import { GetIPAddress, ForgotPassword, ImageUpload, ImageDelete, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
 
 interface Headers extends AxiosHeaders {
     authorization?: string;
     'Content-Type': 'application/json';
 }
 
+interface LocationData {
+    [key: string]: string;
+}
 
 interface InitialState {
     Loading: boolean;
     success: string | any | null;
     errors: string | any | null;
+    IpAddress: LocationData | null;
     Admin: any | null;
     AdminEtabliselist: any | null;
     AdminEtablise: any | null;
@@ -51,6 +55,7 @@ const initialState: InitialState = {
     Loading: false,
     success: null,
     errors: null,
+    IpAddress: null,
     Admin: null,
     AdminEtabliselist: null,
     AdminEtablise: null,
@@ -86,6 +91,20 @@ const ReduxSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // IP Address
+            .addCase(GetIPAddress.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetIPAddress.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.IpAddress = action.payload;
+            })
+            .addCase(GetIPAddress.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.IpAddress = null;
+            })
             // Image Upload 
             .addCase(ImageUpload.pending, (state) => {
                 state.Loading = true;

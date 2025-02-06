@@ -12,9 +12,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import Swal from 'sweetalert2';
 
+import { isBrowser, isMobile, browserName, deviceType, isMacOs, isMobileSafari, isAndroid, isChrome, isDesktop, isWindows, isIOS } from 'react-device-detect';
+
+
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { LoginForAdmin, ValitateOtpForAdmin } from '@/store/slices/adminAction';
+import { GetIPAddress } from '@/store/slices/commonAction';
+
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -37,9 +42,10 @@ const OtpSchema = Yup.object().shape({
 const LoginForm = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, IpAddress } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
+    const [deviceName, setDeviceName] = useState<string | null>(null);
 
     const [showPassword, setShowPassword] = useState<boolean | null>(false);
     const [showVerfication, setShowVerfication] = useState<boolean | null>(false);
@@ -53,6 +59,35 @@ const LoginForm = () => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        dispatch(GetIPAddress());
+    }, []);
+
+    console.log(IpAddress);
+
+    useEffect(() => {
+        if (isDesktop) {
+            if (isWindows) {
+                setDeviceName(`Windows ${browserName} - Web Browser`)
+            }
+            else if (isMacOs) {
+                setDeviceName(`Mac ${browserName} - Web Browser`)
+            }
+        }
+        else if (isMobile) {
+            if (isAndroid) {
+                setDeviceName(`Android ${browserName} - Web Browser`)
+            }
+            else if (isIOS) {
+                setDeviceName(`IOS ${browserName} - Web Browser`)
+            }
+        }
+
+    }, [isDesktop, isWindows, isMacOs, isMobile, isAndroid, isIOS, browserName])
+
+    console.log(deviceName);
+
 
     useEffect(() => {
 
@@ -111,9 +146,9 @@ const LoginForm = () => {
     console.log(errors);
 
     const resendOtp = () => {
-        const tokenString:any = localStorage.getItem('admin-login-details');
-        
-        var sendOtp:any = JSON.parse(tokenString);
+        const tokenString: any = localStorage.getItem('admin-login-details');
+
+        var sendOtp: any = JSON.parse(tokenString);
         console.log("sendOtp", sendOtp);
         dispatch(LoginForAdmin(sendOtp))
     }
@@ -140,7 +175,9 @@ const LoginForm = () => {
                                     validationSchema={OtpSchema}
                                     onSubmit={values => {
                                         let otp = {
-                                            otp: values?.otp
+                                            otp: values?.otp,
+                                            device: deviceName,
+                                            location: `${IpAddress?.city}, ${IpAddress?.region}, ${IpAddress?.country}`
                                         }
                                         console.log(otp);
 
@@ -178,7 +215,7 @@ const LoginForm = () => {
                                                         : "S'inscrire"
                                                 }
                                             </button>
-                                            <div onClick={() => { resendOtp()}} className="px-6 mt-8 text-center cursor-pointer">
+                                            <div onClick={() => { resendOtp() }} className="px-6 mt-8 text-center cursor-pointer">
                                                 <p className="text-sky-400 ">Vous n'avez pas reçu le code ?</p>
                                             </div>
                                         </Form>
@@ -204,7 +241,7 @@ const LoginForm = () => {
                                             password: values?.password,
                                             roleId: "1"
                                         }
-                                        localStorage.setItem('admin-login-details',JSON.stringify(sendOtp));
+                                        localStorage.setItem('admin-login-details', JSON.stringify(sendOtp));
                                         dispatch(LoginForAdmin(sendOtp))
                                     }}
                                 >

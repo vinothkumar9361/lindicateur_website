@@ -18,13 +18,17 @@ const SideBar = ({ showsidebar }: any) => {
         if (typeof window !== 'undefined') {
             const currentUrl = new URL(window.location.href);
             setCurrentPathname(currentUrl.pathname);
-            if (currentUrl.pathname.includes('/etablissements-en-attente/') || currentUrl.pathname.includes('/liste-des-etablissements/') || currentUrl.pathname.includes('/ajouter-un-etablissement/')) {
+            if (currentUrl.pathname.includes('/etablissements-en-attente/') || currentUrl.pathname.includes('/liste-des-etablissements/') ||
+                currentUrl.pathname.includes('/ajouter-un-etablissement/') || currentUrl.pathname.includes('/voir-un-etablissement/') ||
+                currentUrl.pathname.includes('/modifier-an-etablissement/')) {
                 setShowDropdown(1);
             }
-            else if (currentUrl.pathname.includes('/liste-des-publicites/') || currentUrl.pathname.includes('/ajouter-un-publicite/')) {
+            else if (currentUrl.pathname.includes('/liste-des-publicites/') || currentUrl.pathname.includes('/ajouter-un-publicite/') ||
+                currentUrl.pathname.includes('/voir-un-publicite/') || currentUrl.pathname.includes('/modifier-un-publicite/')) {
                 setShowDropdown(2);
             }
-            else if (currentUrl.pathname.includes('/liste-des-bannieres/') || currentUrl.pathname.includes('/ajouter-une-banniere/')) {
+            else if (currentUrl.pathname.includes('/liste-des-bannieres/') || currentUrl.pathname.includes('/ajouter-une-banniere/') ||
+                currentUrl.pathname.includes('/voir-un-bannieres/') || currentUrl.pathname.includes('/modifier-un-bannieres/')) {
                 setShowDropdown(3);
             }
             else if (currentUrl.pathname.includes('/liste-des-categorie/') || currentUrl.pathname.includes('/ajouter-une-categorie/')) {

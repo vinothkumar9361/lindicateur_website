@@ -10,6 +10,8 @@ import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc
 
 import ReactPaginate from 'react-paginate';
 
+import DownloadEtablissementDetails from "./DownloadEtablissementDetails";
+
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { GetAllEtablissementListForAdmin, DeleteEtablissementForAdmin } from '@/store/slices/adminAction';
@@ -24,6 +26,7 @@ const EstablishmentList = () => {
     const [token, setToken] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [sortAsc, setSortAsc] = useState<boolean>(true);
+    const [viewDownload, setViewDownload] = useState<boolean>(false);
 
     const handleSearch = (value: any) => {
         dispatch(GetAllEtablissementListForAdmin({ token, page: 1, search: value }));
@@ -105,6 +108,9 @@ const EstablishmentList = () => {
 
     return (
         <>
+         {/* {
+            viewDownload && <DownloadEtablissementDetails />
+         } */}
             <div className="w-full lg:w-auto">
                 <div>
                     <h3 className="pb-4" >Liste des établissements</h3>
@@ -134,6 +140,14 @@ const EstablishmentList = () => {
                             }
                             <p>Trier</p>
                         </div>
+                    </div>
+                    <div>
+                        {/* <button
+                            onClick={ () => { setViewDownload(true) }}
+                            className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
+                        >
+                            Download
+                        </button> */}
                     </div>
                     <div>
                         <button

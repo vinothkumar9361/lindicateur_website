@@ -6,6 +6,33 @@ interface Headers extends AxiosHeaders {
     'Content-Type': 'application/json';
 }
 
+interface LocationData {
+    [key: string]: string;
+}
+
+export const GetIPAddress = createAsyncThunk<LocationData, void, { rejectValue: string }>(
+    'astromind/GetIPAddress',
+    async (_, { rejectWithValue }) => {
+        try {
+            // const headers: Headers = {
+            //   'Content-Type': 'application/json',
+            // };
+
+            const headers = new AxiosHeaders({
+                'Content-Type': 'application/json',
+            });
+
+            const response = await axios.get(`https://ipinfo.io/json?token=b585b8e9810566`, { headers })
+            if (response?.status == 200 || response.status == 201) {
+                const { data } = response
+                return data;
+            }
+        } catch (error) {
+            return rejectWithValue('');
+        }
+    }
+)
+
 
 export const UpdatePassword = createAsyncThunk(
     'page/UpdatePassword',
@@ -94,7 +121,7 @@ export const ContactUsForm = createAsyncThunk(
     'astromind/ContactUsForm',
     async (val: any, { rejectWithValue }) => {
         console.log(val);
-       
+
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/contact/createContact`, val.contactData);
             if (response.status === 200 || response.status === 201) {

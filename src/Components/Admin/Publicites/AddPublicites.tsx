@@ -9,7 +9,7 @@ import 'react-phone-input-2/lib/style.css';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { AddPublicitesForAdmin, GetAllCategoryListForAdmin } from '@/store/slices/adminAction';
+import { AddPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName } from '@/store/slices/adminAction';
 import { ImageUpload, ImageDelete } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
@@ -33,7 +33,7 @@ const AddetablishmentSchema = Yup.object().shape({
 const Addetablissement = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminCategoryList } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminCategoryList, AdminCompanyProfilesName } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
@@ -54,6 +54,7 @@ const Addetablissement = () => {
     useEffect(() => {
         if (token) {
             dispatch(GetAllCategoryListForAdmin({ token, type: 'website' }));
+            dispatch(GetAllEstablishmentProfileName({}))
         }
     }, [dispatch, token])
 
@@ -143,9 +144,6 @@ const Addetablissement = () => {
 
     }, [logoUpload, photosUpload])
 
-    console.log(photosUpload);
-
-
     useEffect(() => {
         if (success) {
             if (success?.data?.imageUrl) {
@@ -214,9 +212,6 @@ const Addetablissement = () => {
         }
     }, [dispatch, success, errors]);
 
-    console.log(success);
-    console.log(errors);
-
     const handleUploadImg = () => {
 
         let imageType;
@@ -282,9 +277,10 @@ const Addetablissement = () => {
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
-                            console.log(values);
+                            let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
 
                             let publicitesData = {
+                                companyprofileId: CompanyProfileId[0]?.id,
                                 companyName: values?.company,
                                 categoryName: values?.category,
                                 startDate: values?.startdate,
@@ -304,9 +300,6 @@ const Addetablissement = () => {
                                 isPublished: values?.status === "1" ? "true" : "false",
                             }
 
-                            console.log(publicitesData);
-
-
                             dispatch(AddPublicitesForAdmin({ token, publicitesData }));
                         }}
                     >
@@ -315,11 +308,28 @@ const Addetablissement = () => {
                                 <Form className="md:flex md:flex-wrap md:w-full">
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                        <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            as="select"
+                                            name="company"
+                                            id="company"
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                            <option selected>Choose a Etablissement</option>
+                                            {
+                                                AdminCompanyProfilesName?.data?.companyNames?.map((data: any, i: number) => {
+                                                    return (
+                                                        <>
+                                                            <option value={data?.companyName}>{data?.companyName}</option>
+                                                        </>
+                                                    )
+                                                })
+                                            }
+                                        </Field>
                                         {errors.company && touched.company ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
                                         <Field
@@ -343,44 +353,72 @@ const Addetablissement = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
-                                        <Field name="startdate" type="date" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="startdate"
+                                            type="date"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.startdate && touched.startdate ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.startdate}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
-                                        <Field name="enddate" type="date" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="enddate"
+                                            type="date"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.enddate && touched.enddate ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="address" className='text-left pb-2'>Adresse</label>
-                                        <Field name="address" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="address"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.address && touched.address ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
-                                        <Field name="departmentcode" type="number" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="departmentcode"
+                                            type="number"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.departmentcode && touched.departmentcode ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                        <Field name="postcode" type="number" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="postcode"
+                                            type="number"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.postcode && touched.postcode ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="city" className='text-left pb-2'>Ville</label>
-                                        <Field name="city" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="city"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.city && touched.city ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.city}</div>
                                         ) : null}
@@ -388,11 +426,16 @@ const Addetablissement = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="email" className='text-left pb-2'>Courriel</label>
-                                        <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="email"
+                                            type="email"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.email && touched.email ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="images" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tailles</label>
                                         <Field
@@ -405,15 +448,11 @@ const Addetablissement = () => {
                                             <option value="1/2 Écran">1/2 Écran</option>
                                             <option value="1/4 Écran">1/4 Écran</option>
                                         </Field>
-                                        {/* <select id="images" name="images" className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option value="1 Écran">1 Écran</option>
-                                            <option value="1/2 Écran">1/2 Écran</option>
-                                            <option value="1/4 Écran">1/4 Écran</option>
-                                        </select> */}
                                         {errors.images && touched.images ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.images}</div>
                                         ) : null}
                                     </div>
+
                                     {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="photoType" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">type de photo</label>
                                     <select id="photoType" className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -437,7 +476,6 @@ const Addetablissement = () => {
                                                     null
                                             }
                                         </div>
-                                        {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         <div className="flex items-center justify-center w-full">
                                             <label
                                                 htmlFor="logo-upload"
@@ -475,13 +513,13 @@ const Addetablissement = () => {
                                                             />
                                                         </>
                                                 }
-
                                             </label>
                                         </div>
                                         {errorsMessage ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
@@ -494,7 +532,6 @@ const Addetablissement = () => {
                                                     null
                                             }
                                         </div>
-                                        {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         <div className="flex items-center justify-center w-full">
                                             <label
                                                 htmlFor="photos-upload"
@@ -532,13 +569,13 @@ const Addetablissement = () => {
                                                             />
                                                         </>
                                                 }
-
                                             </label>
                                         </div>
                                         {errorMessagephoto ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
                                         <PhoneInput
@@ -547,22 +584,30 @@ const Addetablissement = () => {
                                             value={phoneNumber}
                                             onChange={(value) => { setPhoneNumber(value) }}
                                         />
-                                        {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
-                                        <Field name="websiteURL" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="websiteURL"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.websiteURL && touched.websiteURL ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.websiteURL}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="message" className='text-left pb-2'>Description</label>
-                                        <Field name="message" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="message"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.message && touched.message ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Statut</label>
                                         <Field
@@ -580,6 +625,7 @@ const Addetablissement = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.status}</div>
                                         ) : null}
                                     </div>
+
                                     <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
                                         <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn">
                                             {

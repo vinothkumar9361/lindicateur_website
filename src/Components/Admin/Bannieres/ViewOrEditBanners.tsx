@@ -11,7 +11,7 @@ import { TiDelete } from "react-icons/ti";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetBannersForAdmin, UpdateBannersForAdmin, PublishBannersForAdmin } from '@/store/slices/adminAction';
+import { GetBannersForAdmin, UpdateBannersForAdmin, PublishBannersForAdmin, GetAllEstablishmentProfileName } from '@/store/slices/adminAction';
 import { ImageUpload } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
@@ -33,13 +33,9 @@ const AddetablishmentSchema = Yup.object().shape({
 
 const ViewOrEditBanners = () => {
     const router = useRouter();
-    const params = useParams();
-    // const id = params?.id;
-    // console.log(id);
 
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminBanners } = useSelector((state: RootState) => state.lindicateur);
-    console.log(AdminBanners);
+    const { Loading, success, errors, AdminBanners, AdminCompanyProfilesName } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [id, setId] = useState<string | null>(null);
@@ -66,6 +62,7 @@ const ViewOrEditBanners = () => {
     useEffect(() => {
         if (token && id) {
             dispatch(GetBannersForAdmin({ token, id }));
+            dispatch(GetAllEstablishmentProfileName({}))
         }
     }, [dispatch, token, id])
 
@@ -149,7 +146,6 @@ const ViewOrEditBanners = () => {
                 setPhotosUpload(null);
             }
         }
-
     }, [logoUpload, photosUpload])
 
     const PublishDetails = (id: any) => {
@@ -229,9 +225,6 @@ const ViewOrEditBanners = () => {
         }
     }, [dispatch, success, errors]);
 
-    console.log(success);
-    console.log(errors);
-
     const handleUploadImg = () => {
 
         let imageType;
@@ -266,7 +259,6 @@ const ViewOrEditBanners = () => {
             if (result?.isConfirmed) {
                 localStorage.setItem('customer-banner-id', id)
                 router.push(`/admin/modifier-un-bannieres/`)
-                // window.location.reload();
             }
         })
     }
@@ -277,7 +269,6 @@ const ViewOrEditBanners = () => {
                 logo: '',
                 id: AdminBanners?.data?.existingBanner?.id,
             }
-            console.log(updateData);
             dispatch(UpdateBannersForAdmin({ token, updateData }))
             setLogoUrl(null);
             setLogoUpload(null);
@@ -287,7 +278,6 @@ const ViewOrEditBanners = () => {
                 photos: '',
                 id: AdminBanners?.data?.existingBanner?.id,
             }
-            console.log(updateData);
             dispatch(UpdateBannersForAdmin({ token, updateData }))
             setPhotosUrl(null);
             setPhotosUpload(null);
@@ -302,15 +292,23 @@ const ViewOrEditBanners = () => {
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
-                    <button onClick={() => { editDetails(AdminBanners?.data?.existingBanner?.id) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">Modifier</button>
-                    <button onClick={() => { PublishDetails(AdminBanners?.data?.existingBanner?.id) }} className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn">{AdminBanners?.data?.existingBanner?.isPublished ? "Annuler la publication" : "Publier"}</button>
-
+                    <button
+                        onClick={() => { editDetails(AdminBanners?.data?.existingBanner?.id) }}
+                        className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn"
+                    >
+                        Modifier
+                    </button>
+                    <button
+                        onClick={() => { PublishDetails(AdminBanners?.data?.existingBanner?.id) }}
+                        className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn"
+                    >
+                        {AdminBanners?.data?.existingBanner?.isPublished ? "Annuler la publication" : "Publier"}
+                    </button>
                 </div>
                 <div className='sm:px-16 md:px-4'>
                     <Formik
                         enableReinitialize
                         initialValues={{
-                            // category: AdminBanners?.data?.existingBanner?.categoryName || '',
                             company: AdminBanners?.data?.existingBanner?.companyName || '',
                             startdate: AdminBanners?.data?.existingBanner?.startDate || '',
                             enddate: AdminBanners?.data?.existingBanner?.endDate || '',
@@ -328,10 +326,11 @@ const ViewOrEditBanners = () => {
                         }}
                         // validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
-                            console.log(values);
+                            let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
+
                             let updateData = {
+                                companyprofileId: CompanyProfileId[0]?.id,
                                 companyName: values?.company,
-                                // categoryName: values?.category,
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
                                 address: values?.address,
@@ -347,7 +346,7 @@ const ViewOrEditBanners = () => {
                                 isPublished: values?.status === "1" ? "true" : "false",
                                 id: AdminBanners?.data?.existingBanner?.id,
                             }
-                            console.log(updateData);
+
                             dispatch(UpdateBannersForAdmin({ token, updateData }))
                         }}
                     >
@@ -355,28 +354,50 @@ const ViewOrEditBanners = () => {
                             <Form className="md:flex md:flex-wrap md:w-full">
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                    <Field name="company" disabled={currentPathname.includes("/voir-un-bannieres/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field
+                                        as="select"
+                                        name="company"
+                                        id="company"
+                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
+                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option selected>Choose a Etablissement</option>
+                                        {
+                                            AdminCompanyProfilesName?.data?.companyNames?.map((data: any, i: number) => {
+                                                return (
+                                                    <>
+                                                        <option value={data?.companyName}>{data?.companyName}</option>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                    </Field>
                                     {errors.company && touched.company ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                     ) : null}
                                 </div>
-                                {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                    <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                    <Field name="category" disabled={currentPathname.includes("/voir-un-bannieres/")} className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
-                                    {errors.category && touched.category ? (
-                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
-                                    ) : null}
-                                </div> */}
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
-                                    <Field name="startdate" type="date" disabled={currentPathname.includes("/voir-un-bannieres/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field
+                                        name="startdate"
+                                        type="date"
+                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
+                                        className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                    />
                                     {errors.startdate && touched.startdate ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.startdate}</div>
                                     ) : null}
                                 </div>
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
-                                    <Field name="enddate" disabled={currentPathname.includes("/voir-un-bannieres/")} type="date" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field
+                                        name="enddate"
+                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
+                                        type="date"
+                                        className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                    />
                                     {errors.enddate && touched.enddate ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
                                     ) : null}
@@ -384,7 +405,11 @@ const ViewOrEditBanners = () => {
 
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="address" className='text-left pb-2'>Adresse</label>
-                                    <Field name="address" disabled={currentPathname.includes("/voir-un-bannieres/")} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                    <Field
+                                        name="address"
+                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
+                                        className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                    />
                                     {errors.address && touched.address ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
                                     ) : null}
@@ -463,9 +488,6 @@ const ViewOrEditBanners = () => {
                                                                     <div className="w-full">
                                                                         <p className="w-full px-4">{logoUrl || values?.logo}</p>
                                                                     </div>
-                                                                    {/* <div className="w-1/12 flex justify-end pr-4 z-10">
-                                                            <MdDelete onClick={ () => setLogoUpload("")} className="z-10 w-5 h-5" />
-                                                        </div> */}
                                                                 </div>
                                                                 :
                                                                 null
@@ -497,6 +519,7 @@ const ViewOrEditBanners = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
                                     ) : null}
                                 </div>
+
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <div className="pb-2 flex justify-between">
                                         <label htmlFor="photos-upload" className='text-left pb-2'>Ajouter des photos</label>
@@ -569,7 +592,6 @@ const ViewOrEditBanners = () => {
                                         disabled={currentPathname.includes("/voir-un-bannieres/")}
                                         className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
                                     />
-
                                 </div>
 
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
@@ -590,6 +612,7 @@ const ViewOrEditBanners = () => {
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.status}</div>
                                     ) : null}
                                 </div>
+
                                 <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
                                     <button type="submit" className={`${currentPathname.includes("/voir-un-bannieres/") && "hidden"} text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn`}>
                                         {
@@ -597,7 +620,6 @@ const ViewOrEditBanners = () => {
                                                 <Spinner />
                                                 : "Commencer la bannieres"
                                         }
-
                                     </button>
                                 </div>
                             </Form>

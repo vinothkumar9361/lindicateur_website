@@ -5,7 +5,7 @@ import { LoginForAdmin, ValitateOtpForAdmin, GetAdminProfile, UpdateAdminProfile
 import {
     GetAllEtablissementListForAdmin, GetEtablissementForAdmin, AddEtablissementForAdmin,
     UpdateEtablissementForAdmin, DeleteEtablissementForAdmin, GetAllEtablissementApprovalForAdmin,
-    ApprovedOrUnApprovalEtablissementForAdmin
+    ApprovedOrUnApprovalEtablissementForAdmin, GetAllEstablishmentProfileName
 } from '@/store/slices/adminAction';
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
@@ -36,6 +36,7 @@ interface InitialState {
     AdminEtablise: any | null;
     AdminUnapprovalEtabliselist: any | null;
     AdminCategoryList: any | null;
+    AdminCompanyProfilesName: any | null;
     AdminPublicitesList: any | null;
     AdminPublicites: any | null;
     AdminBannersList: any | null;
@@ -61,6 +62,7 @@ const initialState: InitialState = {
     AdminEtablise: null,
     AdminUnapprovalEtabliselist: null,
     AdminCategoryList: null,
+    AdminCompanyProfilesName: null,
     AdminPublicitesList: null,
     AdminPublicites: null,
     AdminBannersList: null,
@@ -344,6 +346,21 @@ const ReduxSlice = createSlice({
                 state.errors = action.payload;
                 state.Loading = false;
                 state.success = null;
+            })
+
+            // Get All Establishment Profile Name
+            .addCase(GetAllEstablishmentProfileName.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllEstablishmentProfileName.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.AdminCompanyProfilesName = action.payload;
+            })
+            .addCase(GetAllEstablishmentProfileName.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.AdminUnapprovalEtabliselist = null;
             })
 
             // Add Category for admin

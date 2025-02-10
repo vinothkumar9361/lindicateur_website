@@ -262,6 +262,22 @@ export const ApprovedOrUnApprovalEtablissementForAdmin = createAsyncThunk(
     },
 );
 
+export const GetAllEstablishmentProfileName = createAsyncThunk(
+    'lindicateur/GetAllEstablishmentProfileName',
+    async (val: any, { rejectWithValue }) => {
+    
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyNames`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+
 // Admin Publicites Module
 export const GetAllPublicitesListForAdmin = createAsyncThunk(
     'lindicateur/GetAllPublicitesListForAdmin',

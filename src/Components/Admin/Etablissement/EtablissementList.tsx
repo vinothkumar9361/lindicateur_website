@@ -101,14 +101,11 @@ const EstablishmentList = () => {
         const newOffset = Number(event.selected) + 1;
 
         dispatch(GetAllEtablissementListForAdmin({ token, page: newOffset }));
-
     }
-
-    console.log(AdminEtabliselist);
 
     return (
         <>
-         {/* {
+            {/* {
             viewDownload && <DownloadEtablissementDetails />
          } */}
             <div className="w-full lg:w-auto">
@@ -129,9 +126,7 @@ const EstablishmentList = () => {
                             />
                         </div>
                         <div
-                            onClick={() => {
-                                setSortAsc(!sortAsc)
-                            }}
+                            onClick={() => { setSortAsc(!sortAsc) }}
                             className="flex gap-2 items-center cursor-pointer">
                             {
                                 sortAsc ?
@@ -180,9 +175,6 @@ const EstablishmentList = () => {
                                             <th scope="col" className="px-6 py-3 border-2">
                                                 Nom de la société
                                             </th>
-                                            {/* <th scope="col" className="px-6 py-3 border-2">
-                                    Publicité
-                                </th> */}
                                             <th scope="col" className="px-6 py-3 border-2">
                                                 Statut
                                             </th>
@@ -212,9 +204,6 @@ const EstablishmentList = () => {
                                                             <td className="px-6 py-4 border-2">
                                                                 {data?.companyName}
                                                             </td>
-                                                            {/* <td className="px-6 py-4 border-2">
-                                                    oui
-                                                </td> */}
                                                             <td className="px-6 py-4 border-2">
                                                                 {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
                                                             </td>
@@ -225,14 +214,23 @@ const EstablishmentList = () => {
                                                                         router.push(`/admin/voir-un-etablissement/`)
                                                                     }}
                                                                     className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline pr-4"
-                                                                >Voir</a>
+                                                                >
+                                                                    Voir
+                                                                </a>
                                                                 <a onClick={() => {
                                                                     localStorage.setItem('admin-estab-id', data?.id)
                                                                     router.push(`/admin/modifier-an-etablissement/`)
                                                                 }}
                                                                     className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                                                >Modifier</a>
-                                                                <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
+                                                                >
+                                                                    Modifier
+                                                                </a>
+                                                                <a
+                                                                    onClick={() => { deleteDetails(data?.id) }}
+                                                                    className="cursor-pointer font-medium text-red-600 hover:underline ms-3"
+                                                                >
+                                                                    Supprimer
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     </>
@@ -248,7 +246,6 @@ const EstablishmentList = () => {
                                     onPageChange={handlePageClick}
                                     pageRangeDisplayed={3}
                                     pageCount={AdminEtabliselist?.data?.pagination?.totalPages}
-                                    // forcePage={AdminEtabliselist?.data?.pagination?.currentpage - 1}
                                     previousLabel="<"
                                     renderOnZeroPageCount={null}
                                     className='custom-pagination'

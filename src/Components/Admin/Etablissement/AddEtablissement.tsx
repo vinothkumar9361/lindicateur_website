@@ -128,7 +128,6 @@ const Addetablissement = () => {
                                 handleUploadImg();
                                 setErrorMessagephoto(null);
                             }
-
                         };
                         img.src = e.target.result;
                     };
@@ -190,7 +189,6 @@ const Addetablissement = () => {
                     router.push('/admin/liste-des-etablissements/')
                 })
             }
-
         }
         else if (errors) {
             Swal.fire({
@@ -213,7 +211,6 @@ const Addetablissement = () => {
     }, [dispatch, success, errors]);
 
     const handleUploadImg = () => {
-
         let imageType;
         let imageUrl;
         if (logoUpload) {
@@ -229,7 +226,6 @@ const Addetablissement = () => {
             imageUrl: imageUrl,
             imageType: imageType
         }
-
         dispatch(ImageUpload({ imageData }));
     }
 
@@ -272,7 +268,6 @@ const Addetablissement = () => {
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
-                            console.log(values);
                             let data = {
                                 fullName: values?.name,
                                 categoryName: values?.category,
@@ -297,11 +292,15 @@ const Addetablissement = () => {
                                 <Form className="md:flex md:flex-wrap md:w-full">
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="name" className='text-left pb-2'>Nom et Prénom</label>
-                                        <Field name="name" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="name"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.name && touched.name ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.name}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
                                         <Field
@@ -325,44 +324,59 @@ const Addetablissement = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                         ) : null}
                                     </div>
-                                    {/* <div className='flex flex-col pt-4 lg:w-1/2 lg:pl-4'>
-                                    <label htmlFor="category" className='text-left pb-2'>Catégorie</label>
-                                    <Field name="category" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
-                                    {errors.category && touched.category ? (
-                                        <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
-                                    ) : null}
-                                </div> */}
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                        <Field name="company" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="company"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.company && touched.company ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="address" className='text-left pb-2'>Adresse</label>
-                                        <Field name="address" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="address"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.address && touched.address ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
-                                        <Field name="departmentcode" type="number" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="departmentcode"
+                                            type="number"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.departmentcode && touched.departmentcode ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                        <Field name="postcode" type="number" className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4' />
+                                        <Field
+                                            name="postcode"
+                                            type="number"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
                                         {errors.postcode && touched.postcode ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="city" className='text-left pb-2'>Ville</label>
-                                        <Field name="city" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="city"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.city && touched.city ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.city}</div>
                                         ) : null}
@@ -370,11 +384,16 @@ const Addetablissement = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="email" className='text-left pb-2'>Courriel</label>
-                                        <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="email"
+                                            type="email"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.email && touched.email ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
@@ -387,7 +406,6 @@ const Addetablissement = () => {
                                                     null
                                             }
                                         </div>
-                                        {/* <Field name="logo" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         <div className="flex items-center justify-center w-full">
                                             <label
                                                 htmlFor="logo-upload"
@@ -430,6 +448,7 @@ const Addetablissement = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
@@ -442,7 +461,6 @@ const Addetablissement = () => {
                                                     null
                                             }
                                         </div>
-                                        {/* <Field name="photos" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                         <div className="flex items-center justify-center w-full">
                                             <label
                                                 htmlFor="photos-upload"
@@ -486,6 +504,7 @@ const Addetablissement = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
                                         <PhoneInput
@@ -494,15 +513,21 @@ const Addetablissement = () => {
                                             value={phoneNumber}
                                             onChange={(value) => { setPhoneNumber(value) }}
                                         />
-                                        {/* <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' /> */}
                                     </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
-                                        <Field name="websiteURL" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="websiteURL"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
 
                                     </div>
                                     <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
-                                        <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn">
+                                        <button
+                                            type="submit"
+                                            className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn"
+                                        >
                                             {
                                                 Loading ?
                                                     <Spinner />

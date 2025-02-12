@@ -6,12 +6,13 @@ import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
+import Select from "react-select";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { AddPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName } from '@/store/slices/adminAction';
+import { AddPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName, GetEtablissementForAdmin } from '@/store/slices/adminAction';
 import { ImageUpload, ImageDelete } from '@/store/slices/commonAction';
-import { successMessage, errorMessage } from '@/store/slices/slice';
+import { successMessage, errorMessage, removeEtablishmentData } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
 import Spinner from "@/Components/Common/Loading";
@@ -33,7 +34,7 @@ const AddetablishmentSchema = Yup.object().shape({
 const Addetablissement = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminCategoryList, AdminCompanyProfilesName } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminCategoryList, AdminCompanyProfilesName, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
@@ -43,6 +44,18 @@ const Addetablissement = () => {
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
+    const [companyName, setCompanyName] = useState<any | null>(null);
+    const [categoryName, setCategoryName] = useState<any | null>(null);
+
+    const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
+        value: data.companyName,
+        label: data.companyName,
+    }));
+
+    const categoryNameOptions = AdminCategoryList?.data?.category?.map((data: any) => ({
+        value: data.categoryName,
+        label: data.categoryName,
+    }));
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -50,6 +63,18 @@ const Addetablissement = () => {
             setToken(tokenString);
         }
     }, []);
+
+    useEffect(() => {
+        if (AdminEtablise?.data?.existingCompanyProfile?.phoneNumber) {
+            setPhoneNumber(AdminEtablise?.data?.existingCompanyProfile?.phoneNumber)
+        }
+        if (AdminEtablise?.data?.existingCompanyProfile?.companyName) {
+            setCompanyName(AdminEtablise?.data?.existingCompanyProfile?.companyName)
+        }
+        if (AdminEtablise?.data?.existingCompanyProfile?.categoryName) {
+            setCategoryName(AdminEtablise?.data?.existingCompanyProfile?.categoryName)
+        }
+    }, [AdminEtablise])
 
     useEffect(() => {
         if (token) {
@@ -246,6 +271,8 @@ const Addetablissement = () => {
         }
     }
 
+    console.log("AdminEtablise", AdminEtablise);
+
     return (
         <>
             <div className="w-full lg:w-auto">
@@ -255,17 +282,18 @@ const Addetablissement = () => {
                 </div>
                 <div className='sm:px-16 md:px-4'>
                     <Formik
+                        enableReinitialize
                         initialValues={{
                             name: '',
-                            category: '',
-                            company: '',
+                            category: categoryName || '',
+                            company: companyName || '',
                             startdate: '',
                             enddate: '',
-                            address: '',
-                            departmentcode: '',
-                            postcode: '',
-                            city: '',
-                            email: '',
+                            address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
+                            departmentcode: AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '',
+                            postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
+                            city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
+                            email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
                             logo: logoUrl?.imageUrl || '',
                             photos: photosUrl?.imageUrl || '',
                             phone: phoneNumber,
@@ -273,7 +301,7 @@ const Addetablissement = () => {
                             images: '1 Écran',
                             photoType: 'poster',
                             status: '',
-                            websiteURL: ''
+                            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || ''
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
@@ -303,12 +331,28 @@ const Addetablissement = () => {
                             dispatch(AddPublicitesForAdmin({ token, publicitesData }));
                         }}
                     >
-                        {({ errors, touched, values }) => {
+                        {({ errors, touched, values }: any) => {
+
+                            useEffect(() => {
+                                console.log(values?.company);
+
+                                let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
+                                console.log(CompanyProfileId);
+
+                                if (token && CompanyProfileId[0]?.id) {
+                                    dispatch(GetEtablissementForAdmin({ token, id: CompanyProfileId[0]?.id }))
+                                }
+                                else {
+                                    dispatch(removeEtablishmentData(""));
+                                }
+
+                            }, [values?.company])
+
                             return (
                                 <Form className="md:flex md:flex-wrap md:w-full">
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                        <Field
+                                        <label htmlFor="company" className='text-left mb-1'>Société</label>
+                                        {/* <Field
                                             as="select"
                                             name="company"
                                             id="company"
@@ -324,7 +368,16 @@ const Addetablissement = () => {
                                                     )
                                                 })
                                             }
-                                        </Field>
+                                        </Field> */}
+                                        <Select
+                                            options={companyNameOptions}
+                                            name="company"
+                                            value={companyNameOptions?.find((option: any) => option.value === values.company)}
+                                            onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
+                                            isClearable={true}
+                                            placeholder="Choose an Establishment"
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                        />
                                         {errors.company && touched.company ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                         ) : null}
@@ -332,11 +385,11 @@ const Addetablissement = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                        <Field
+                                        {/* <Field
                                             as="select"
                                             name="category"
                                             id="category"
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         >
                                             <option selected>Choose a Catégorie</option>
                                             {
@@ -348,7 +401,16 @@ const Addetablissement = () => {
                                                     )
                                                 })
                                             }
-                                        </Field>
+                                        </Field> */}
+                                        <Select
+                                            options={categoryNameOptions}
+                                            name="category"
+                                            value={categoryNameOptions?.find((option: any) => option.value === values.category)}
+                                            onChange={(selectedOption) => setCategoryName(selectedOption?.value)}
+                                            isClearable={true}
+                                            placeholder="Choose a Catégorie"
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                        />
                                         {errors.category && touched.category ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                         ) : null}

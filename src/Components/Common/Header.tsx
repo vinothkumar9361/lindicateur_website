@@ -38,7 +38,7 @@ function Header() {
 
     return (
         <>
-            <nav className={`${scrollPositionY >= 600 ? "hidden" : "fixed"} navbar w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10`}>
+            <nav className={`${scrollPositionY >= 600 ? "hidden transition-transform duration-300" : "fixed"} navbar w-full bg-gray-100 border-gray-200 dark:bg-gray-900 box_shadow_light z-10`}>
                 <div className="flex flex-wrap lg:flex-row items-center justify-between mx-auto">
                     <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse py-4">
                         <Image src={Logo} alt="logo" width={300} height={100} className="w-56" />

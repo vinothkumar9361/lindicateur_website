@@ -5,7 +5,7 @@ import { LoginForAdmin, ValitateOtpForAdmin, GetAdminProfile, UpdateAdminProfile
 import {
     GetAllEtablissementListForAdmin, GetEtablissementForAdmin, AddEtablissementForAdmin,
     UpdateEtablissementForAdmin, DeleteEtablissementForAdmin, GetAllEtablissementApprovalForAdmin,
-    ApprovedOrUnApprovalEtablissementForAdmin, GetAllEstablishmentProfileName
+    ApprovedOrUnApprovalEtablissementForAdmin, GetAllEstablishmentProfileName, GetEstablishmentProfileReport
 } from '@/store/slices/adminAction';
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
@@ -89,6 +89,9 @@ const ReduxSlice = createSlice({
         },
         loadingStatus: (state, action) => {
             state.Loading = action.payload.loadingStatus;
+        },
+        removeEtablishmentData: (state, action) => {
+            state.AdminEtablise = action.payload.removeEtablishmentData;
         },
     },
     extraReducers: (builder) => {
@@ -361,6 +364,21 @@ const ReduxSlice = createSlice({
                 state.errors = action.payload;
                 state.Loading = false;
                 state.AdminUnapprovalEtabliselist = null;
+            })
+
+            // Get Establishment Profile Report
+            .addCase(GetEstablishmentProfileReport.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetEstablishmentProfileReport.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(GetEstablishmentProfileReport.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
             })
 
             // Add Category for admin
@@ -787,5 +805,5 @@ const ReduxSlice = createSlice({
     },
 });
 
-export const { errorMessage, successMessage, loadingStatus } = ReduxSlice.actions;
+export const { errorMessage, successMessage, loadingStatus, removeEtablishmentData } = ReduxSlice.actions;
 export default ReduxSlice.reducer;

@@ -59,8 +59,6 @@ const ResultData = ({ handlePlace }: any) => {
 
 
     const handleSelectPlace = (value: any) => {
-        console.log("testing");
-
         handlePlace(value);
     }
 
@@ -68,8 +66,8 @@ const ResultData = ({ handlePlace }: any) => {
         dots: false,
         arrows: true,
         infinite: true,
-        // autoplay: true,
-        // autoplaySpeed: 5000,
+        autoplay: true,
+        autoplaySpeed: 5000,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -81,8 +79,8 @@ const ResultData = ({ handlePlace }: any) => {
         dots: false,
         arrows: true,
         infinite: true,
-        // autoplay: true,
-        // autoplaySpeed: 5000,
+        autoplay: true,
+        autoplaySpeed: 5000,
         speed: 500,
         slidesToShow: 2,
         slidesToScroll: 1,
@@ -94,8 +92,8 @@ const ResultData = ({ handlePlace }: any) => {
         dots: false,
         arrows: true,
         infinite: true,
-        // autoplay: true,
-        // autoplaySpeed: 5000,
+        autoplay: true,
+        autoplaySpeed: 5000,
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -106,13 +104,12 @@ const ResultData = ({ handlePlace }: any) => {
     useEffect(() => {
 
         let firstData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1 Écran"));
-        console.log(firstData);
         setFullEcranData(firstData);
+
         let secondData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1/2 Écran"));
-        console.log(secondData);
         setHalfEcranData(secondData);
+
         let thirdData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1/4 Écran"));
-        console.log(thirdData);
         setQuarterEcranData(thirdData);
     }, [CustomerPublicitesList])
     return (
@@ -138,7 +135,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                     <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
-                                                                    {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                 </div>
                                                                 :
                                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer ad-banner cursor-pointer">
@@ -146,7 +142,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                         <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
                                                                             <div className="pb-4">
                                                                                 <img src={item?.logo ? item?.logo : Logo} alt="" />
-                                                                                {/* <Image src={Logo} alt="logo" /> */}
                                                                             </div>
                                                                             <div className="text-center">
                                                                                 <h3 className="pb-3">{item?.companyName}</h3>
@@ -187,7 +182,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
-                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                     </div>
                                                                     :
                                                                     null
@@ -215,7 +209,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                     <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
-                                                                    {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                 </div>
                                                                 :
                                                                 null
@@ -240,7 +233,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
-                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                     </div>
                                                                     :
                                                                     null
@@ -269,7 +261,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
-                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                     </div>
                                                                     :
                                                                     null
@@ -295,7 +286,6 @@ const ResultData = ({ handlePlace }: any) => {
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
-                                                                        {/* <Image src={item?.photos} alt="img" className="w-full h-full" width={900} height={580} /> */}
                                                                     </div>
                                                                     :
                                                                     null
@@ -308,9 +298,7 @@ const ResultData = ({ handlePlace }: any) => {
                                     </>
                             }
 
-
-
-                            <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
+                            {/* <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
                                 {
                                     CustomerResearchData?.data?.data?.map((item: any, i: number) => {
                                         return (
@@ -321,9 +309,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                             <Image src={TestImg} alt="img" className="w-full h-20" />
                                                         </a>
                                                     </div>
-                                                    {/* <div >
-                                            <Image src={item?.photos ? item?.photos : item?.logo ? item?.logo : TestImg} alt="img" className="w-full" />
-                                        </div> */}
+                                                   
                                                     <div className="text-center px-4 py-4">
                                                         <h5 className="font-bold py-2">{item?.companyName}</h5>
                                                         <p className="bg_green py-1 ">{item?.categoryName}</p>
@@ -336,7 +322,7 @@ const ResultData = ({ handlePlace }: any) => {
                                         )
                                     })
                                 }
-                            </div>
+                            </div> */}
                         </>
                         :
                         <div className="py-20 text-center">

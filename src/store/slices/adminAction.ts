@@ -265,9 +265,28 @@ export const ApprovedOrUnApprovalEtablissementForAdmin = createAsyncThunk(
 export const GetAllEstablishmentProfileName = createAsyncThunk(
     'lindicateur/GetAllEstablishmentProfileName',
     async (val: any, { rejectWithValue }) => {
-    
+
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/customer/getAllCompanyNames`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetEstablishmentProfileReport = createAsyncThunk(
+    'lindicateur/GetEstablishmentProfileReport',
+    async (val: any, { rejectWithValue }) => {
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/export/exportCompanyProfile/${val?.id}`, { headers: headers });
             if (response.status === 200 || response.status === 201) {
                 return response;
             }

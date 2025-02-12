@@ -298,7 +298,7 @@ const ResultData = ({ handlePlace }: any) => {
                                     </>
                             }
 
-                            {/* <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
+                            <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
                                 {
                                     CustomerResearchData?.data?.data?.map((item: any, i: number) => {
                                         return (
@@ -306,6 +306,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
                                                     <div className="bg-gray-100 h-32 text-center flex justify-center content-center items-center">
                                                         <a href={item?.websiteURL} rel="noopener noreferrer" target="_blank" className="w-full h-20">
+                                                            {/* <img src={item?.photos ? item?.photos : TestImg } alt="img" className="w-full h-20" /> */}
                                                             <Image src={TestImg} alt="img" className="w-full h-20" />
                                                         </a>
                                                     </div>
@@ -322,7 +323,7 @@ const ResultData = ({ handlePlace }: any) => {
                                         )
                                     })
                                 }
-                            </div> */}
+                            </div>
                         </>
                         :
                         <div className="py-20 text-center">

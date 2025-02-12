@@ -1,16 +1,27 @@
 `use client`;
 
+import { useRouter } from "next/router";
+
 import { useState, useEffect } from "react";
 
 import NavHeader from "@/Components/Admin/Nav/NavHeader";
 import SideBar from "@/Components/Admin/Nav/SideBar";
 
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { successMessage, errorMessage } from '@/store/slices/slice';
+import { RootState, AppDispatch } from '@/store/store';
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
+    const router = useRouter();
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors, Customer } = useSelector((state: RootState) => state.lindicateur);
+
     const [showSidebar, setShowSidebar] = useState<boolean | null>(true);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            if(window.innerWidth < 1024){
+            if (window.innerWidth < 1024) {
                 setShowSidebar(false);
             }
         }
@@ -19,6 +30,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     const handleChangeSidebarShow = () => {
         setShowSidebar(!showSidebar);
     }
+
+    useEffect(() => {
+        console.log(errors);
+
+
+        if (errors?.response?.data?.message === "utilisateur non valide" || errors?.response?.data?.message === "Le jeton a expiré") {
+            dispatch(errorMessage(""));
+            localStorage.removeItem('admin-auth-token');
+            router.push('/admin/login/')
+        }
+    }, [dispatch, errors]);
+
     return (
         <>
             <div className="bg-gray-200 h-screen">

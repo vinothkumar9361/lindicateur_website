@@ -304,10 +304,10 @@ const ResultData = ({ handlePlace }: any) => {
                                         return (
                                             <>
                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
-                                                    <div className="bg-gray-100 h-32 text-center flex justify-center content-center items-center">
+                                                    <div className="bg-gray-100 h-28 text-center flex justify-center content-center items-center">
                                                         <a href={item?.websiteURL} rel="noopener noreferrer" target="_blank" className="w-full h-20">
                                                             {/* <img src={item?.photos ? item?.photos : TestImg } alt="img" className="w-full h-20" /> */}
-                                                            <Image src={TestImg} alt="img" className="w-full h-20" />
+                                                            <Image src={TestImg} alt="img" className="w-full h-14" />
                                                         </a>
                                                     </div>
                                                    

@@ -79,10 +79,10 @@ const ResultData = ({ handlePlace }: any) => {
         dots: false,
         arrows: true,
         infinite: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
+        // autoplay: true,
+        // autoplaySpeed: 5000,
         speed: 500,
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1,
         nextArrow: <SampleNextArrow to="next" />,
         prevArrow: <SamplePrevArrow to="prev" />,
@@ -92,10 +92,10 @@ const ResultData = ({ handlePlace }: any) => {
         dots: false,
         arrows: true,
         infinite: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
+        // autoplay: true,
+        // autoplaySpeed: 5000,
         speed: 500,
-        slidesToShow: 3,
+        slidesToShow: 1,
         slidesToScroll: 1,
         nextArrow: <SampleNextArrow to="next" />,
         prevArrow: <SamplePrevArrow to="prev" />,
@@ -229,7 +229,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 cursor-pointer mt-6">
+                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 cursor-pointer md:mt-6">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
@@ -246,7 +246,7 @@ const ResultData = ({ handlePlace }: any) => {
                             }
 
                             {
-                                quarterEcranData?.length <= 2 ?
+                                quarterEcranData?.length <= 1 ?
                                     <>
                                         <div className="grid grid-cols-3 gap-4">
                                             {
@@ -273,7 +273,7 @@ const ResultData = ({ handlePlace }: any) => {
                                     </>
                                     :
                                     <>
-                                        <Slider {...settingsthree} className="mt-6">
+                                        <Slider {...settingsthree} className="md:mt-6">
                                             {
                                                 quarterEcranData?.map((item: any, i: number) => {
                                                     console.log(item?.photos);
@@ -304,7 +304,7 @@ const ResultData = ({ handlePlace }: any) => {
                                         return (
                                             <>
                                                 <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
-                                                    <div className="bg-gray-100 h-28 text-center flex justify-center content-center items-center">
+                                                    <div className="bg-gray-100 h-26 pt-4 text-center flex justify-center content-center items-center">
                                                         <a href={item?.websiteURL} rel="noopener noreferrer" target="_blank" className="w-full h-20">
                                                             {/* <img src={item?.photos ? item?.photos : TestImg } alt="img" className="w-full h-20" /> */}
                                                             <Image src={TestImg} alt="img" className="w-full h-14" />

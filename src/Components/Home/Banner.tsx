@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import Logo from '@/Images/Home/logo.svg';
-import BannerBackground from '@/Images/Home/banner_background.jpg';
+import BannerBackground from '@/Images/Home/banner_background_2.webp';
 
 import { FaSearch } from "react-icons/fa";
 

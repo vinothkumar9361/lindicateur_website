@@ -57,6 +57,16 @@ function Footer() {
                     <div className={`items-center justify-between w-full lg:flex lg:flex-col lg:w-auto lg:pr-20`} id="navbar-user">
                         <ul className="header-ul flex flex-col font-medium p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-gray-100 dark:bg-gray-800 lg:dark:bg-gray-900 dark:border-gray-700">
                             <li className="" >
+                                <a href="/mentions-legales/" target="_blank" className="block py-2 px-3 font-medium text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Mentions légales</a>
+                            </li>
+                            <li className="mar-left">
+                                <a href="/conditions-generales/" target="_blank" className="block py-2 px-3 font-medium text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">CGV</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className={`items-center justify-between w-full lg:flex lg:flex-col lg:w-auto lg:pr-20`} id="navbar-user">
+                        <ul className="header-ul flex flex-col font-medium p-4 lg:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-gray-100 dark:bg-gray-800 lg:dark:bg-gray-900 dark:border-gray-700">
+                            <li className="" >
                                 <a href="/" className="block py-2 px-3 font-medium text-gray-900 rounded hover:text-black hover:font-bold lg:hover:bg-transparent lg:hover:text-black lg:p-0 dark:text-white lg:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Accueil</a>
                             </li>
                             <li className="mar-left">

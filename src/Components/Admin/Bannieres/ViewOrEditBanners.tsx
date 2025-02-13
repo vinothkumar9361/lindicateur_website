@@ -200,7 +200,9 @@ const ViewOrEditBanners = () => {
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
-                    router.push(`/admin/voir-un-bannieres/`);
+                    if (!currentPathname.includes("/voir-un-bannieres/")) {
+                        router.push(`/admin/voir-un-bannieres/`);
+                    }
                     dispatch(GetBannersForAdmin({ token, id }));
                 })
             }

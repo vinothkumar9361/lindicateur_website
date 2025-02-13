@@ -131,13 +131,13 @@ const ResultData = ({ handlePlace }: any) => {
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search cursor-pointer">
+                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search cursor-pointer">
                                                                     <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
                                                                 </div>
                                                                 :
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer ad-banner cursor-pointer">
+                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="cursor-pointer ad-banner cursor-pointer">
                                                                     <div className="ad-text">
                                                                         <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
                                                                             <div className="pb-4">
@@ -178,7 +178,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search cursor-pointer">
+                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search cursor-pointer">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
@@ -205,7 +205,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 w-4/5 flex justify-center cursor-pointer mt-6">
+                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 w-4/5 flex justify-center cursor-pointer mt-6">
                                                                     <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
@@ -229,7 +229,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 cursor-pointer md:mt-6">
+                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 cursor-pointer md:mt-6">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
@@ -257,7 +257,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-3 flex justify-center cursor-pointer mt-6">
+                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 flex justify-center cursor-pointer mt-6">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
@@ -282,7 +282,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-3 cursor-pointer">
+                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 cursor-pointer">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
@@ -303,7 +303,7 @@ const ResultData = ({ handlePlace }: any) => {
                                     CustomerResearchData?.data?.data?.map((item: any, i: number) => {
                                         return (
                                             <>
-                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
+                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
                                                     <div className="bg-gray-100 h-26 pt-4 text-center flex justify-center content-center items-center">
                                                         <a href={item?.websiteURL} rel="noopener noreferrer" target="_blank" className="w-full h-20">
                                                             {/* <img src={item?.photos ? item?.photos : TestImg } alt="img" className="w-full h-20" /> */}

@@ -52,63 +52,74 @@ const SearchMaps = ({ place }: any) => {
     const getMapMarker = async (city: any, i: number) => {
         console.log("city", city);
 
-        const url = `https://api.xn--lindicateur-rfrencement-nccb.fr/admin/getMap?q=${city}`;
-        const response = await fetch(url);
-        console.log("res", response);
+        const google_key = "AIzaSyD7xvZFtE4aQWnCIw5UlF8IoayDrYnoiRo";
 
-        const data = await response.json();
+        let marker: any;
+        let latitude: any;
+        let longitude: any;
+
+        // const url = `https://api.xn--lindicateur-rfrencement-nccb.fr/admin/getMap?q=${city}`;
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(city)}&key=${google_key}`;
+
+        let location = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(city)}&key=${google_key}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "OK") {
+                    return data;
+                    // const bounds = new window.google.maps.LatLngBounds();
+                    // bounds.extend(marker.position);
+                    // map.fitBounds(bounds);
+                    // map.setZoom(12);
+
+                    // if (map) {
+                    //     const bounds = new window.google.maps.LatLngBounds();
+                    //     bounds.extend(marker.position);
+
+                    //     map.fitBounds(bounds, {
+                    //         padding: 100,  // Adjust padding to control zoom
+                    //     });
+                    // }
+                } else {
+                    console.error("Geocoding failed:", data.status);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+
+        // const response = await fetch(url);
+        // console.log("res", response);
+
+        // const data = await response.json();
 
         // const { data }: any = response;
 
-        let latitude: any;
-        let longitude: any;
-        if (data && data.length > 0) {
-            const { lat, lon } = data[0];
-            latitude = parseFloat(lat);
-            longitude = parseFloat(lon);
+        const { lat, lng } = location.results[0].geometry.location;
+        latitude = parseFloat(lat);
+        longitude = parseFloat(lng);
 
-            let marker = {
-                id: i + 1,
-                name: city,
-                position: {
-                    lat: latitude,
-                    lng: longitude
-                }
+        marker = {
+            id: i + 1,
+            name: city,
+            position: {
+                lat: latitude,
+                lng: longitude
             }
-
-            // const bounds = new window.google.maps.LatLngBounds();
-            // bounds.extend(marker.position);
-            // map.fitBounds(bounds);
-            // map.setZoom(12);
-
-            // if (map) {
-            //     const bounds = new window.google.maps.LatLngBounds();
-            //     bounds.extend(marker.position);
-
-            //     map.fitBounds(bounds, {
-            //         padding: 100,  // Adjust padding to control zoom
-            //     });
-            // }
-            return marker;
         }
+
+        return marker;
+
+
 
     }
 
     useEffect(() => {
         if (place) {
-            console.log("place", place);
-
             let position = getMapMarker(place, 1).then((position: any) => {
-                console.log("position", position);
                 if (position) {
                     setMarkerValue([position])
                     if (map) {
-                        console.log("position", position?.position);
-
                         // map.setCenter(position.position);  
                         // map.setZoom(12);
                         const bounds = new window.google.maps.LatLngBounds();
-                        console.log("bounds", bounds);
 
                         if (position?.position) {
                             bounds.extend(position?.position);
@@ -122,8 +133,6 @@ const SearchMaps = ({ place }: any) => {
                                 if (zoomLevel > 15) {
                                     map.setZoom(15);
                                 }
-
-                                console.log("Zoom Level After fitBounds:", map.getZoom());
 
                                 const adjustedBounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
 
@@ -170,7 +179,7 @@ const SearchMaps = ({ place }: any) => {
         if (CustomerPublicitesList?.data?.data) {
             Promise.all(
                 CustomerPublicitesList.data.data.map((value: any, i: number) =>
-                    getMapMarker(value?.city, i)
+                    getMapMarker(value?.address, i)
                 )
             )
                 .then((positions) => {
@@ -191,7 +200,7 @@ const SearchMaps = ({ place }: any) => {
         if (CustomerResearchData?.data?.data) {
             Promise.all(
                 CustomerResearchData.data.data.map((value: any, i: number) =>
-                    getMapMarker(value?.city, i)
+                    getMapMarker(value?.address, i)
                 )
             )
                 .then((positions) => {

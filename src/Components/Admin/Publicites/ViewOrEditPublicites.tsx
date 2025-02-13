@@ -205,7 +205,9 @@ const ViewOrEditPublicites = () => {
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
-                    router.push(`/admin/voir-un-publicite/`)
+                    if(!currentPathname.includes("/voir-un-publicite/")){
+                        router.push(`/admin/voir-un-publicite/`)
+                    }
                     dispatch(GetPublicitesForAdmin({ token, id }));
                 })
             }

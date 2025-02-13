@@ -178,7 +178,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search cursor-pointer">
+                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search cursor-pointer">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
@@ -205,7 +205,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 w-1/2 flex cursor-pointer mt-6">
+                                                                <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-2 w-4/5 flex justify-center cursor-pointer mt-6">
                                                                     <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
@@ -248,7 +248,7 @@ const ResultData = ({ handlePlace }: any) => {
                             {
                                 quarterEcranData?.length <= 1 ?
                                     <>
-                                        <div className="grid grid-cols-3 gap-4">
+                                        <div className="">
                                             {
                                                 quarterEcranData?.map((item: any, i: number) => {
                                                     console.log(item?.photos);
@@ -257,7 +257,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-3 flex cursor-pointer mt-6">
+                                                                    <div onClick={() => { handleSelectPlace(item?.city) }} className="ad-card-search ad-card-search-3 flex justify-center cursor-pointer mt-6">
                                                                         <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>

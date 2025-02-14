@@ -116,7 +116,6 @@ const EstablishmentList = () => {
         const newOffset = Number(event.selected) + 1;
 
         dispatch(GetAllEtablissementListForCustomer({ token, page: newOffset }));
-
     }
 
     return (
@@ -132,13 +131,12 @@ const EstablishmentList = () => {
                             <div className="p-2 h-10 border-2 border-gray-500 rounded-l-md">
                                 <IoSearchOutline className="w-6 h-6" />
                             </div>
-                            {/* <p>Recherche</p> */}
-                            <input className="h-10 w-48 border-2 border-gray-500 pl-2 rounded-r-md outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
+                            <input
+                                className="h-10 w-48 border-2 border-gray-500 pl-2 rounded-r-md outline-none focus:ring-transparent"
+                                placeholder="Recherche"
+                                onChange={(e) => { handleSearch(e.target.value) }}
+                            />
                         </div>
-                        {/* <div className="flex gap-2 items-center">
-                            <CiFilter className="w-6 h-6" />
-                            <p>Filtre</p>
-                        </div> */}
                         <div
                             onClick={() => {
                                 setSortAsc(!sortAsc)
@@ -183,9 +181,6 @@ const EstablishmentList = () => {
                                             <th scope="col" className="px-6 py-3 border-2">
                                                 Nom de la société
                                             </th>
-                                            {/* <th scope="col" className="px-6 py-3 border-2">
-                                    Publicité
-                                </th> */}
                                             <th scope="col" className="px-6 py-3 border-2">
                                                 Statut
                                             </th>
@@ -215,9 +210,6 @@ const EstablishmentList = () => {
                                                             <td className="px-6 py-4 border-2">
                                                                 {data?.companyName}
                                                             </td>
-                                                            {/* <td className="px-6 py-4 border-2">
-                                                    oui
-                                                </td> */}
                                                             <td className="px-6 py-4 border-2">
                                                                 {data?.isApproved ? "Approuvé" : "En attente d'approbation"}
                                                             </td>
@@ -246,7 +238,6 @@ const EstablishmentList = () => {
                                     onPageChange={handlePageClick}
                                     pageRangeDisplayed={3}
                                     pageCount={CustomerEtabliselist?.data?.pagination?.totalPages}
-                                    // forcePage={AdminEtabliselist?.data?.pagination?.currentpage - 1}
                                     previousLabel="<"
                                     renderOnZeroPageCount={null}
                                     className='custom-pagination'

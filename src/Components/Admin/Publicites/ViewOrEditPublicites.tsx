@@ -30,7 +30,7 @@ const AddetablishmentSchema = Yup.object().shape({
 
 const ViewOrEditPublicites = () => {
     const router = useRouter();
-   
+
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, AdminPublicites, AdminCategoryList, AdminCompanyProfilesName } = useSelector((state: RootState) => state.lindicateur);
 
@@ -43,6 +43,26 @@ const ViewOrEditPublicites = () => {
     const [photosUrl, setPhotosUrl] = useState<any | null>(null);
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
+
+    const [initialValue, setInitialValue] = useState<any | null>({
+        category: AdminPublicites?.data?.existingAds?.categoryName || '',
+        company: AdminPublicites?.data?.existingAds?.companyName || '',
+        startdate: AdminPublicites?.data?.existingAds?.startDate || '',
+        enddate: AdminPublicites?.data?.existingAds?.endDate || '',
+        address: AdminPublicites?.data?.existingAds?.address || '',
+        departmentcode: AdminPublicites?.data?.existingAds?.departmentCode || '',
+        postcode: AdminPublicites?.data?.existingAds?.postalCode || '',
+        city: AdminPublicites?.data?.existingAds?.city || '',
+        email: AdminPublicites?.data?.existingAds?.email || '',
+        logo: AdminPublicites?.data?.existingAds?.logo || '',
+        photos: AdminPublicites?.data?.existingAds?.photos || '',
+        phone: AdminPublicites?.data?.existingAds?.phoneNumber || '',
+        message: AdminPublicites?.data?.existingAds?.description || '',
+        images: AdminPublicites?.data?.existingAds?.imageSize || '',
+        photoType: AdminPublicites?.data?.existingAds?.adBgType || 'blank',
+        status: AdminPublicites?.data?.existingAds?.isPublished ? "1" : "0",
+        websiteURL: AdminPublicites?.data?.existingAds?.websiteURL || '',
+    });
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -67,6 +87,30 @@ const ViewOrEditPublicites = () => {
             dispatch(GetPublicitesForAdmin({ token, id }));
         }
     }, [dispatch, token, id])
+
+    useEffect(() => {
+        if (AdminPublicites?.data?.existingAds) {
+            setInitialValue({
+                category: AdminPublicites?.data?.existingAds?.categoryName || '',
+                company: AdminPublicites?.data?.existingAds?.companyName || '',
+                startdate: AdminPublicites?.data?.existingAds?.startDate || '',
+                enddate: AdminPublicites?.data?.existingAds?.endDate || '',
+                address: AdminPublicites?.data?.existingAds?.address || '',
+                departmentcode: AdminPublicites?.data?.existingAds?.departmentCode || '',
+                postcode: AdminPublicites?.data?.existingAds?.postalCode || '',
+                city: AdminPublicites?.data?.existingAds?.city || '',
+                email: AdminPublicites?.data?.existingAds?.email || '',
+                logo: AdminPublicites?.data?.existingAds?.logo || '',
+                photos: AdminPublicites?.data?.existingAds?.photos || '',
+                phone: AdminPublicites?.data?.existingAds?.phoneNumber || '',
+                message: AdminPublicites?.data?.existingAds?.description || '',
+                images: AdminPublicites?.data?.existingAds?.imageSize || '',
+                photoType: AdminPublicites?.data?.existingAds?.adBgType || 'blank',
+                status: AdminPublicites?.data?.existingAds?.isPublished ? "1" : "0",
+                websiteURL: AdminPublicites?.data?.existingAds?.websiteURL || '',
+            })
+        }
+    }, [AdminPublicites])
 
     useEffect(() => {
         if (logoUpload) {
@@ -205,7 +249,7 @@ const ViewOrEditPublicites = () => {
                     timer: 5000,
                 }).then(() => {
                     dispatch(successMessage(""));
-                    if(!currentPathname.includes("/voir-un-publicite/")){
+                    if (!currentPathname.includes("/voir-un-publicite/")) {
                         router.push(`/admin/voir-un-publicite/`)
                     }
                     dispatch(GetPublicitesForAdmin({ token, id }));
@@ -272,20 +316,18 @@ const ViewOrEditPublicites = () => {
 
     const handleRemoveUrl = (value: any) => {
         if (value === 1) {
-            let updateData = {
-                logo: '',
-                id: AdminPublicites?.data?.existingAds?.id,
-            }
-            dispatch(UpdatePublicitesForAdmin({ token, updateData }))
+            setInitialValue((prevState: any) => ({
+                ...prevState,
+                logo: ''
+            }));
             setLogoUrl(null);
             setLogoUpload(null);
         }
         else if (value === 2) {
-            let updateData = {
-                photos: '',
-                id: AdminPublicites?.data?.existingAds?.id,
-            }
-            dispatch(UpdatePublicitesForAdmin({ token, updateData }))
+            setInitialValue((prevState: any) => ({
+                ...prevState,
+                photos: ''
+            }));
             setPhotosUrl(null);
             setPhotosUpload(null);
         }
@@ -321,26 +363,7 @@ const ViewOrEditPublicites = () => {
                 <div className='sm:px-16 md:px-4'>
                     <Formik
                         enableReinitialize
-                        initialValues={{
-                            category: AdminPublicites?.data?.existingAds?.categoryName || '',
-                            company: AdminPublicites?.data?.existingAds?.companyName || '',
-                            startdate: AdminPublicites?.data?.existingAds?.startDate || '',
-                            enddate: AdminPublicites?.data?.existingAds?.endDate || '',
-                            address: AdminPublicites?.data?.existingAds?.address || '',
-                            departmentcode: AdminPublicites?.data?.existingAds?.departmentCode || '',
-                            postcode: AdminPublicites?.data?.existingAds?.postalCode || '',
-                            city: AdminPublicites?.data?.existingAds?.city || '',
-                            email: AdminPublicites?.data?.existingAds?.email || '',
-                            logo: AdminPublicites?.data?.existingAds?.logo || '',
-                            photos: AdminPublicites?.data?.existingAds?.photos || '',
-                            phone: AdminPublicites?.data?.existingAds?.phoneNumber || '',
-                            message: AdminPublicites?.data?.existingAds?.description || '',
-                            images: AdminPublicites?.data?.existingAds?.imageSize || '',
-                            photoType: AdminPublicites?.data?.existingAds?.adBgType || 'blank',
-                            status: AdminPublicites?.data?.existingAds?.isPublished ? "1" : "0",
-                            websiteURL: AdminPublicites?.data?.existingAds?.websiteURL || '',
-
-                        }}
+                        initialValues={initialValue}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
@@ -545,7 +568,7 @@ const ViewOrEditPublicites = () => {
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                             {
-                                                logoUrl || values?.logo ?
+                                                (logoUrl || values?.logo) && currentPathname.includes("/modifier-un-publicite/") ?
                                                     <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
                                                         <TiDelete className="w-6 h-6 hover:text-red-500" />
                                                     </div>
@@ -601,7 +624,7 @@ const ViewOrEditPublicites = () => {
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
                                             {
-                                                photosUrl || values?.photos ?
+                                                (photosUrl || values?.photos) && currentPathname.includes("/modifier-un-publicite/") ?
                                                     <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
                                                         <TiDelete className="w-6 h-6 hover:text-red-500" />
                                                     </div>

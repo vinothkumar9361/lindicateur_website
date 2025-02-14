@@ -1,7 +1,6 @@
 `use client`;
 
 import { useRouter } from "next/router";
-import { useParams } from 'next/navigation';
 
 import { useState, useEffect, useRef } from "react";
 
@@ -9,12 +8,10 @@ import { FaSearch } from "react-icons/fa";
 
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
-import { StandaloneSearchBox, LoadScript } from '@react-google-maps/api';
 
 import Spinner from "@/Components/Common/Loading";
 
 import Select from 'react-select';
-import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -30,19 +27,6 @@ const categoryType = [
 
 const Search = () => {
     const router = useRouter();
-    // const { companyName, categoryName, locationName, phoneNumber } = router.query;
-
-    // const params = useParams();
-    // const companyName = params?.companyName;
-    // const categoryName = params?.categoryName;
-    // const locationName = params?.locationName;
-    // const phoneNumber = params?.phoneNumber;
-
-    // console.log(router.query);
-    // console.log("Company Name:", companyName);
-    // console.log("Category Name:", categoryName);
-    // console.log("Location Name:", locationName);
-    // console.log("Phone Number:", phoneNumber);
 
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, CustomerCategoryList, CustomerCityList } = useSelector((state: RootState) => state.lindicateur);
@@ -77,19 +61,19 @@ const Search = () => {
 
             setToken(tokenString);
 
-            if(companyNameString){
+            if (companyNameString) {
                 setCompanyName(companyNameString);
                 localStorage.removeItem("companyName");
             }
-            if(categoryNameString){
+            if (categoryNameString) {
                 setCategoryName(categoryNameString);
                 localStorage.removeItem("categoryName");
             }
-            if(locationNameString){
+            if (locationNameString) {
                 setLocationName(locationNameString);
                 localStorage.removeItem("locationName");
             }
-            if(phoneNumberString){
+            if (phoneNumberString) {
                 setPhoneNumber(phoneNumberString);
                 localStorage.removeItem("phoneNumber");
             }
@@ -122,9 +106,7 @@ const Search = () => {
 
     const handleInputChange = (inputValue: any, { action }: any) => {
         if (action === "input-change") {
-            console.log("Search Value:", inputValue);
             dispatch(GetAllCity({ type: "website", search: inputValue }));
-
         }
     };
 
@@ -147,7 +129,6 @@ const Search = () => {
             setCityType(options)
         }
     }, [CustomerCityList])
-
 
     const inputRef: any = useRef("");
 
@@ -253,19 +234,8 @@ const Search = () => {
                             <div className="lg:bg-white xl:h-32">
                                 <div className="px-2 sm:px-10 pt-4">
                                     <p className="text-red-500 ">{serrorMessage}</p>
-                                    {/* <label htmlFor="">À qui appartient ce numéro ?</label> */}
                                 </div>
                                 <div className="px-2 sm:px-10 pt-8 sm:flex sm:flex-col sm:item-center xl:grid xl:grid-cols-4 xl:gap-4 xl:px-2 xl:pb-8">
-                                    {/* <MultiSelect
-
-                                        hasSelectAll={false}
-                                        options={categoryType}
-                                        value={select}
-                                        onChange={setSelect}
-                                        labelledBy="Quoi: Un restaurant, un dentiste..."
-                                        overrideStrings={{ "selectSomeItems": "Quoi: Un restaurant, un dentiste..." }}
-                                        className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500"
-                                    /> */}
                                     <Select
                                         options={categoryType}
                                         value={scategoryName}
@@ -274,7 +244,7 @@ const Search = () => {
                                         placeholder="Quoi:Un restaurant..."
                                         className="cursor-pointer border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 serarch-input focus:ring-transparent"
                                     />
-                                    {/* <input type="text" placeholder="Quoi: Un restaurant, un dentiste..." className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500" /> */}
+
                                     <input
                                         type="text"
                                         value={scompanyName}
@@ -282,6 +252,7 @@ const Search = () => {
                                         placeholder="Qui: Monsieur Jean, SARL..."
                                         className="border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent focus:inset-ring-2"
                                     />
+
                                     <Select
                                         options={cityType}
                                         value={slocationName}
@@ -293,36 +264,11 @@ const Search = () => {
                                         className="cursor-pointer border-0 border-b-2 border-gray-500 w-full mb-3 placeholder:text-gray-400 outline-2 outline:border-gray-500 serarch-input focus:ring-transparent"
                                         noOptionsMessage={() => " Saisir..."}
                                     />
-                                    {/* <input
-                                        type="text"
-                                        value={slocationName}
-                                        onChange={(e) => setScategoryName(e.target.value)}
-                                        placeholder="Où: France, Ile-de-France, Paris..."
-                                        className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2 focus:ring-transparent"
-                                    /> */}
 
-                                    {/* <div className="border-0 border-b-2 border-gray-500 w-full mb-5 lg:mb-3 placeholder:text-gray-400 outline-2">
-                                        <LoadScript
-                                            googleMapsApiKey='AIzaSyD7xvZFtE4aQWnCIw5UlF8IoayDrYnoiRo'
-                                            libraries={["places"]}
-                                        >
-                                            <StandaloneSearchBox
-                                                onLoad={ref => { inputRef.current = ref }}
-                                                onPlacesChanged={handlePlace}
-                                            >
-
-                                                <input
-                                                    type="text"
-                                                    placeholder="Où: France, Ile-de-France, Paris..."
-                                                    id="validationCustom01"
-                                                    className="border-0 border-gray-500 w-full placeholder:text-gray-400 outline-2"
-                                                // style={{ width: "100%" }}
-                                                />
-                                            </StandaloneSearchBox>
-                                        </LoadScript>
-                                    </div> */}
-
-                                    <button onClick={() => { handleProfileSearch() }} className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn">
+                                    <button
+                                        onClick={() => { handleProfileSearch() }}
+                                        className="text-black font-bold border_black p-3 w-full sm:w-64 lg:w-full mb-5 lg:mb-3 search-btn"
+                                    >
                                         {
                                             Loading ?
                                                 <Spinner />
@@ -332,7 +278,6 @@ const Search = () => {
                                 </div>
                             </div>
                     }
-
                 </div>
             </div>
         </>

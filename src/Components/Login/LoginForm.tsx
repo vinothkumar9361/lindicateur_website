@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 
@@ -61,7 +60,6 @@ const LoginForm = () => {
                     localStorage.setItem('user-auth-id', success?.existingUser?.id);
                     dispatch(successMessage(""));
                     router.push(`/dashboard/`);
-
                 }
             })
         }
@@ -78,9 +76,6 @@ const LoginForm = () => {
             })
         }
     }, [dispatch, success, errors]);
-
-    console.log(success);
-    console.log(errors);
 
     return (
         <>
@@ -107,7 +102,6 @@ const LoginForm = () => {
                                     password: values?.password,
                                     roleId: "2"
                                 }
-                                console.log(data);
 
                                 dispatch(LoginForCustomer(data))
                             }}
@@ -116,18 +110,28 @@ const LoginForm = () => {
                                 <Form className="">
                                     <div className='flex flex-col pt-4'>
                                         <label htmlFor="userName" className='text-left pb-2'>Nom d'utilisateur</label>
-                                        <Field name="userName" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                        <Field
+                                            name="userName"
+                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                        />
                                         {errors.userName && touched.userName ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.userName}</div>
                                         ) : null}
                                     </div>
+
                                     <div className='flex flex-col pt-4'>
                                         <div className="flex justify-between">
                                             <label htmlFor="password" className='text-left pb-2'>Mot de passe </label>
-                                            <p className="text-xs text-gray-400 text-right pt-1"><a href="/forgot-password-customer/" className="text-blue-500">Mot de passe oublié ?</a></p>
+                                            <p className="text-xs text-gray-400 text-right pt-1">
+                                                <a href="/forgot-password-customer/" className="text-blue-500">Mot de passe oublié ?</a>
+                                            </p>
                                         </div>
                                         <div className="relative">
-                                            <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />
+                                            <Field
+                                                name="password"
+                                                type={`${showPassword ? "text" : "password"}`}
+                                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full'
+                                            />
                                             <span
                                                 className='login-eye-icon cursor-pointer'
                                                 onClick={() => setShowPassword(!showPassword)}
@@ -139,11 +143,15 @@ const LoginForm = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.password}</div>
                                         ) : null}
                                     </div>
+
                                     <div className="flex gap-2 pt-4">
                                         <input type="checkbox" className="shadow txt_green cursor-pointer" />
                                         <p>Souvenez-vous de moi</p>
                                     </div>
-                                    <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">
+                                    <button
+                                        type="submit"
+                                        className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn"
+                                    >
                                         {
                                             Loading ?
                                                 <Spinner />
@@ -153,8 +161,11 @@ const LoginForm = () => {
                                     <div className="text-center">
                                         <p className="font-bold text-xl">OU</p>
                                     </div>
-                                    <button className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6  mb-5 lg:mb-3 search-btn"><Link href='/signup/'>Créer un nouveau compte</Link></button>
-
+                                    <button
+                                        className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6  mb-5 lg:mb-3 search-btn"
+                                    >
+                                        <Link href='/signup/'>Créer un nouveau compte</Link>
+                                    </button>
                                 </Form>
                             )}
                         </Formik>

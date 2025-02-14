@@ -48,6 +48,23 @@ const ViewOrEditBanners = () => {
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
 
+    const [initialValue, setInitialValue] = useState<any | null>({
+        company: AdminBanners?.data?.existingBanner?.companyName || '',
+        startdate: AdminBanners?.data?.existingBanner?.startDate || '',
+        enddate: AdminBanners?.data?.existingBanner?.endDate || '',
+        address: AdminBanners?.data?.existingBanner?.address || '',
+        postcode: AdminBanners?.data?.existingBanner?.postalCode || '',
+        city: AdminBanners?.data?.existingBanner?.city || '',
+        email: AdminBanners?.data?.existingBanner?.email || '',
+        logo: AdminBanners?.data?.existingBanner?.logo || '',
+        photos: AdminBanners?.data?.existingBanner?.photos || '',
+        phone: AdminBanners?.data?.existingBanner?.phoneNumber || '',
+        message: AdminBanners?.data?.existingBanner?.description || '',
+        // images: AdminBanners?.data?.existingBanner?.imageSize || '',
+        websiteURL: AdminBanners?.data?.existingBanner?.websiteURL || '',
+        status: AdminBanners?.data?.existingBanner?.isPublished ? "1" : "0",
+    });
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -65,6 +82,27 @@ const ViewOrEditBanners = () => {
             dispatch(GetAllEstablishmentProfileName({}))
         }
     }, [dispatch, token, id])
+
+    useEffect(() => {
+        if (AdminBanners?.data?.existingBanner) {
+            setInitialValue({
+                company: AdminBanners?.data?.existingBanner?.companyName || '',
+                startdate: AdminBanners?.data?.existingBanner?.startDate || '',
+                enddate: AdminBanners?.data?.existingBanner?.endDate || '',
+                address: AdminBanners?.data?.existingBanner?.address || '',
+                postcode: AdminBanners?.data?.existingBanner?.postalCode || '',
+                city: AdminBanners?.data?.existingBanner?.city || '',
+                email: AdminBanners?.data?.existingBanner?.email || '',
+                logo: AdminBanners?.data?.existingBanner?.logo || '',
+                photos: AdminBanners?.data?.existingBanner?.photos || '',
+                phone: AdminBanners?.data?.existingBanner?.phoneNumber || '',
+                message: AdminBanners?.data?.existingBanner?.description || '',
+                // images: AdminBanners?.data?.existingBanner?.imageSize || '',
+                websiteURL: AdminBanners?.data?.existingBanner?.websiteURL || '',
+                status: AdminBanners?.data?.existingBanner?.isPublished ? "1" : "0",
+            })
+        }
+    }, [AdminBanners])
 
     useEffect(() => {
         if (logoUpload) {
@@ -267,20 +305,18 @@ const ViewOrEditBanners = () => {
 
     const handleRemoveUrl = (value: any) => {
         if (value === 1) {
-            let updateData = {
-                logo: '',
-                id: AdminBanners?.data?.existingBanner?.id,
-            }
-            dispatch(UpdateBannersForAdmin({ token, updateData }))
+            setInitialValue((prevState: any) => ({
+                ...prevState,
+                logo: ''
+            }));
             setLogoUrl(null);
             setLogoUpload(null);
         }
         else if (value === 2) {
-            let updateData = {
-                photos: '',
-                id: AdminBanners?.data?.existingBanner?.id,
-            }
-            dispatch(UpdateBannersForAdmin({ token, updateData }))
+            setInitialValue((prevState: any) => ({
+                ...prevState,
+                photos: ''
+            }));
             setPhotosUrl(null);
             setPhotosUpload(null);
         }
@@ -294,12 +330,17 @@ const ViewOrEditBanners = () => {
                     <hr className="" />
                 </div>
                 <div className="flex justify-end gap-5 sm:px-16 md:px-4">
-                    <button
-                        onClick={() => { editDetails(AdminBanners?.data?.existingBanner?.id) }}
-                        className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn"
-                    >
-                        Modifier
-                    </button>
+                    {
+                        currentPathname.includes("/voir-un-bannieres/") ?
+                            <button
+                                onClick={() => { editDetails(AdminBanners?.data?.existingBanner?.id) }}
+                                className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn"
+                            >
+                                Modifier
+                            </button>
+                            : null
+                    }
+
                     <button
                         onClick={() => { PublishDetails(AdminBanners?.data?.existingBanner?.id) }}
                         className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-2 w-32 sm:w-40 md:w-60 mt-6 mb-5 lg:mb-3 search-btn"
@@ -310,22 +351,7 @@ const ViewOrEditBanners = () => {
                 <div className='sm:px-16 md:px-4'>
                     <Formik
                         enableReinitialize
-                        initialValues={{
-                            company: AdminBanners?.data?.existingBanner?.companyName || '',
-                            startdate: AdminBanners?.data?.existingBanner?.startDate || '',
-                            enddate: AdminBanners?.data?.existingBanner?.endDate || '',
-                            address: AdminBanners?.data?.existingBanner?.address || '',
-                            postcode: AdminBanners?.data?.existingBanner?.postalCode || '',
-                            city: AdminBanners?.data?.existingBanner?.city || '',
-                            email: AdminBanners?.data?.existingBanner?.email || '',
-                            logo: AdminBanners?.data?.existingBanner?.logo || '',
-                            photos: AdminBanners?.data?.existingBanner?.photos || '',
-                            phone: AdminBanners?.data?.existingBanner?.phoneNumber || '',
-                            message: AdminBanners?.data?.existingBanner?.description || '',
-                            // images: AdminBanners?.data?.existingBanner?.imageSize || '',
-                            websiteURL: AdminBanners?.data?.existingBanner?.websiteURL || '',
-                            status: AdminBanners?.data?.existingBanner?.isPublished ? "1" : "0",
-                        }}
+                        initialValues={initialValue}
                         // validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
@@ -469,7 +495,7 @@ const ViewOrEditBanners = () => {
                                     <div className="pb-2 flex justify-between">
                                         <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                         {
-                                            logoUrl || values?.logo ?
+                                            (logoUrl || values?.logo) && currentPathname.includes("/modifier-un-bannieres/") ?
                                                 <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
                                                     <TiDelete className="w-6 h-6 hover:text-red-500" />
                                                 </div>
@@ -526,7 +552,7 @@ const ViewOrEditBanners = () => {
                                     <div className="pb-2 flex justify-between">
                                         <label htmlFor="photos-upload" className='text-left pb-2'>Ajouter des photos</label>
                                         {
-                                            photosUrl || values?.photos ?
+                                            (photosUrl || values?.photos) && currentPathname.includes("/modifier-un-bannieres/") ?
                                                 <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
                                                     <TiDelete className="w-6 h-6 hover:text-red-500" />
                                                 </div>
@@ -536,7 +562,7 @@ const ViewOrEditBanners = () => {
                                     </div>
                                     <div className="flex items-center justify-center w-full">
 
-                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
+                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${photosUrl || values?.photos ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
                                             {
                                                 Loading && photosUpload ?
                                                     <Spinner />

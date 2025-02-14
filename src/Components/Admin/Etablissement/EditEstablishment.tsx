@@ -43,6 +43,21 @@ const EditEstablishment = () => {
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
 
+    const [initialValue, setInitialValue] = useState<any | null>({
+        name: AdminEtablise?.data?.existingCompanyProfile?.fullName || '',
+        category: AdminEtablise?.data?.existingCompanyProfile?.categoryName || '',
+        company: AdminEtablise?.data?.existingCompanyProfile?.companyName || '',
+        address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
+        departmentcode: AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '',
+        postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
+        city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
+        email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
+        logo: AdminEtablise?.data?.existingCompanyProfile?.logo || '',
+        photos: AdminEtablise?.data?.existingCompanyProfile?.photos || '',
+        phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
+        websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
+    });
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -65,6 +80,25 @@ const EditEstablishment = () => {
             dispatch(GetEtablissementForAdmin({ token, id }));
         }
     }, [dispatch, token, id])
+
+    useEffect(() => {
+        if (AdminEtablise?.data?.existingCompanyProfile) {
+            setInitialValue({
+                name: AdminEtablise?.data?.existingCompanyProfile?.fullName || '',
+                category: AdminEtablise?.data?.existingCompanyProfile?.categoryName || '',
+                company: AdminEtablise?.data?.existingCompanyProfile?.companyName || '',
+                address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
+                departmentcode: AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '',
+                postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
+                city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
+                email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
+                logo: AdminEtablise?.data?.existingCompanyProfile?.logo || '',
+                photos: AdminEtablise?.data?.existingCompanyProfile?.photos || '',
+                phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
+                websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
+            })
+        }
+    }, [AdminEtablise])
 
     useEffect(() => {
         if (logoUpload) {
@@ -227,20 +261,18 @@ const EditEstablishment = () => {
 
     const handleRemoveUrl = (value: any) => {
         if (value === 1) {
-            let updateData = {
-                logo: '',
-                id: AdminEtablise?.data?.existingCompanyProfile?.id,
-            }
-            dispatch(UpdateEtablissementForAdmin({ token, updateData }))
+            setInitialValue((prevState: any) => ({
+                ...prevState,
+                logo: ''
+            }));
             setLogoUrl(null);
             setLogoUpload(null);
         }
         else if (value === 2) {
-            let updateData = {
-                photos: '',
-                id: AdminEtablise?.data?.existingCompanyProfile?.id,
-            }
-            dispatch(UpdateEtablissementForAdmin({ token, updateData }))
+            setInitialValue((prevState: any) => ({
+                ...prevState,
+                photos: ''
+            }));
             setPhotosUrl(null);
             setPhotosUpload(null);
         }
@@ -256,20 +288,7 @@ const EditEstablishment = () => {
                 <div className='sm:px-16 md:px-4'>
                     <Formik
                         enableReinitialize
-                        initialValues={{
-                            name: AdminEtablise?.data?.existingCompanyProfile?.fullName || '',
-                            category: AdminEtablise?.data?.existingCompanyProfile?.categoryName || '',
-                            company: AdminEtablise?.data?.existingCompanyProfile?.companyName || '',
-                            address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
-                            departmentcode: AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '',
-                            postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
-                            city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
-                            email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
-                            logo: AdminEtablise?.data?.existingCompanyProfile?.logo || '',
-                            photos: AdminEtablise?.data?.existingCompanyProfile?.photos || '',
-                            phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
-                            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
-                        }}
+                        initialValues={initialValue}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             let updateData = {
@@ -411,7 +430,7 @@ const EditEstablishment = () => {
                                     <div className="pb-2 flex justify-between">
                                         <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                         {
-                                            logoUrl || values?.logo ?
+                                            (logoUrl || values?.logo) && currentPathname.includes("/modifier-an-etablissement/") ?
                                                 <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
                                                     <TiDelete className="w-6 h-6 hover:text-red-500" />
                                                 </div>
@@ -467,7 +486,7 @@ const EditEstablishment = () => {
                                     <div className="pb-2 flex justify-between">
                                         <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
                                         {
-                                            photosUrl || values?.photos ?
+                                            (photosUrl || values?.photos) && currentPathname.includes("/modifier-an-etablissement/") ?
                                                 <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
                                                     <TiDelete className="w-6 h-6 hover:text-red-500" />
                                                 </div>
@@ -476,7 +495,7 @@ const EditEstablishment = () => {
                                         }
                                     </div>
                                     <div className="flex items-center justify-center w-full">
-                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${logoUrl || values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
+                                        <label htmlFor="photos-upload" className={`flex flex-col items-center justify-center w-full ${photosUrl || values?.photos ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
                                             {
                                                 Loading && photosUpload ?
                                                     <Spinner />

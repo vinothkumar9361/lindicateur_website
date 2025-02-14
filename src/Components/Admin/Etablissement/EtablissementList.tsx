@@ -122,14 +122,14 @@ const EstablishmentList = () => {
                     <h3 className="pb-4" >Liste des établissements</h3>
                     <hr className="" />
                 </div>
-                <div className="flex flex-col md:flex-row gap-5 w-full lg:justify-between py-4">
-                    <div className="flex gap-8  lg:gap-14 py-2 px-2">
+                <div className="flex flex-col xl:flex-row gap-5 w-full lg:justify-between py-4">
+                    <div className="flex gap-8  py-2 px-2">
                         <div className="flex items-center cursor-pointer">
                             <div className="p-1 h-8 border-2 border-gray-500">
                                 <IoSearchOutline className="w-6 h-6" />
                             </div>
                             <input
-                                className="h-8 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent"
+                                className="h-8 w-48 sm:w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent"
                                 placeholder="Recherche"
                                 onChange={(e) => { handleSearch(e.target.value) }}
                             />
@@ -145,31 +145,25 @@ const EstablishmentList = () => {
                             <p>Trier</p>
                         </div>
                     </div>
-                    <div className="flex gap-5">
-                        {/* <div>
-                            <button
-                                onClick={() => { setViewImport(true) }}
-                                className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg cursor-pointer"
-                            >
-                                Importer
-                            </button>
-                        </div> */}
-                        <div>
-                            <button
-                                onClick={() => { setViewDownload(true) }}
-                                className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg cursor-pointer"
-                            >
-                                Rapport
-                            </button>
-                        </div>
-                        <div>
-                            <button
-                                onClick={() => { router.push('/admin/ajouter-un-etablissement/') }}
-                                className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
-                            >
-                                Ajouter un établissement
-                            </button>
-                        </div>
+                    <div className="flex flex-wrap justify-between gap-5 xl:gap-3">
+                        <button
+                            onClick={() => { setViewImport(true) }}
+                            className="text-black font-medium p-2  w-32 sm:w-36 md:w-40 xl:w-32 bg_green rounded-lg cursor-pointer"
+                        >
+                            Importer
+                        </button>
+                        <button
+                            onClick={() => { setViewDownload(true) }}
+                            className="text-black font-medium p-2  w-32 sm:w-36 md:w-40 xl:w-32 bg_green rounded-lg cursor-pointer"
+                        >
+                            Rapport
+                        </button>
+                        <button
+                            onClick={() => { router.push('/admin/ajouter-un-etablissement/') }}
+                            className="text-black font-medium p-2 w-full sm:w-64 md:w-80 xl:w-64 bg_green rounded-lg"
+                        >
+                            Ajouter un établissement
+                        </button>
                     </div>
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">

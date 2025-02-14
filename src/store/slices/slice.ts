@@ -5,7 +5,8 @@ import { LoginForAdmin, ValitateOtpForAdmin, GetAdminProfile, UpdateAdminProfile
 import {
     GetAllEtablissementListForAdmin, GetEtablissementForAdmin, AddEtablissementForAdmin,
     UpdateEtablissementForAdmin, DeleteEtablissementForAdmin, GetAllEtablissementApprovalForAdmin,
-    ApprovedOrUnApprovalEtablissementForAdmin, GetAllEstablishmentProfileName, GetEstablishmentProfileReport
+    ApprovedOrUnApprovalEtablissementForAdmin, GetAllEstablishmentProfileName, GetEstablishmentProfileReport,
+    ImportEstablishmentProfile
 } from '@/store/slices/adminAction';
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
@@ -376,6 +377,21 @@ const ReduxSlice = createSlice({
                 state.success = action.payload;
             })
             .addCase(GetEstablishmentProfileReport.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Upload establishment Profile
+            .addCase(ImportEstablishmentProfile.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(ImportEstablishmentProfile.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(ImportEstablishmentProfile.rejected, (state, action) => {
                 state.errors = action.payload;
                 state.Loading = false;
                 state.success = null;

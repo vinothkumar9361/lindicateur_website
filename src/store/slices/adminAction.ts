@@ -296,6 +296,25 @@ export const GetEstablishmentProfileReport = createAsyncThunk(
     },
 );
 
+export const ImportEstablishmentProfile = createAsyncThunk(
+    'lindicateur/ImportEstablishmentProfile',
+    async (val: any, { rejectWithValue }) => {
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'multipart/form-data',
+        })
+
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/import/importCompanyProfile`, val.fileData, { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
 
 // Admin Publicites Module
 export const GetAllPublicitesListForAdmin = createAsyncThunk(

@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import {  GetAllEstablishmentProfileName } from '@/store/slices/adminAction';
+import { ImportEstablishmentProfile } from '@/store/slices/adminAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -45,6 +45,16 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
     }, []);
 
     const handleUpload = () => {
+        console.log("fileUpload", fileUpload);
+
+        let fileData = {
+            file: fileUpload
+        }
+        if (fileUpload) {
+            dispatch(ImportEstablishmentProfile({ token, fileData }))
+        }
+
+
 
     };
 
@@ -94,53 +104,17 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
 
     useEffect(() => {
         if (success) {
-            if (success?.data?.pdfIsCreated) {
-                Swal.fire({
-                    title: success?.data?.message,
-                    icon: "success",
-                    iconColor: "#36AA00",
-                    confirmButtonColor: "#36AA00",
-                    confirmButtonText: "D'accord",
-                    timer: 5000,
-                }).then(() => {
-                    const byteArray = new Uint8Array(success?.data?.pdfBuffer?.data);
-                    console.log(byteArray);
-
-                    let pdfBlob = new Blob([byteArray], { type: "application/pdf" }); // Ensure correct MIME type
-                    console.log(pdfBlob);
-
-                    let pdfObjectUrl = URL.createObjectURL(pdfBlob);
-                    console.log(pdfObjectUrl);
-
-                    const link = document.createElement("a");
-
-                    link.href = pdfObjectUrl;
-                    link.setAttribute("download", `${success?.data?.companyName}.pdf`);
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    window.URL.revokeObjectURL(pdfObjectUrl);
-
-                    dispatch(successMessage(""));
-                    handleCloseDownload();
-                })
-            }
-            else {
-                Swal.fire({
-                    title: success?.data?.message,
-                    icon: "success",
-                    iconColor: "#36AA00",
-                    confirmButtonColor: "#36AA00",
-                    confirmButtonText: "D'accord",
-                    timer: 5000,
-                }).then(() => {
-                    const byteArray = new Uint8Array(success?.data?.pdfBuffer?.data);
-
-                    console.log(byteArray);
-
-                    // dispatch(successMessage(""));
-                })
-            }
+            Swal.fire({
+                title: success?.data?.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "D'accord",
+                timer: 5000,
+            }).then(() => {
+                handleCloseDownload();
+                dispatch(successMessage(""));
+            })
         }
         else if (errors) {
             Swal.fire({
@@ -156,7 +130,7 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
         }
     }, [dispatch, success, errors]);
 
-    console.log(fileUpload);
+    console.log(success);
 
 
     return (
@@ -222,8 +196,9 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
                             <div className="w-full flex justify-center">
                                 <button
                                     type="submit"
-                                    onClick={() => { handleUpload()}}
-                                    className="w-80 text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 mt-6 mb-5 lg:mb-3 search-btn"
+                                    disabled={!fileUpload}
+                                    onClick={() => { handleUpload() }}
+                                    className={` ${fileUpload ? 'text-black cursor-pointer' : 'text-gray-500'}  rounded-lg border-2 border-gray-300 ${fileUpload && 'hover:border-gray-700 search-btn'} p-3 w-80 mb-5 lg:mb-3`}
                                 >
                                     {
                                         Loading ?

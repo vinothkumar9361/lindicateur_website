@@ -53,9 +53,6 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
         if (fileUpload) {
             dispatch(ImportEstablishmentProfile({ token, fileData }))
         }
-
-
-
     };
 
     useEffect(() => {

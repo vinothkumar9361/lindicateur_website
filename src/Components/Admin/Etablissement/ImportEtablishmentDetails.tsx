@@ -58,7 +58,7 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
     useEffect(() => {
         if (fileUpload) {
             const supportedFormats = ['text/csv'];
-            const maxFileSize = 1 * 1024 * 1024; // 1 MB in bytes
+            const maxFileSize = 25 * 1024 * 1024; // 1 MB in bytes
 
             if (fileUpload) {
                 const fileType: any = fileUpload?.type;
@@ -69,7 +69,7 @@ const ImportEtablissementDetails = ({ viewImport, handleCloseDownload }: any) =>
                     setFileUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage("La taille du fichier doit être inférieure à 1 Mo.");
+                    setErrorsMessage("La taille du fichier doit être inférieure à 25 Mo.");
                     setFileUpload(null);
                 }
                 else {

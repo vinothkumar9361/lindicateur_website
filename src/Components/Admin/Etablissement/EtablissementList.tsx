@@ -197,7 +197,16 @@ const EstablishmentList = () => {
                                                     <>
                                                         <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
-                                                                {i + 1}
+                                                            {
+                                                                        AdminEtabliselist?.data?.pagination?.currentPage === 1 ?
+                                                                            <>
+                                                                                {i + 1}
+                                                                            </>
+                                                                            :
+                                                                            <>
+                                                                                {((AdminEtabliselist?.data?.pagination?.currentPage - 1) * 20) + (i + 1)}
+                                                                            </>
+                                                                    }
                                                             </th>
                                                             <td className="px-6 py-4 border-2">
                                                                 {"I00" + data?.id}

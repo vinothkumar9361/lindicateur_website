@@ -49,11 +49,36 @@ const AddBannieres = () => {
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
     const [companyName, setCompanyName] = useState<any | null>(null);
+    const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
 
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
         label: data.companyName,
     }));
+
+    useEffect(() => {
+        const companyfilteredOptions = companyNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        console.log(companyfilteredOptions);
+
+        setSearchcompanyName(companyfilteredOptions);
+
+    }, [AdminCompanyProfilesName])
+
+    const handleInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = companyNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            console.log(filteredOptions);
+
+            setSearchcompanyName(filteredOptions);
+
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -299,7 +324,7 @@ const AddBannieres = () => {
 
                             let bannerData = {
                                 companyprofileId: CompanyProfileId[0]?.id,
-                                companyName: values?.company,
+                                companyName: companyName || values?.company,
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
                                 address: values?.address,
@@ -338,24 +363,8 @@ const AddBannieres = () => {
                                 <Form className="md:flex md:flex-wrap md:w-full">
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                        {/* <Field
-                                            as="select"
-                                            name="company"
-                                            id="company"
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        >
-                                            <option selected>Choose a Etablissement</option>
-                                            {
-                                                AdminCompanyProfilesName?.data?.companyNames?.map((data: any, i: number) => {
-                                                    return (
-                                                        <>
-                                                            <option value={data?.companyName}>{data?.companyName}</option>
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </Field> */}
-                                        <Select
+
+                                        {/* <Select
                                             options={companyNameOptions}
                                             name="company"
                                             value={companyNameOptions?.find((option: any) => option.value === values.company)}
@@ -363,7 +372,21 @@ const AddBannieres = () => {
                                             isClearable={true}
                                             placeholder="Choose an Establishment"
                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                        /> */}
+
+                                        <Select
+                                            options={searchcompanyName}
+                                            name="company"
+                                            value={companyNameOptions?.find((option: any) => option.value === companyName)}
+                                            onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
+                                            isClearable={true}
+                                            isSearchable
+                                            onInputChange={handleInputChange}
+                                            placeholder="Choose an Establishment"
+                                            noOptionsMessage={() => " Saisir..."}
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
                                         />
+
                                         {errors.company && touched.company ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                         ) : null}

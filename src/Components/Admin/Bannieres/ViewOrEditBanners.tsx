@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
+import Select from "react-select";
 
 import { PiWarningCircleBold } from "react-icons/pi";
 import { TiDelete } from "react-icons/ti";
@@ -65,6 +66,37 @@ const ViewOrEditBanners = () => {
         status: AdminBanners?.data?.existingBanner?.isPublished ? "1" : "0",
     });
 
+    const [companyName, setCompanyName] = useState<any | null>(null);
+    const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
+
+    const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
+        value: data.companyName,
+        label: data.companyName,
+    }));
+
+    useEffect(() => {
+        const companyfilteredOptions = companyNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        console.log(companyfilteredOptions);
+
+        setSearchcompanyName(companyfilteredOptions);
+
+    }, [AdminCompanyProfilesName])
+
+    const handleInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = companyNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            console.log(filteredOptions);
+
+            setSearchcompanyName(filteredOptions);
+        }
+    };
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const tokenString = localStorage.getItem('admin-auth-token');
@@ -101,6 +133,7 @@ const ViewOrEditBanners = () => {
                 websiteURL: AdminBanners?.data?.existingBanner?.websiteURL || '',
                 status: AdminBanners?.data?.existingBanner?.isPublished ? "1" : "0",
             })
+            setCompanyName(AdminBanners?.data?.existingBanner?.companyName);
         }
     }, [AdminBanners])
 
@@ -358,7 +391,7 @@ const ViewOrEditBanners = () => {
 
                             let updateData = {
                                 companyprofileId: CompanyProfileId[0]?.id,
-                                companyName: values?.company,
+                                companyName: companyName || values?.company,
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
                                 address: values?.address,
@@ -382,7 +415,7 @@ const ViewOrEditBanners = () => {
                             <Form className="md:flex md:flex-wrap md:w-full">
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                    <Field
+                                    {/* <Field
                                         as="select"
                                         name="company"
                                         id="company"
@@ -399,7 +432,21 @@ const ViewOrEditBanners = () => {
                                                 )
                                             })
                                         }
-                                    </Field>
+                                    </Field> */}
+
+                                    <Select
+                                        options={searchcompanyName}
+                                        name="company"
+                                        value={companyNameOptions?.find((option: any) => option.value === companyName)}
+                                        onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
+                                        isClearable={true}
+                                        isSearchable
+                                        onInputChange={handleInputChange}
+                                        placeholder="Choose an Establishment"
+                                        noOptionsMessage={() => " Saisir..."}
+                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                    />
+
                                     {errors.company && touched.company ? (
                                         <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                     ) : null}

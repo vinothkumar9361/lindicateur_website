@@ -621,13 +621,13 @@ export const GetAllCategoryListForAdmin = createAsyncThunk(
         })
         try {
             if (val?.search && val?.sort) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&search=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&categoryName=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }
             }
             else if (val?.search) {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&search=${val?.search}`, { headers: headers });
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/gellAllCategory?page=${val?.page}&type=${val?.type}&categoryName=${val?.search}`, { headers: headers });
                 if (response.status === 200 || response.status === 201) {
                     return response;
                 }

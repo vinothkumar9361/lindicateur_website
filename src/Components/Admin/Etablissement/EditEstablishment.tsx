@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
+import Select from "react-select";
 
 import { PiWarningCircleBold } from "react-icons/pi";
 import { TiDelete } from "react-icons/ti";
@@ -57,6 +58,35 @@ const EditEstablishment = () => {
         phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
         websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
     });
+    const [categoryName, setCategoryName] = useState<any | null>(null);
+    const [searchcategoryName, setSearchcategoryName] = useState<any | null>([]);
+
+    const categoryNameOptions = AdminCategoryList?.data?.category?.map((data: any) => ({
+        value: data.categoryName,
+        label: data.categoryName,
+    }));
+
+    useEffect(() => {
+        const categoryfilteredOptions = categoryNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        console.log(categoryfilteredOptions);
+
+        setSearchcategoryName(categoryfilteredOptions);
+    }, [AdminCategoryList])
+
+    const handlecategoryInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = categoryNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            console.log(filteredOptions);
+
+            setSearchcategoryName(filteredOptions);
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -97,6 +127,10 @@ const EditEstablishment = () => {
                 phone: AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '',
                 websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
             })
+            setCategoryName(AdminEtablise?.data?.existingCompanyProfile?.categoryName);
+            console.log(AdminEtablise?.data?.existingCompanyProfile?.categoryName);
+            
+            console.log(categoryNameOptions?.find((option: any) => option.value === AdminEtablise?.data?.existingCompanyProfile?.categoryName));
         }
     }, [AdminEtablise])
 
@@ -293,7 +327,7 @@ const EditEstablishment = () => {
                         onSubmit={values => {
                             let updateData = {
                                 fullName: values?.name,
-                                categoryName: values?.category,
+                                categoryName: categoryName || values?.category,
                                 companyName: values?.company,
                                 address: values?.address,
                                 departmentCode: values?.departmentcode,
@@ -327,25 +361,31 @@ const EditEstablishment = () => {
 
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                     <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                    <Field
-                                        as="select"
+                                    {/* <Select
+                                        options={categoryNameOptions}
                                         name="category"
-                                        id="category"
-                                        selected={values?.category}
-                                        disabled={currentPathname.includes("/voir-un-etablissement/")}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                        <option selected>Choose a Catégorie</option>
-                                        {
-                                            AdminCategoryList?.data?.category?.map((data: any, i: number) => {
-                                                return (
-                                                    <>
-                                                        <option value={data?.categoryName}>{data?.categoryName}</option>
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                    </Field>
+                                        value={categoryNameOptions?.find((option: any) => option.value === categoryName)}
+                                        onChange={(selectedOption: any) => setCategoryName(selectedOption?.value)}
+                                        isClearable={true}
+                                        placeholder="Choose a Catégorie"
+                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                        isDisabled={currentPathname.includes("/voir-un-publicite/")}
+                                    /> */}
+
+                                    <Select
+                                        options={searchcategoryName}
+                                        name="category"
+                                        value={categoryNameOptions?.find((option: any) => option.value === categoryName?.toLowerCase())}
+                                        onChange={(selectedOption: any) => setCategoryName(selectedOption?.value)}
+                                        isClearable={true}
+                                        isSearchable
+                                        onInputChange={handlecategoryInputChange}
+                                        placeholder="Choose a Catégorie"
+                                        noOptionsMessage={() => " Saisir..."}
+                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                        isDisabled={currentPathname.includes("/voir-un-etablissement/")}
+                                    />
+
                                     {errors.category && touched.category ? (
                                         <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                     ) : null}

@@ -679,6 +679,9 @@ li {
   border-bottom-left-radius: 10pc !important;
 }
 
+.quill-editor .ql-container{
+   height: 120px;
+}
 
 /* Custom Pagination */
 .custom-pagination {

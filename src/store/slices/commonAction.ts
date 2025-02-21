@@ -95,6 +95,27 @@ export const ImageUpload = createAsyncThunk(
     },
 );
 
+//Multiple Image Upload
+export const MultipleImageUpload = createAsyncThunk(
+    'astromind/MultipleImageUpload',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+        }
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/photo/uploadPhotos`, val.photosData,
+                { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                const { data } = response;
+                return data;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
 // Image Delete
 export const ImageDelete = createAsyncThunk(
     'astromind/ImageDelete',

@@ -71,8 +71,6 @@ const EditEstablishment = () => {
             option.value.toLowerCase().includes("a".toLowerCase())
         ).slice(0, 500);
 
-        console.log(categoryfilteredOptions);
-
         setSearchcategoryName(categoryfilteredOptions);
     }, [AdminCategoryList])
 
@@ -81,8 +79,6 @@ const EditEstablishment = () => {
             const filteredOptions = categoryNameOptions.filter((option: any) =>
                 option.value.toLowerCase().includes(inputValue.toLowerCase())
             ).slice(0, 500);
-
-            console.log(filteredOptions);
 
             setSearchcategoryName(filteredOptions);
         }
@@ -128,9 +124,6 @@ const EditEstablishment = () => {
                 websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
             })
             setCategoryName(AdminEtablise?.data?.existingCompanyProfile?.categoryName);
-            console.log(AdminEtablise?.data?.existingCompanyProfile?.categoryName);
-            
-            console.log(categoryNameOptions?.find((option: any) => option.value === AdminEtablise?.data?.existingCompanyProfile?.categoryName));
         }
     }, [AdminEtablise])
 

@@ -1,5 +1,7 @@
 `use client`;
 
+import dynamic from "next/dynamic";
+
 import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
@@ -8,10 +10,13 @@ import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import Select from "react-select";
 
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
+
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { AddPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName, GetEtablissementForAdmin } from '@/store/slices/adminAction';
-import { ImageUpload, ImageDelete } from '@/store/slices/commonAction';
+import { ImageUpload, MultipleImageUpload, ImageDelete } from '@/store/slices/commonAction';
 import { successMessage, errorMessage, removeEtablishmentData } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -41,11 +46,34 @@ const Addetablissement = () => {
     const [logoUrl, setLogoUrl] = useState<any | null>(null);
     const [photosUpload, setPhotosUpload] = useState<any | null>(null);
     const [photosUrl, setPhotosUrl] = useState<any | null>(null);
+    const [gallery, setGallery] = useState<any | null>([]);
+    const [previewUrls, setPreviewUrls] = useState([]);
+
+    console.log(gallery);
+    console.log(previewUrls);
+
+
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
+    const [errorMessagegallery, setErrorMessagegallery] = useState<string | null>(null);
+
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [categoryName, setCategoryName] = useState<any | null>(null);
+    const [searchcategoryName, setSearchcategoryName] = useState<any | null>([]);
+    const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
+
+    const [value, setValue] = useState('');
+    const [presentation, setPresentation] = useState<any | null>(null);
+    const [activities, setActivities] = useState<any | null>(null);
+    const [partners, setPartners] = useState<any | null>(null);
+    const [references, setReferences] = useState<any | null>(null);
+
+    console.log(presentation);
+    console.log(activities);
+    console.log(partners);
+    console.log(references);
+
 
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
@@ -56,6 +84,40 @@ const Addetablissement = () => {
         value: data.categoryName,
         label: data.categoryName,
     }));
+
+    useEffect(() => {
+        const companyfilteredOptions = companyNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        setSearchcompanyName(companyfilteredOptions);
+
+        const categoryfilteredOptions = categoryNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        setSearchcategoryName(categoryfilteredOptions);
+    }, [AdminCategoryList, AdminCompanyProfilesName])
+
+    const handleInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = companyNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            setSearchcompanyName(filteredOptions);
+        }
+    };
+
+    const handlecategoryInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = categoryNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            setSearchcategoryName(filteredOptions);
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -166,8 +228,61 @@ const Addetablissement = () => {
                 setPhotosUpload(null);
             }
         }
+        else if (gallery) {
+            const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            const maxFileSize = 1 * 1024 * 1024;
 
-    }, [logoUpload, photosUpload])
+            const removeItem = (arr: any, index: any) => {
+                arr.filter((_: any, i: any) => i !== index)
+            };
+
+            console.log("gallery", gallery);
+
+            if (gallery?.length > 6) {
+                setErrorMessagegallery("élécharger seulement 6 images");
+            }
+
+            gallery?.map((image: any, i: any) => {
+                console.log(image);
+
+                const fileType: any = image?.type;
+                const fileSize: any = image?.size;
+                console.log(fileType);
+
+
+                if (!supportedFormats.includes(fileType)) {
+                    setErrorMessagegallery("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
+                    const updatedGallery = removeItem(gallery, i);
+                    console.log(updatedGallery);
+                    setGallery(updatedGallery === undefined ? [] : updatedGallery);
+                }
+                else if (fileSize > maxFileSize) {
+                    setErrorMessagegallery('La taille du fichier doit être inférieure à 1 Mo.');
+                    const updatedGallery = removeItem(gallery, i);
+                    console.log(updatedGallery);
+                    setGallery(updatedGallery === undefined ? [] : updatedGallery);
+                }
+                else {
+                    // Create a FileReader to read the image file
+                    const reader = new FileReader();
+                    reader.onload = (e: any) => {
+                        const img: any = new Image();
+                        img.onload = () => {
+                            const { width, height } = img;
+
+                            const url: any = URL.createObjectURL(image);
+                            setPreviewUrls((prevState): any => [...prevState, url]);
+                            setErrorMessagegallery(null);
+
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(image);
+                }
+            })
+        }
+
+    }, [logoUpload, photosUpload, gallery])
 
     useEffect(() => {
         if (success) {
@@ -203,6 +318,16 @@ const Addetablissement = () => {
                     dispatch(successMessage(""));
                 })
             }
+            else if (success?.data?.isAddCreated) {
+                dispatch(successMessage(""));
+                  let photosData = {
+                    photoUrl : gallery,
+                    photoTitle : "photo",
+                    adId : success?.data?.newAds?.id
+                  }
+
+                  dispatch(MultipleImageUpload({ photosData }))
+            }
             else {
                 Swal.fire({
                     title: success?.data?.message,
@@ -212,8 +337,8 @@ const Addetablissement = () => {
                     confirmButtonText: "D'accord",
                     timer: 5000,
                 }).then(() => {
-                    dispatch(successMessage(""));
-                    router.push('/admin/liste-des-publicites/')
+                    // dispatch(successMessage(""));
+                    // router.push('/admin/liste-des-publicites/')
                 })
             }
         }
@@ -236,6 +361,9 @@ const Addetablissement = () => {
             })
         }
     }, [dispatch, success, errors]);
+
+    console.log(success);
+    
 
     const handleUploadImg = () => {
 
@@ -273,6 +401,13 @@ const Addetablissement = () => {
 
     console.log("AdminEtablise", AdminEtablise);
 
+    const handleFileChange = (event: any) => {
+        const files = Array.from(event.target.files);
+        const prevfiles = gallery;
+        const mergefiles = [...prevfiles, ...files]
+        setGallery(mergefiles);
+    };
+
     return (
         <>
             <div className="w-full lg:w-auto">
@@ -301,7 +436,12 @@ const Addetablissement = () => {
                             images: '1 Écran',
                             photoType: 'poster',
                             status: '',
-                            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || ''
+                            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
+                            presentation: presentation || '',
+                            activities: activities || '',
+                            partners: partners || '',
+                            references: references || '',
+
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
@@ -309,8 +449,8 @@ const Addetablissement = () => {
 
                             let publicitesData = {
                                 companyprofileId: CompanyProfileId[0]?.id,
-                                companyName: values?.company,
-                                categoryName: values?.category,
+                                companyName: companyName || values?.company,
+                                categoryName: categoryName || values?.category,
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
                                 address: values?.address,
@@ -326,6 +466,10 @@ const Addetablissement = () => {
                                 adBgType: values?.photoType,
                                 websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 isPublished: values?.status === "1" ? "true" : "false",
+                                presentation: values?.presentation || '',
+                                activities: values?.activities || '',
+                                partners: values?.partners || '',
+                                references: values?.references || '',
                             }
 
                             dispatch(AddPublicitesForAdmin({ token, publicitesData }));
@@ -370,14 +514,18 @@ const Addetablissement = () => {
                                             }
                                         </Field> */}
                                         <Select
-                                            options={companyNameOptions}
+                                            options={searchcompanyName}
                                             name="company"
-                                            value={companyNameOptions?.find((option: any) => option.value === values.company)}
+                                            value={companyNameOptions?.find((option: any) => option.value === companyName)}
                                             onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
                                             isClearable={true}
+                                            isSearchable
+                                            onInputChange={handleInputChange}
                                             placeholder="Choose an Establishment"
+                                            noOptionsMessage={() => " Saisir..."}
                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
                                         />
+
                                         {errors.company && touched.company ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
                                         ) : null}
@@ -385,30 +533,16 @@ const Addetablissement = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                        {/* <Field
-                                            as="select"
-                                            name="category"
-                                            id="category"
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        >
-                                            <option selected>Choose a Catégorie</option>
-                                            {
-                                                AdminCategoryList?.data?.category?.map((data: any, i: number) => {
-                                                    return (
-                                                        <>
-                                                            <option value={data?.categoryName}>{data?.categoryName}</option>
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </Field> */}
                                         <Select
-                                            options={categoryNameOptions}
+                                            options={searchcategoryName}
                                             name="category"
-                                            value={categoryNameOptions?.find((option: any) => option.value === values.category)}
-                                            onChange={(selectedOption) => setCategoryName(selectedOption?.value)}
+                                            value={categoryNameOptions?.find((option: any) => option.value === categoryName)}
+                                            onChange={(selectedOption: any) => setCategoryName(selectedOption?.value)}
                                             isClearable={true}
+                                            isSearchable
+                                            onInputChange={handlecategoryInputChange}
                                             placeholder="Choose a Catégorie"
+                                            noOptionsMessage={() => " Saisir..."}
                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
                                         />
                                         {errors.category && touched.category ? (
@@ -584,7 +718,7 @@ const Addetablissement = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <div className="pb-2 flex justify-between">
-                                            <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
+                                            <label htmlFor="photos-upload" className='text-left'>Ajouter des publicites</label>
                                             {
                                                 photosUrl ?
                                                     <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
@@ -688,7 +822,132 @@ const Addetablissement = () => {
                                         ) : null}
                                     </div>
 
-                                    <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Présentation</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={presentation}
+                                            onChange={setPresentation}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Activités</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={activities}
+                                            onChange={setActivities}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Partenaires</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={partners}
+                                            onChange={setPartners}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Références</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={references}
+                                            onChange={setReferences}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <div className="pb-2 flex justify-between">
+                                            <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
+                                            {
+                                                photosUrl ?
+                                                    <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
+                                                        <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                                    </div>
+                                                    :
+                                                    null
+                                            }
+                                        </div>
+
+                                        <div className="flex flex-wrap gap-3 mb-5">
+                                            {
+                                                previewUrls?.map((url: any) => (
+                                                    <>
+                                                        <div className="">
+                                                            <img src={url} alt="" className="w-30 h-20 object-contain" />
+                                                        </div>
+                                                    </>
+                                                ))
+                                            }
+                                        </div>
+                                        <div className="flex items-center justify-center w-full">
+                                            <label
+                                                htmlFor="gallery-upload"
+                                                className={`flex flex-col items-center justify-center w-full ${photosUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}
+                                            >
+                                                {
+                                                    Loading && photosUpload ?
+                                                        <Spinner />
+                                                        :
+                                                        <>
+                                                            {
+                                                                photosUrl ?
+                                                                    <div className="flex flex-col items-center justify-center w-full">
+                                                                        <a href={photosUrl} className="w-full text-wrap break-words line-clamp-2 px-4">{photosUrl?.imageUrl}</a>
+                                                                    </div>
+                                                                    :
+                                                                    null
+                                                            }
+                                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                                </svg>
+                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (6 photos)</p>
+                                                            </div>
+                                                            <input
+                                                                id="gallery-upload"
+                                                                name="gallery-upload"
+                                                                type="file"
+                                                                className="hidden"
+                                                                // onChange={(e: any) => {
+                                                                //     setGallery(e.target.files[0])
+                                                                // }}
+                                                                onChange={handleFileChange}
+                                                                multiple
+                                                            />
+                                                        </>
+                                                }
+                                            </label>
+                                        </div>
+                                        {errorMessagegallery ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagegallery}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16 mt-6">
                                         <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn">
                                             {
                                                 Loading ?

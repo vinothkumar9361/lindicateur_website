@@ -91,19 +91,21 @@ const SearchMaps = ({ place }: any) => {
         // const data = await response.json();
 
         // const { data }: any = response;
+        if (location) {
+            const { lat, lng } = location?.results[0]?.geometry?.location;
+            latitude = parseFloat(lat);
+            longitude = parseFloat(lng);
 
-        const { lat, lng } = location.results[0].geometry.location;
-        latitude = parseFloat(lat);
-        longitude = parseFloat(lng);
-
-        marker = {
-            id: i + 1,
-            name: city,
-            position: {
-                lat: latitude,
-                lng: longitude
+            marker = {
+                id: i + 1,
+                name: city,
+                position: {
+                    lat: latitude,
+                    lng: longitude
+                }
             }
         }
+       
 
         return marker;
 
@@ -175,47 +177,47 @@ const SearchMaps = ({ place }: any) => {
         }
     }, [place])
 
-    useEffect(() => {
-        if (CustomerPublicitesList?.data?.data) {
-            Promise.all(
-                CustomerPublicitesList.data.data.map((value: any, i: number) =>
-                    getMapMarker(value?.address, i)
-                )
-            )
-                .then((positions) => {
-                    setMarkerValue((prevMarkers: any) => {
-                        const uniquePositions = positions.filter(
-                            (pos) => !prevMarkers.some((m: any) => JSON.stringify(m) === JSON.stringify(pos))
-                        );
-                        return [...prevMarkers, ...uniquePositions];
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error fetching map markers:", error);
-                });
-        }
-    }, [CustomerPublicitesList]);
+    // useEffect(() => {
+    //     if (CustomerPublicitesList?.data?.data) {
+    //         Promise.all(
+    //             CustomerPublicitesList.data.data.map((value: any, i: number) =>
+    //                 getMapMarker(value?.address, i)
+    //             )
+    //         )
+    //             .then((positions) => {
+    //                 setMarkerValue((prevMarkers: any) => {
+    //                     const uniquePositions = positions.filter(
+    //                         (pos) => !prevMarkers.some((m: any) => JSON.stringify(m) === JSON.stringify(pos))
+    //                     );
+    //                     return [...prevMarkers, ...uniquePositions];
+    //                 });
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error fetching map markers:", error);
+    //             });
+    //     }
+    // }, [CustomerPublicitesList]);
 
-    useEffect(() => {
-        if (CustomerResearchData?.data?.data) {
-            Promise.all(
-                CustomerResearchData.data.data.map((value: any, i: number) =>
-                    getMapMarker(value?.address, i)
-                )
-            )
-                .then((positions) => {
-                    setMarkerValue((prevMarkers: any) => {
-                        const uniquePositions = positions.filter(
-                            (pos) => !prevMarkers.some((m: any) => JSON.stringify(m) === JSON.stringify(pos))
-                        );
-                        return [...prevMarkers, ...uniquePositions];
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error fetching map markers:", error);
-                });
-        }
-    }, [CustomerResearchData]);
+    // useEffect(() => {
+    //     if (CustomerResearchData?.data?.data) {
+    //         Promise.all(
+    //             CustomerResearchData.data.data.map((value: any, i: number) =>
+    //                 getMapMarker(value?.address, i)
+    //             )
+    //         )
+    //             .then((positions) => {
+    //                 setMarkerValue((prevMarkers: any) => {
+    //                     const uniquePositions = positions.filter(
+    //                         (pos) => !prevMarkers.some((m: any) => JSON.stringify(m) === JSON.stringify(pos))
+    //                     );
+    //                     return [...prevMarkers, ...uniquePositions];
+    //                 });
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error fetching map markers:", error);
+    //             });
+    //     }
+    // }, [CustomerResearchData]);
 
     const handleActiveMarker = (marker: any) => {
         if (marker === activeMarker) {

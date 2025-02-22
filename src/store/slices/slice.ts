@@ -14,7 +14,7 @@ import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, Updat
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
-import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity } from '@/store/slices/customerAction';
+import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity, GetPublicitiesData } from '@/store/slices/customerAction';
 
 import { GetIPAddress, ForgotPassword, ImageUpload, MultipleImageUpload, ImageDelete, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
 
@@ -49,7 +49,7 @@ interface InitialState {
     CustomerPublicitesList: any | null;
     CustomerCategoryList: any | null;
     CustomerCityList: any | null;
-
+    CustomerPublicities: any | null;
 }
 
 // Initial state
@@ -74,7 +74,8 @@ const initialState: InitialState = {
     CustomerBannerList: null,
     CustomerPublicitesList: null,
     CustomerCategoryList: null,
-    CustomerCityList: null
+    CustomerCityList: null,
+    CustomerPublicities: null,
 };
 
 // Create the slice
@@ -832,6 +833,21 @@ const ReduxSlice = createSlice({
                 state.errors = action.payload;
                 state.Loading = false;
                 state.CustomerCityList = null;
+            })
+
+            // Get Publicites Data
+            .addCase(GetPublicitiesData.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetPublicitiesData.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerPublicities = action.payload;
+            })
+            .addCase(GetPublicitiesData.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerPublicities = null;
             })
 
     },

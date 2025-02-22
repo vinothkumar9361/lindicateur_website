@@ -112,6 +112,11 @@ const ResultData = ({ handlePlace }: any) => {
         let thirdData = CustomerPublicitesList?.data?.data?.filter((item: any) => item?.imageSize.includes("1/4 Écran"));
         setQuarterEcranData(thirdData);
     }, [CustomerPublicitesList])
+
+    const formatString = (str: any) => {
+        return str.toLowerCase().replace(/\s+/g, '');
+    };
+
     return (
         <>
             <div className="result-data bg-white flex flex-col justify-center gap-5 p-4 mt-6">
@@ -125,14 +130,19 @@ const ResultData = ({ handlePlace }: any) => {
                                     <>
                                         {
                                             fullEcranData?.map((item: any, i: number) => {
-                                                console.log(item?.photos);
-
+                                                let slug = formatString(item?.companyName)
                                                 return (
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search cursor-pointer">
-                                                                    <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                <div
+                                                                    onClick={() => {
+                                                                        handleSelectPlace(item?.address)
+                                                                        localStorage.setItem("publicites-webiste-auth-id", item?.id)
+                                                                    }}
+                                                                    className="ad-card-search cursor-pointer"
+                                                                >
+                                                                    <a href={`/entreprises/${slug}`} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
                                                                 </div>
@@ -172,14 +182,20 @@ const ResultData = ({ handlePlace }: any) => {
                                         <Slider {...settings} className="">
                                             {
                                                 fullEcranData?.map((item: any, i: number) => {
-                                                    console.log(item?.photos);
+                                                    let slug = formatString(item?.companyName)
 
                                                     return (
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search cursor-pointer">
-                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                    <div
+                                                                        onClick={() => {
+                                                                            handleSelectPlace(item?.address)
+                                                                            localStorage.setItem("publicites-webiste-auth-id", item?.id)
+                                                                        }}
+                                                                        className="ad-card-search cursor-pointer"
+                                                                    >
+                                                                        <a href={`/entreprises/${slug}`} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
                                                                     </div>
@@ -199,14 +215,14 @@ const ResultData = ({ handlePlace }: any) => {
                                     <>
                                         {
                                             halfEcranData?.map((item: any, i: number) => {
-                                                console.log(item?.photos);
+                                                let slug = formatString(item?.companyName)
 
                                                 return (
                                                     <>
                                                         {
                                                             item?.adBgType == "poster" ?
                                                                 <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 w-4/5 flex justify-center cursor-pointer mt-6">
-                                                                    <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                    <a href={`/entreprises/${slug}`} rel="noopener noreferrer" className="" target="_blank">
                                                                         <img src={item?.photos} alt="img" className="" />
                                                                     </a>
                                                                 </div>
@@ -223,14 +239,13 @@ const ResultData = ({ handlePlace }: any) => {
                                         <Slider {...settingstwo} className="">
                                             {
                                                 halfEcranData?.map((item: any, i: number) => {
-                                                    console.log(item?.photos);
-
+                                                    let slug = formatString(item?.companyName);
                                                     return (
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
                                                                     <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 cursor-pointer md:mt-6">
-                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                        <a href={`/entreprises/${slug}`} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
                                                                     </div>
@@ -251,14 +266,14 @@ const ResultData = ({ handlePlace }: any) => {
                                         <div className="">
                                             {
                                                 quarterEcranData?.map((item: any, i: number) => {
-                                                    console.log(item?.photos);
+                                                    let slug = formatString(item?.companyName);
 
                                                     return (
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
                                                                     <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 flex justify-center cursor-pointer mt-6">
-                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                        <a href={`/entreprises/${slug}`} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
                                                                     </div>
@@ -276,14 +291,14 @@ const ResultData = ({ handlePlace }: any) => {
                                         <Slider {...settingsthree} className="md:mt-6">
                                             {
                                                 quarterEcranData?.map((item: any, i: number) => {
-                                                    console.log(item?.photos);
+                                                    let slug = formatString(item?.companyName);
 
                                                     return (
                                                         <>
                                                             {
                                                                 item?.adBgType == "poster" ?
                                                                     <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 cursor-pointer">
-                                                                        <a href={item?.websiteURL} rel="noopener noreferrer" className="" target="_blank">
+                                                                        <a href={`/entreprises/${slug}`} rel="noopener noreferrer" className="" target="_blank">
                                                                             <img src={item?.photos} alt="img" className="" />
                                                                         </a>
                                                                     </div>
@@ -301,6 +316,7 @@ const ResultData = ({ handlePlace }: any) => {
                             <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">
                                 {
                                     CustomerResearchData?.data?.data?.map((item: any, i: number) => {
+
                                         return (
                                             <>
                                                 <div onClick={() => { handleSelectPlace(item?.address) }} className="cursor-pointer w-full sm:w-64 md:w-80 lg:w-64 2xl:w-64 box_shadow_light">
@@ -310,7 +326,7 @@ const ResultData = ({ handlePlace }: any) => {
                                                             <Image src={TestImg} alt="img" className="w-full h-14" />
                                                         </a>
                                                     </div>
-                                                   
+
                                                     <div className="text-center px-4 py-4">
                                                         <h5 className="font-bold py-2">{item?.companyName}</h5>
                                                         <p className="bg_green py-1 ">{item?.categoryName}</p>

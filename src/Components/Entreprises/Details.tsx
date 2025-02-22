@@ -11,7 +11,7 @@ import { MdEmail } from "react-icons/md";
 import AdImg from '@/Images/Home/Ad_img.png';
 
 
-const Details = () => {
+const Details = ({ data }: any) => {
     const images = [
         {
             original: "https://picsum.photos/id/1018/1000/600/",
@@ -42,70 +42,78 @@ const Details = () => {
                                 <p className="text-xl font-semibold ">Coordonnées</p>
                             </div>
                             <div className="mt-4">
-                                <p className="pb-4"><span className="font-semibold text-lg">Nom : </span> Octopus ERA</p>
-                                <p className="pb-4"><span className="font-semibold text-lg">Adresse :</span> Appt 805, 132 Boulevard de Stalingrad, Ivry-sur-Seine</p>
-                                <p className="pb-4"><span className="font-semibold text-lg">Code Postal :</span> 330333</p>
-                                <p className="pb-4"><span className="font-semibold text-lg">Ville : </span> Ivry-sur-Seine</p>
+                                <p className="pb-4"><span className="font-semibold text-lg">Nom : </span> {data?.companyName}</p>
+                                <p className="pb-4"><span className="font-semibold text-lg">Adresse :</span> {data?.address}</p>
+                                <p className="pb-4"><span className="font-semibold text-lg">Code Postal :</span> {data?.postalCode}</p>
+                                <p className="pb-4"><span className="font-semibold text-lg">Ville : </span> {data?.city}</p>
                             </div>
                             <div className="flex gap-3">
-                                <button className="w-1/2 bg_green flex justify-center items-center gap-3 rounded-2xl py-2">
+                                <a href={`tel:+${data?.phoneNumber}`} className="w-1/2 bg_green flex justify-center items-center gap-3 rounded-2xl py-2">
                                     <IoCall />
                                     <p>Appel</p>
-                                </button>
-                                <button className="w-1/2 bg_green flex justify-center items-center gap-3 rounded-2xl">
+                                </a>
+                                <a href={`mailto:${data?.email}`} className="w-1/2 bg_green flex justify-center items-center gap-3 rounded-2xl">
                                     <MdEmail />
                                     <p>Email</p>
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <div className="w-full lg:w-2/3">
-                            <Image src={AdImg} alt="image" />
+                            <img src={data?.photos} alt="image" />
                         </div>
                     </div>
 
-                    <div className="mt-4">
-                        <div className="bg-gray-300 py-2 px-4">
-                            <p className="text-xl font-semibold ">Présentation</p>
-                        </div>
-                        <div className="pt-4 px-2">
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        data?.presentation ?
+                            <div className="mt-4">
+                                <div className="bg-gray-300 py-2 px-4">
+                                    <p className="text-xl font-semibold ">Présentation</p>
+                                </div>
+                                <div className="pt-4 px-2">
+                                    <div dangerouslySetInnerHTML={{ __html: data?.presentation }} />
+                                </div>
+                            </div>
+                            : null
+                    }
 
-                    <div className="mt-4">
-                        <div className="bg-gray-300 py-2 px-4">
-                            <p className="text-xl font-semibold ">Activités</p>
-                        </div>
-                        <div className="pt-4 px-2">
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        data?.activities ?
+                            <div className="mt-4">
+                                <div className="bg-gray-300 py-2 px-4">
+                                    <p className="text-xl font-semibold ">Activities</p>
+                                </div>
+                                <div className="pt-4 px-2">
+                                    <div dangerouslySetInnerHTML={{ __html: data?.activities }} />
+                                </div>
+                            </div>
+                            : null
+                    }
 
-                    <div className="mt-4">
-                        <div className="bg-gray-300 py-2 px-4">
-                            <p className="text-xl font-semibold ">Partenaires</p>
-                        </div>
-                        <div className="pt-4 px-2">
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        data?.partners ?
+                            <div className="mt-4">
+                                <div className="bg-gray-300 py-2 px-4">
+                                    <p className="text-xl font-semibold ">Partenaires</p>
+                                </div>
+                                <div className="pt-4 px-2">
+                                    <div dangerouslySetInnerHTML={{ __html: data?.partners }} />
+                                </div>
+                            </div>
+                            : null
+                    }
 
-                    <div className="mt-4">
-                        <div className="bg-gray-300 py-2 px-4">
-                            <p className="text-xl font-semibold ">Références</p>
-                        </div>
-                        <div className="pt-4 px-2">
-                            <p>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
-                        </div>
-                    </div>
+                    {
+                        data?.references ?
+                            <div className="mt-4">
+                                <div className="bg-gray-300 py-2 px-4">
+                                    <p className="text-xl font-semibold ">Références</p>
+                                </div>
+                                <div className="pt-4 px-2">
+                                    <div dangerouslySetInnerHTML={{ __html: data?.references }} />
+                                </div>
+                            </div>
+                            : null
+                    }
 
                     <div className="mt-4">
                         <div className="bg-gray-300 py-2 px-4">
@@ -115,8 +123,6 @@ const Details = () => {
                             <ImageGallery items={images} />
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </>

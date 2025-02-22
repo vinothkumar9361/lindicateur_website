@@ -1,11 +1,16 @@
 `use client`;
 
+import dynamic from "next/dynamic";
+
 import { useRouter } from "next/router";
 import { useParams } from 'next/navigation';
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import Select from "react-select";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
 import { PiWarningCircleBold } from "react-icons/pi";
 import { TiDelete } from "react-icons/ti";
@@ -45,6 +50,11 @@ const ViewOrEditPublicites = () => {
     const [photosUrl, setPhotosUrl] = useState<any | null>(null);
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
+
+    const [presentation, setPresentation] = useState<any | null>(null);
+    const [activities, setActivities] = useState<any | null>(null);
+    const [partners, setPartners] = useState<any | null>(null);
+    const [references, setReferences] = useState<any | null>(null);
 
     const [initialValue, setInitialValue] = useState<any | null>({
         category: AdminPublicites?.data?.existingAds?.categoryName || '',
@@ -171,9 +181,11 @@ const ViewOrEditPublicites = () => {
                 websiteURL: AdminPublicites?.data?.existingAds?.websiteURL || '',
             })
             setCategoryName(AdminPublicites?.data?.existingAds?.categoryName);
-            setCompanyName(AdminPublicites?.data?.existingAds?.companyName)
-
-
+            setCompanyName(AdminPublicites?.data?.existingAds?.companyName);
+            setPresentation(AdminPublicites?.data?.existingAds?.presentation || '');
+            setActivities(AdminPublicites?.data?.existingAds?.activities || '');
+            setPartners(AdminPublicites?.data?.existingAds?.partners || '');
+            setReferences(AdminPublicites?.data?.existingAds?.references || '');
         }
     }, [AdminPublicites])
 
@@ -453,6 +465,10 @@ const ViewOrEditPublicites = () => {
                                 websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
                                 isPublished: values?.status === "1" ? "true" : "false",
                                 id: AdminPublicites?.data?.existingAds?.id,
+                                presentation: presentation,
+                                activities: activities,
+                                partners: partners,
+                                references: references,
                             }
                             dispatch(UpdatePublicitesForAdmin({ token, updateData }))
                         }}
@@ -783,6 +799,67 @@ const ViewOrEditPublicites = () => {
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.status}</div>
                                         ) : null}
                                     </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Présentation</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={presentation}
+                                            onChange={setPresentation}
+                                            readOnly={currentPathname.includes("/voir-un-publicite/")}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Activités</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={activities}
+                                            onChange={setActivities}
+                                            readOnly={currentPathname.includes("/voir-un-publicite/")}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Partenaires</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={partners}
+                                            onChange={setPartners}
+                                            readOnly={currentPathname.includes("/voir-un-publicite/")}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
+                                        <label htmlFor="message" className='text-left pb-2'>Références</label>
+
+                                        <ReactQuill
+                                            theme="snow"
+                                            value={references}
+                                            onChange={setReferences}
+                                            readOnly={currentPathname.includes("/voir-un-publicite/")}
+                                            className="quill-editor border border-gray-300 bg-white"
+                                        />
+                                        {errors.message && touched.message ? (
+                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
+                                        ) : null}
+                                    </div>
+
 
                                     <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
                                         <button

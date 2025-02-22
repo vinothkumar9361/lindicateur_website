@@ -318,3 +318,19 @@ export const GetAllCity = createAsyncThunk(
         }
     },
 );
+
+export const GetPublicitiesData = createAsyncThunk(
+    'lindicateur/GetPublicitiesData',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getSingleAdsPage/${val?.id}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);

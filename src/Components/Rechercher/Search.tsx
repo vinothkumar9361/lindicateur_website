@@ -19,12 +19,6 @@ import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch,
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
-const categoryType = [
-    { value: 'item-1', label: 'Fabrication, location, vente de coffrages' },
-    { value: 'item-2', label: 'Affinage de fromages' },
-    { value: 'item-3', label: 'Arboriculture et production de fruits' },
-]
-
 const Search = () => {
     const router = useRouter();
 

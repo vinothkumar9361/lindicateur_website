@@ -65,6 +65,7 @@ const Addetablissement = () => {
     const [partners, setPartners] = useState<any | null>(null);
     const [references, setReferences] = useState<any | null>(null);
 
+    const [updateValue, setUpdateValue] = useState<any | null>(null);
 
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
@@ -118,6 +119,14 @@ const Addetablissement = () => {
     }, []);
 
     useEffect(() => {
+        setUpdateValue({
+            address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
+            departmentcode: AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '',
+            postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
+            city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
+            email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
+            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
+        })
         if (AdminEtablise?.data?.existingCompanyProfile?.phoneNumber) {
             setPhoneNumber(AdminEtablise?.data?.existingCompanyProfile?.phoneNumber)
         }
@@ -327,23 +336,39 @@ const Addetablissement = () => {
                 })
             }
             else if (success?.data?.isAddCreated) {
-                dispatch(successMessage(""));
-                const formData = new FormData();
+                if (gallery?.length > 0) {
+                    dispatch(successMessage(""));
+                    const formData = new FormData();
 
-                gallery.forEach((image: any) => {
-                    formData.append("photoUrl", image);
-                });
+                    gallery.forEach((image: any) => {
+                        formData.append("photoUrl", image);
+                    });
 
-                formData.append("photoTitle", "photo");
-                formData.append("adId", success?.data?.newAds?.id);
+                    formData.append("photoTitle", "photo");
+                    formData.append("adId", success?.data?.newAds?.id);
 
-                let photosData = {
-                    photoUrl: gallery,
-                    photoTitle: "photo",
-                    adId: success?.data?.newAds?.id
+                    let photosData = {
+                        photoUrl: gallery,
+                        photoTitle: "photo",
+                        adId: success?.data?.newAds?.id
+                    }
+
+                    dispatch(MultipleImageUpload({ photosData: formData }))
+                }
+                else {
+                    Swal.fire({
+                        title: success?.data?.message,
+                        icon: "success",
+                        iconColor: "#36AA00",
+                        confirmButtonColor: "#36AA00",
+                        confirmButtonText: "D'accord",
+                        timer: 5000,
+                    }).then(() => {
+                        dispatch(successMessage(""));
+                        router.push('/admin/liste-des-publicites/')
+                    })
                 }
 
-                dispatch(MultipleImageUpload({ photosData: formData }))
             }
             else if (success?.isPhotoCreated) {
                 Swal.fire({
@@ -519,7 +544,7 @@ const Addetablissement = () => {
                             dispatch(AddPublicitesForAdmin({ token, publicitesData }));
                         }}
                     >
-                        {({ errors, touched, values }: any) => {
+                        {({ errors, touched, values, setValues }: any) => {
 
                             useEffect(() => {
                                 console.log(values?.company);
@@ -535,6 +560,16 @@ const Addetablissement = () => {
                                 }
 
                             }, [values?.company])
+
+                            // useEffect(() => {
+                            //     if (AdminEtablise) {
+                            //         setValues((prevValues: any) => ({
+                            //             ...prevValues, // Preserve user-entered data
+                            //             ""
+                            //         }));
+                            //     }
+
+                            // }, [AdminEtablise])
 
                             return (
                                 <Form className="md:flex md:flex-wrap md:w-full">

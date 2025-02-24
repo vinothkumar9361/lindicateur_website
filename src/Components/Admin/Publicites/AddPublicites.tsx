@@ -49,10 +49,6 @@ const Addetablissement = () => {
     const [gallery, setGallery] = useState<any | null>([]);
     const [previewUrls, setPreviewUrls] = useState([]);
 
-    console.log(gallery);
-    console.log(previewUrls);
-
-
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [errorMessagegallery, setErrorMessagegallery] = useState<string | null>(null);
@@ -68,12 +64,6 @@ const Addetablissement = () => {
     const [activities, setActivities] = useState<any | null>(null);
     const [partners, setPartners] = useState<any | null>(null);
     const [references, setReferences] = useState<any | null>(null);
-
-    console.log(presentation);
-    console.log(activities);
-    console.log(partners);
-    console.log(references);
-
 
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
@@ -232,57 +222,74 @@ const Addetablissement = () => {
             const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             const maxFileSize = 1 * 1024 * 1024;
 
-            const removeItem = (arr: any, index: any) => {
-                arr.filter((_: any, i: any) => i !== index)
-            };
+            const removeItem = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
 
             console.log("gallery", gallery);
 
             if (gallery?.length > 6) {
                 setErrorMessagegallery("élécharger seulement 6 images");
+                gallery?.map((image: any, i: any) => {
+                    if (i > 5) {
+                        const updatedGallery = removeItem(gallery, i);
+                        console.log(updatedGallery);
+                        setGallery(updatedGallery === undefined ? [] : updatedGallery);
+                    }
+                })
             }
+            else {
+                let validImages: any[] = [];
 
-            gallery?.map((image: any, i: any) => {
-                console.log(image);
+                gallery?.map((image: any, i: any) => {
+                    console.log(image);
 
-                const fileType: any = image?.type;
-                const fileSize: any = image?.size;
-                console.log(fileType);
+                    const fileType: any = image?.type;
+                    const fileSize: any = image?.size;
 
+                    if (!supportedFormats.includes(fileType)) {
+                        setErrorMessagegallery("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
+                        const updatedGallery = removeItem(gallery, i);
+                        console.log(updatedGallery);
+                        setGallery(updatedGallery === undefined ? [] : updatedGallery);
+                    }
+                    else if (fileSize > maxFileSize) {
+                        setErrorMessagegallery('La taille du fichier doit être inférieure à 1 Mo.');
+                        const updatedGallery = removeItem(gallery, i);
+                        console.log(updatedGallery);
+                        setGallery(updatedGallery === undefined ? [] : updatedGallery);
+                    }
+                    else {
+                        validImages.push(image);
 
-                if (!supportedFormats.includes(fileType)) {
-                    setErrorMessagegallery("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
-                    const updatedGallery = removeItem(gallery, i);
-                    console.log(updatedGallery);
-                    setGallery(updatedGallery === undefined ? [] : updatedGallery);
-                }
-                else if (fileSize > maxFileSize) {
-                    setErrorMessagegallery('La taille du fichier doit être inférieure à 1 Mo.');
-                    const updatedGallery = removeItem(gallery, i);
-                    console.log(updatedGallery);
-                    setGallery(updatedGallery === undefined ? [] : updatedGallery);
-                }
-                else {
-                    // Create a FileReader to read the image file
-                    const reader = new FileReader();
-                    reader.onload = (e: any) => {
-                        const img: any = new Image();
-                        img.onload = () => {
-                            const { width, height } = img;
-
-                            const url: any = URL.createObjectURL(image);
-                            setPreviewUrls((prevState): any => [...prevState, url]);
-                            setErrorMessagegallery(null);
-
+                        // Create a FileReader to read the image file
+                        const reader = new FileReader();
+                        reader.onload = (e: any) => {
+                            const img: any = new Image();
+                            img.onload = () => {
+                                const { width, height } = img;
+                                console.log("testing");
+                            };
+                            img.src = e.target.result;
                         };
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(image);
-                }
-            })
-        }
+                        reader.readAsDataURL(image);
+                    }
+                })
 
+                // Keep only the first 6 valid images
+                validImages = validImages.slice(0, 6);
+
+                // Clear error if exactly 6 valid images are added
+                if (validImages.length === 6) {
+                    // setGallery(validImages);
+                    setErrorMessagegallery(null);
+                }
+            }
+        }
     }, [logoUpload, photosUpload, gallery])
+
+    useEffect(() => {
+        const urls = gallery?.map((image: any) => URL.createObjectURL(image));
+        setPreviewUrls(urls);
+    }, [gallery])
 
     useEffect(() => {
         if (success) {
@@ -320,13 +327,35 @@ const Addetablissement = () => {
             }
             else if (success?.data?.isAddCreated) {
                 dispatch(successMessage(""));
-                  let photosData = {
-                    photoUrl : gallery,
-                    photoTitle : "photo",
-                    adId : success?.data?.newAds?.id
-                  }
+                const formData = new FormData();
 
-                  dispatch(MultipleImageUpload({ photosData }))
+                gallery.forEach((image: any) => {
+                    formData.append("photoUrl", image);
+                });
+
+                formData.append("photoTitle", "photo");
+                formData.append("adId", success?.data?.newAds?.id);
+
+                let photosData = {
+                    photoUrl: gallery,
+                    photoTitle: "photo",
+                    adId: success?.data?.newAds?.id
+                }
+
+                dispatch(MultipleImageUpload({ photosData: formData }))
+            }
+            else if (success?.isPhotoCreated) {
+                Swal.fire({
+                    title: "Annonces créées",
+                    icon: "success",
+                    iconColor: "#36AA00",
+                    confirmButtonColor: "#36AA00",
+                    confirmButtonText: "D'accord",
+                    timer: 5000,
+                }).then(() => {
+                    dispatch(successMessage(""));
+                    router.push('/admin/liste-des-publicites/')
+                })
             }
             else {
                 Swal.fire({
@@ -363,7 +392,7 @@ const Addetablissement = () => {
     }, [dispatch, success, errors]);
 
     console.log(success);
-    
+
 
     const handleUploadImg = () => {
 
@@ -407,6 +436,20 @@ const Addetablissement = () => {
         const mergefiles = [...prevfiles, ...files]
         setGallery(mergefiles);
     };
+
+    const handlePhotosRemove = (value: any) => {
+        const removeItemArray = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
+
+        // gallery.splice(1, value);
+        // previewUrls.splice(1, value);
+        const newGallery: any = removeItemArray(gallery, value);
+        const newPreviewUrls: any = removeItemArray(previewUrls, value);
+        console.log(newGallery);
+        console.log(newPreviewUrls);
+        setGallery(newGallery);
+        setPreviewUrls(newPreviewUrls);
+
+    }
 
     return (
         <>
@@ -876,9 +919,12 @@ const Addetablissement = () => {
 
                                         <div className="flex flex-wrap gap-3 mb-5">
                                             {
-                                                previewUrls?.map((url: any) => (
+                                                previewUrls?.map((url: any, i: number) => (
                                                     <>
-                                                        <div className="">
+                                                        <div className="" >
+                                                            <div onClick={() => handlePhotosRemove(i)} className="cursor-pointer place-items-end">
+                                                                <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                                            </div>
                                                             <img src={url} alt="" className="w-30 h-20 object-contain" />
                                                         </div>
                                                     </>

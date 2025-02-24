@@ -1,6 +1,8 @@
 
 import Image from "next/image";
 
+import { useState, useEffect, useRef } from "react";
+
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 
@@ -12,20 +14,43 @@ import AdImg from '@/Images/Home/Ad_img.png';
 
 
 const Details = ({ data }: any) => {
-    const images = [
-        {
-            original: "https://picsum.photos/id/1018/1000/600/",
-            thumbnail: "https://picsum.photos/id/1018/250/150/",
-        },
-        {
-            original: "https://picsum.photos/id/1015/1000/600/",
-            thumbnail: "https://picsum.photos/id/1015/250/150/",
-        },
-        {
-            original: "https://picsum.photos/id/1019/1000/600/",
-            thumbnail: "https://picsum.photos/id/1019/250/150/",
-        },
-    ];
+
+    console.log("data", data);
+
+    const [imageList, setImageList] = useState<any | null>(null);
+    const [viewImageList, setViewImageList] = useState<boolean>(false);
+
+    const galleryRef = useRef<any>(null);
+
+    useEffect(() => {
+        if (data?.photolists?.length > 0) {
+            const photos = data?.photolists?.map((photo: any) => ({
+                original: photo.photoUrl,
+                thumbnail: photo.photoUrl,
+            }));
+
+            setImageList(photos);
+        }
+
+    }, [data?.photolists])
+
+    const handleImageLoad = () => {
+        if (galleryRef.current) {
+            galleryRef.current.fullScreen();
+        }
+    };
+
+    const handleCloseGallery = () => {
+        if (document.fullscreenElement) {
+            console.log("Exiting fullscreen...");
+            document.exitFullscreen?.();
+        }
+
+        setTimeout(() => {
+            console.log("Closing image gallery...");
+            setViewImageList(false);
+        }, 200);
+    };
 
     return (
         <>
@@ -119,9 +144,52 @@ const Details = ({ data }: any) => {
                         <div className="bg-gray-300 py-2 px-4">
                             <p className="text-xl font-semibold ">Photos </p>
                         </div>
-                        <div className="mt-4 lg:px-20">
-                            <ImageGallery items={images} />
-                        </div>
+                        {
+                            data?.photolists ?
+                                <div className="flex flex-wrap justify-center gap-4 mt-5">
+                                    {
+                                        data?.photolists?.map((image: any) => (
+                                            <>
+                                                <div onClick={() => { setViewImageList(true) }} className="w-40 h-30 sm:w-60 sm:h-40 md:w-80 md:h-60 lg:w-72 lg:h-48 cursor-pointer">
+                                                    <img src={image?.photoUrl} alt="photos" className="w-full h-full" />
+                                                </div>
+                                            </>
+                                        ))
+                                    }
+                                </div>
+                                : null
+                        }
+                        {
+                            viewImageList ?
+                                <div className="mt-4 lg:px-20">
+                                    {
+                                        imageList ?
+                                            <ImageGallery
+                                                ref={galleryRef}
+                                                items={imageList}
+                                                showFullscreenButton={false}
+                                                useBrowserFullscreen={true}
+                                                onImageLoad={handleImageLoad}
+                                                onScreenChange={(isFullscreen) => {
+                                                    if (!isFullscreen) {
+                                                        console.log("Exited fullscreen");
+                                                        if (!isFullscreen && viewImageList) {
+                                                            // handleCloseGallery();
+
+                                                            setTimeout(() => {
+                                                                setViewImageList(false);
+                                                            }, 500);
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                            : null
+                                    }
+                                </div>
+                                : null
+                        }
+
+
                     </div>
                 </div>
             </div>

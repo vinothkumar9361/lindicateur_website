@@ -65,6 +65,7 @@ const Addetablissement = () => {
     const [partners, setPartners] = useState<any | null>(null);
     const [references, setReferences] = useState<any | null>(null);
 
+
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
         label: data.companyName,
@@ -163,7 +164,7 @@ const Addetablissement = () => {
                             //     setErrorMessage('Image dimensions should be less than 150x150 pixels.');
                             // }
 
-                            handleUploadImg();
+                            handleUploadImg(e);
                             setErrorsMessage(null);
                         };
                         img.src = e.target.result;
@@ -203,7 +204,7 @@ const Addetablissement = () => {
                             //     setErrorMessagephoto('Image dimensions should be less than 800x400 pixels.');
                             // }
                             // else{
-                            handleUploadImg();
+                            handleUploadImg(e);
                             setErrorMessagephoto(null);
                             // }
 
@@ -394,8 +395,8 @@ const Addetablissement = () => {
     console.log(success);
 
 
-    const handleUploadImg = () => {
-
+    const handleUploadImg = (e: any) => {
+        e.preventDefault();
         let imageType;
         let imageUrl;
         if (logoUpload) {
@@ -573,30 +574,6 @@ const Addetablissement = () => {
                                         />
                                         {errors.category && touched.category ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
-                                        <Field
-                                            name="startdate"
-                                            type="date"
-                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
-                                        />
-                                        {errors.startdate && touched.startdate ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.startdate}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
-                                        <Field
-                                            name="enddate"
-                                            type="date"
-                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
-                                        />
-                                        {errors.enddate && touched.enddate ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
                                         ) : null}
                                     </div>
 
@@ -798,6 +775,30 @@ const Addetablissement = () => {
                                         ) : null}
                                     </div>
 
+                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                        <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
+                                        <Field
+                                            name="startdate"
+                                            type="date"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
+                                        {errors.startdate && touched.startdate ? (
+                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.startdate}</div>
+                                        ) : null}
+                                    </div>
+
+                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                        <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
+                                        <Field
+                                            name="enddate"
+                                            type="date"
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        />
+                                        {errors.enddate && touched.enddate ? (
+                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
+                                        ) : null}
+                                    </div>
+
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
                                         <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
                                         <PhoneInput
@@ -907,14 +908,6 @@ const Addetablissement = () => {
                                     <div className='flex flex-col pt-4 md:pt-8 w-full'>
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
-                                            {
-                                                photosUrl ?
-                                                    <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
-                                                        <TiDelete className="w-6 h-6 hover:text-red-500" />
-                                                    </div>
-                                                    :
-                                                    null
-                                            }
                                         </div>
 
                                         <div className="flex flex-wrap gap-3 mb-5">
@@ -937,18 +930,10 @@ const Addetablissement = () => {
                                                 className={`flex flex-col items-center justify-center w-full ${photosUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}
                                             >
                                                 {
-                                                    Loading && photosUpload ?
+                                                    Loading ?
                                                         <Spinner />
                                                         :
                                                         <>
-                                                            {
-                                                                photosUrl ?
-                                                                    <div className="flex flex-col items-center justify-center w-full">
-                                                                        <a href={photosUrl} className="w-full text-wrap break-words line-clamp-2 px-4">{photosUrl?.imageUrl}</a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
                                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                                                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />

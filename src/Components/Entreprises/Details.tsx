@@ -66,10 +66,10 @@ const Details = ({ data }: any) => {
         <>
             <div className="py-10">
                 <div className="container mx-auto px-4 lg:px-10">
-                    <div className="flex gap-3 cursor-pointer">
+                    {/* <div className="flex gap-3 cursor-pointer">
                         <FaArrowLeftLong className="w-6 h-6 txt_light_green" />
                         <p className="txt_light_green">retour a la recherche</p>
-                    </div>
+                    </div> */}
 
                     <div className="flex flex-col lg:flex-row gap-5 mt-4">
                         <div className="w-full lg:w-1/3">

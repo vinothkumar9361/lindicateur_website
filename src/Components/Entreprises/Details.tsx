@@ -34,22 +34,32 @@ const Details = ({ data }: any) => {
 
     }, [data?.photolists])
 
+    const enterFullscreen = () => {
+        console.log("test");
+        setViewImageList(true);
+
+        setTimeout(() => {
+            handleImageLoad();
+        }, 0);
+    };
+
     const handleImageLoad = () => {
+        console.log(galleryRef.current);
+
         if (galleryRef.current) {
             galleryRef.current.fullScreen();
         }
+        console.log("Image loaded");
+
     };
 
-    const handleCloseGallery = () => {
-        if (document.fullscreenElement) {
-            console.log("Exiting fullscreen...");
-            document.exitFullscreen?.();
+    const handleScreenChange = (isFullscreen: boolean) => {
+        if (!isFullscreen) {
+            console.log("Exited fullscreen");
+            setTimeout(() => {
+                setViewImageList(false);
+            }, 200);
         }
-
-        setTimeout(() => {
-            console.log("Closing image gallery...");
-            setViewImageList(false);
-        }, 200);
     };
 
     return (
@@ -150,7 +160,7 @@ const Details = ({ data }: any) => {
                                     {
                                         data?.photolists?.map((image: any) => (
                                             <>
-                                                <div onClick={() => { setViewImageList(true) }} className="w-40 h-30 sm:w-60 sm:h-40 md:w-80 md:h-60 lg:w-72 lg:h-48 cursor-pointer">
+                                                <div onClick={enterFullscreen} className="w-40 h-30 sm:w-60 sm:h-40 md:w-80 md:h-60 lg:w-72 lg:h-48 cursor-pointer">
                                                     <img src={image?.photoUrl} alt="photos" className="w-full h-full" />
                                                 </div>
                                             </>
@@ -167,29 +177,15 @@ const Details = ({ data }: any) => {
                                             <ImageGallery
                                                 ref={galleryRef}
                                                 items={imageList}
-                                                showFullscreenButton={false}
+                                                showFullscreenButton={true}
                                                 useBrowserFullscreen={true}
-                                                onImageLoad={handleImageLoad}
-                                                onScreenChange={(isFullscreen) => {
-                                                    if (!isFullscreen) {
-                                                        console.log("Exited fullscreen");
-                                                        if (!isFullscreen && viewImageList) {
-                                                            // handleCloseGallery();
-
-                                                            setTimeout(() => {
-                                                                setViewImageList(false);
-                                                            }, 500);
-                                                        }
-                                                    }
-                                                }}
+                                                onScreenChange={handleScreenChange}
                                             />
                                             : null
                                     }
                                 </div>
                                 : null
                         }
-
-
                     </div>
                 </div>
             </div>

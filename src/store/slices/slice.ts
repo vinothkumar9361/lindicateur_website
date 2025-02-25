@@ -16,7 +16,7 @@ import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomer
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
 import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity, GetPublicitiesData } from '@/store/slices/customerAction';
 
-import { GetIPAddress, ForgotPassword, ImageUpload, MultipleImageUpload, ImageDelete, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
+import { GetIPAddress, ForgotPassword, ImageUpload, MultipleImageUpload, MultipleImageDelete, ImageDelete, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
 
 interface Headers extends AxiosHeaders {
     authorization?: string;
@@ -142,8 +142,22 @@ const ReduxSlice = createSlice({
                 state.success = null;
             })
 
+            //Multiple Image Delete 
+            .addCase(MultipleImageDelete.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(MultipleImageDelete.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(MultipleImageDelete.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
 
-            // Image Upload 
+            // Image Delete 
             .addCase(ImageDelete.pending, (state) => {
                 state.Loading = true;
             })

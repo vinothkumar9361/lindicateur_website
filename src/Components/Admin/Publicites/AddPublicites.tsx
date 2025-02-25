@@ -516,7 +516,6 @@ const Addetablissement = () => {
 
 
     const handleUploadImg = (e: any) => {
-        e.preventDefault();
         let imageType;
         let imageUrl;
         if (logoUpload) {

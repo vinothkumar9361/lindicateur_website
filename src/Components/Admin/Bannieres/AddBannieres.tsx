@@ -19,6 +19,7 @@ import { RootState, AppDispatch } from '@/store/store';
 import Spinner from "@/Components/Common/Loading";
 
 import { Formik, Form, Field } from 'formik';
+import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 
@@ -41,12 +42,15 @@ const AddBannieres = () => {
     const { Loading, success, errors, AdminCompanyProfilesName, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
+
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
     const [logoUrl, setLogoUrl] = useState<any | null>(null);
     const [photosUpload, setPhotosUpload] = useState<any | null>(null);
     const [photosUrl, setPhotosUrl] = useState<any | null>(null);
+
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
+
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
@@ -61,8 +65,6 @@ const AddBannieres = () => {
             option.value.toLowerCase().includes("a".toLowerCase())
         ).slice(0, 500);
 
-        console.log(companyfilteredOptions);
-
         setSearchcompanyName(companyfilteredOptions);
 
     }, [AdminCompanyProfilesName])
@@ -73,10 +75,7 @@ const AddBannieres = () => {
                 option.value.toLowerCase().includes(inputValue.toLowerCase())
             ).slice(0, 500);
 
-            console.log(filteredOptions);
-
             setSearchcompanyName(filteredOptions);
-
         }
     };
 
@@ -87,20 +86,121 @@ const AddBannieres = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (AdminEtablise?.data?.existingCompanyProfile?.phoneNumber) {
-            setPhoneNumber(AdminEtablise?.data?.existingCompanyProfile?.phoneNumber)
-        }
-        if (AdminEtablise?.data?.existingCompanyProfile?.companyName) {
-            setCompanyName(AdminEtablise?.data?.existingCompanyProfile?.companyName)
-        }
-    }, [AdminEtablise])
+    // useEffect(() => {
+    //     if (AdminEtablise?.data?.existingCompanyProfile?.phoneNumber) {
+    //         setPhoneNumber(AdminEtablise?.data?.existingCompanyProfile?.phoneNumber)
+    //     }
+    //     if (AdminEtablise?.data?.existingCompanyProfile?.companyName) {
+    //         setCompanyName(AdminEtablise?.data?.existingCompanyProfile?.companyName)
+    //     }
+    // }, [AdminEtablise])
 
     useEffect(() => {
         if (token) {
             dispatch(GetAllEstablishmentProfileName({}))
         }
     }, [dispatch, token])
+
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            company: '',
+            startdate: '',
+            enddate: '',
+            address: '',
+            postcode: '',
+            city: '',
+            email: '',
+            logo: '',
+            photos: '',
+            phone: '',
+            message: '',
+            status: '',
+            websiteURL: '',
+        },
+        onSubmit: async (values: any) => {
+            console.log(values);
+            let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
+
+            let bannerData = {
+                companyprofileId: CompanyProfileId[0]?.id,
+                companyName: values?.company,
+                startDate: values?.startdate,
+                endDate: values?.enddate,
+                address: values?.address,
+                postalCode: values?.postcode,
+                city: values?.city,
+                email: values?.email,
+                logo: values?.logo?.imageUrl,
+                photos: values?.photos?.imageUrl,
+                phoneNumber: values?.phone,
+                description: values?.message,
+                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
+                isPublished: values?.status === "1" ? "true" : "false",
+            }
+
+            dispatch(AddBannersForAdmin({ token, bannerData }));
+
+        },
+        // validationSchema={}
+        validate: (values: any) => {
+            const errors: any = {};
+
+            if (!values?.startdate) {
+                errors.startdate = "Entrez un Date de début";
+            }
+            if (!values?.enddate) {
+                errors.enddate = "Entrez un Date de fin";
+            }
+
+            console.log(values.startdate);
+            console.log(errors);
+
+            // if (errors.departmentcode || errors.startdate || errors.enddate) {
+            //     Swal.fire({
+            //         title: errors?.departmentcode || errors?.startdate || errors?.enddate,
+            //         icon: "error",
+            //         iconColor: "#CA0505",
+            //         confirmButtonColor: "#CA0505",
+            //         confirmButtonText: "D'accord",
+            //         timer: 5000,
+            //     }).then(() => {
+            //     })
+            // }
+            return errors;
+        }
+    })
+
+
+    useEffect(() => {
+        if (!formik?.values?.company) {
+            dispatch(removeEtablishmentData(""));
+            return;
+        }
+
+        let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == formik?.values?.company);
+        console.log(CompanyProfileId);
+
+        if (token && CompanyProfileId[0]?.id) {
+            dispatch(GetEtablissementForAdmin({ token, id: CompanyProfileId[0]?.id }))
+        }
+        else {
+            dispatch(removeEtablishmentData(""));
+        }
+
+    }, [formik?.values?.company])
+
+    useEffect(() => {
+        formik.setFieldValue("address", AdminEtablise?.data?.existingCompanyProfile?.address || '');
+        formik.setFieldValue("departmentcode", AdminEtablise?.data?.existingCompanyProfile?.departmentCode || '');
+        formik.setFieldValue("postcode", AdminEtablise?.data?.existingCompanyProfile?.postalCode || '');
+        formik.setFieldValue("city", AdminEtablise?.data?.existingCompanyProfile?.city || '');
+        formik.setFieldValue("email", AdminEtablise?.data?.existingCompanyProfile?.email || '');
+        formik.setFieldValue("websiteURL", AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '');
+        formik.setFieldValue("phone", AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '');
+    }, [AdminEtablise])
+
 
     useEffect(() => {
         if (logoUpload) {
@@ -202,11 +302,11 @@ const AddBannieres = () => {
                     timer: 5000,
                 }).then(() => {
                     if (logoUpload) {
-                        setLogoUrl(success?.data);
+                        formik.setFieldValue("logo", success?.data || '');
                         setLogoUpload(null)
                     }
                     else if (photosUpload) {
-                        setPhotosUrl(success?.data);
+                        formik.setFieldValue("photos", success?.data || '');
                         setPhotosUpload(null)
                     }
                     dispatch(successMessage(""));
@@ -282,12 +382,12 @@ const AddBannieres = () => {
     const handleRemoveUrl = (value: any) => {
         if (value === 1) {
             dispatch(ImageDelete({ id: logoUrl?.id }))
-            setLogoUrl(null);
+            formik.setFieldValue("logo", '');
             setLogoUpload(null);
         }
         else if (value === 2) {
             dispatch(ImageDelete({ id: photosUrl?.id }))
-            setPhotosUrl(null);
+            formik.setFieldValue("photos", '');
             setPhotosUpload(null);
         }
     }
@@ -300,341 +400,318 @@ const AddBannieres = () => {
                     <hr className="" />
                 </div>
                 <div className='sm:px-16 md:px-4'>
-                    <Formik
-                        enableReinitialize
-                        initialValues={{
-                            name: '',
-                            company: companyName || '',
-                            startdate: '',
-                            enddate: '',
-                            address: AdminEtablise?.data?.existingCompanyProfile?.address || '',
-                            postcode: AdminEtablise?.data?.existingCompanyProfile?.postalCode || '',
-                            city: AdminEtablise?.data?.existingCompanyProfile?.city || '',
-                            email: AdminEtablise?.data?.existingCompanyProfile?.email || '',
-                            logo: logoUrl?.imageUrl || '',
-                            photos: photosUrl?.imageUrl || '',
-                            phone: phoneNumber,
-                            message: '',
-                            websiteURL: AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '',
-                            status: '',
-                        }}
-                        // validationSchema={AddetablishmentSchema}
-                        onSubmit={values => {
-                            let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
+                    <form action="" className="md:flex md:flex-wrap md:w-full" onSubmit={formik.handleSubmit}>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <label htmlFor="company" className='text-left mb-1'>Société</label>
+                            <Select
+                                options={searchcompanyName}
+                                name="company"
+                                value={companyNameOptions?.find((option: any) => option.value === formik?.values?.company)}
+                                onChange={(selectedOption) => { formik.setFieldValue("company", selectedOption?.value) }}
+                                isClearable={true}
+                                isSearchable
+                                onInputChange={handleInputChange}
+                                placeholder="Choose an Establishment"
+                                noOptionsMessage={() => " Saisir..."}
+                                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                            />
 
-                            let bannerData = {
-                                companyprofileId: CompanyProfileId[0]?.id,
-                                companyName: companyName || values?.company,
-                                startDate: values?.startdate,
-                                endDate: values?.enddate,
-                                address: values?.address,
-                                postalCode: values?.postcode,
-                                city: values?.city,
-                                email: values?.email,
-                                logo: logoUrl?.imageUrl,
-                                photos: photosUrl?.imageUrl,
-                                phoneNumber: phoneNumber,
-                                description: values?.message,
-                                websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
-                                isPublished: values?.status === "1" ? "true" : "false",
-                            }
+                            {formik.errors.company && formik.touched.company && typeof formik.errors.company === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.company}
+                                </div>
+                            )}
+                        </div>
 
-                            dispatch(AddBannersForAdmin({ token, bannerData }));
-                        }}
-                    >
-                        {({ errors, touched, values }: any) => {
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                            <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
+                            <input
+                                name="startdate"
+                                type="date"
+                                value={formik.values.startdate}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                            />
+                            {formik.errors.startdate && formik.touched.startdate && typeof formik.errors.startdate === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.startdate}
+                                </div>
+                            )}
+                        </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
+                            <input
+                                name="enddate"
+                                type="date"
+                                value={formik.values.enddate}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                            />
+                            {formik.errors.enddate && formik.touched.enddate && typeof formik.errors.enddate === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.enddate}
+                                </div>
+                            )}
+                        </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                            <label htmlFor="address" className='text-left pb-2'>Adresse</label>
+                            <input
+                                type="text"
+                                name="address"
+                                value={formik.values.address}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                            />
+                            {formik.errors.address && formik.touched.address && typeof formik.errors.address === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.address}
+                                </div>
+                            )}
+                        </div>
 
-                            useEffect(() => {
-                                console.log(values?.company);
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
+                            <input
+                                name="postcode"
+                                type="number"
+                                value={formik.values.postcode}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                            />
+                            {formik.errors.postcode && formik.touched.postcode && typeof formik.errors.postcode === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.postcode}
+                                </div>
+                            )}
+                        </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                            <label htmlFor="city" className='text-left pb-2'>Ville</label>
+                            <input
+                                type="text"
+                                name="city"
+                                value={formik.values.city}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                            />
+                            {formik.errors.city && formik.touched.city && typeof formik.errors.city === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.city}
+                                </div>
+                            )}
+                        </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <label htmlFor="email" className='text-left pb-2'>Courriel</label>
+                            <input
+                                name="email"
+                                type="email"
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                            />
+                            {formik.errors.email && formik.touched.email && typeof formik.errors.email === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.email}
+                                </div>
+                            )}
+                        </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 phone-input md:pl-4'>
+                            <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
+                            <PhoneInput
+                                country={'fr'}
+                                placeholder="N° de téléphone"
+                                inputProps={{ id: "phone", name: "phone" }}
+                                value={formik?.values?.phone}
+                                onChange={(value) => { formik.setFieldValue("phone", value) }}
+                            />
+                        </div>
 
-                                let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
-                                console.log(CompanyProfileId);
-
-                                if (token && CompanyProfileId[0]?.id) {
-                                    dispatch(GetEtablissementForAdmin({ token, id: CompanyProfileId[0]?.id }))
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <div className="pb-2 flex justify-between">
+                                <label htmlFor="logo-upload" className='text-left'>Ajouter un logo</label>
+                                {
+                                    formik?.values?.logo ?
+                                        <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
+                                            <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                        </div>
+                                        :
+                                        null
                                 }
-                                else {
-                                    dispatch(removeEtablishmentData(""));
+                            </div>
+                            <div className="flex items-center justify-center w-full">
+                                <label
+                                    htmlFor="logo-upload"
+                                    className={`flex flex-col items-center justify-center w-full ${formik?.values?.logo ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}
+                                >
+                                    {
+                                        Loading && logoUpload ?
+                                            <Spinner />
+                                            :
+                                            <>
+                                                {
+                                                    formik?.values?.logo ?
+                                                        <div className="flex flex-col items-center justify-center w-full">
+                                                            <a href={formik?.values?.logo?.imageUrl} className="w-full text-wrap break-words px-4">{formik?.values?.logo?.imageUrl}</a>
+                                                        </div>
+                                                        :
+                                                        null
+                                                }
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                    </svg>
+                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
+                                                </div>
+                                                <input
+                                                    id="logo-upload"
+                                                    name="logo-upload"
+                                                    type="file"
+                                                    className="hidden"
+                                                    onChange={(e: any) => {
+                                                        setLogoUpload(e.target.files[0])
+                                                    }}
+                                                    multiple
+                                                />
+                                            </>
+                                    }
+                                </label>
+                            </div>
+                            {errorsMessage ? (
+                                <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
+                            ) : null}
+                        </div>
+
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                            <div className="pb-2 flex justify-between">
+                                <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
+                                {
+                                    formik?.values?.photos ?
+                                        <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
+                                            <TiDelete className="w-6 h-6 hover:text-red-500" />
+                                        </div>
+                                        :
+                                        null
                                 }
-
-                            }, [values?.company])
-
-                            return (
-                                <Form className="md:flex md:flex-wrap md:w-full">
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="company" className='text-left pb-2'>Société</label>
-
-                                        {/* <Select
-                                            options={companyNameOptions}
-                                            name="company"
-                                            value={companyNameOptions?.find((option: any) => option.value === values.company)}
-                                            onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
-                                            isClearable={true}
-                                            placeholder="Choose an Establishment"
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
-                                        /> */}
-
-                                        <Select
-                                            options={searchcompanyName}
-                                            name="company"
-                                            value={companyNameOptions?.find((option: any) => option.value === companyName)}
-                                            onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
-                                            isClearable={true}
-                                            isSearchable
-                                            onInputChange={handleInputChange}
-                                            placeholder="Choose an Establishment"
-                                            noOptionsMessage={() => " Saisir..."}
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
-                                        />
-
-                                        {errors.company && touched.company ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.company}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <label htmlFor="startdate" className='text-left pb-2'>Date de début</label>
-                                        <Field
-                                            name="startdate"
-                                            type="date"
-                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
-                                        />
-                                        {errors.startdate && touched.startdate ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.startdate}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="enddate" className='text-left pb-2'>Date de fin</label>
-                                        <Field
-                                            name="enddate"
-                                            type="date"
-                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
-                                        />
-                                        {errors.enddate && touched.enddate ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.enddate}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <label htmlFor="postcode" className='text-left pb-2'>Code postal</label>
-                                        <Field
-                                            name="postcode"
-                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
-                                        />
-                                        {errors.postcode && touched.postcode ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.postcode}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="address" className='text-left pb-2'>Adresse</label>
-                                        <Field
-                                            name="address"
-                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
-                                        />
-                                        {errors.address && touched.address ? (
-                                            <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.address}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <label htmlFor="city" className='text-left pb-2'>Ville</label>
-                                        <Field
-                                            name="city"
-                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
-                                        />
-                                        {errors.city && touched.city ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.city}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="email" className='text-left pb-2'>Courriel</label>
-                                        <Field
-                                            name="email"
-                                            type="email"
-                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
-                                        />
-                                        {errors.email && touched.email ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4 phone-input'>
-                                        <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
-                                        <PhoneInput
-                                            country={'fr'}
-                                            placeholder="N° de téléphone"
-                                            value={phoneNumber}
-                                            onChange={(value) => { setPhoneNumber(value) }}
-                                        />
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <div className="pb-2 flex justify-between">
-                                            <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
-                                            {
-                                                logoUrl ?
-                                                    <div onClick={() => handleRemoveUrl(1)} className="cursor-pointer place-items-end pr-4">
-                                                        <TiDelete className="w-6 h-6 hover:text-red-500" />
-                                                    </div>
-                                                    :
-                                                    null
-                                            }
-                                        </div>
-                                        <div className="flex items-center justify-center w-full">
-                                            <label
-                                                htmlFor="logo-upload"
-                                                className={`flex flex-col items-center justify-center w-full ${logoUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
+                            </div>
+                            <div className="flex items-center justify-center w-full">
+                                <label
+                                    htmlFor="photos-upload"
+                                    className={`flex flex-col items-center justify-center w-full ${formik?.values?.photos ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}
+                                >
+                                    {
+                                        Loading && photosUpload ?
+                                            <Spinner />
+                                            :
+                                            <>
                                                 {
-                                                    Loading && logoUpload ?
-                                                        <Spinner />
+                                                    formik?.values?.photos ?
+                                                        <div className="flex flex-col items-center justify-center w-full">
+                                                            <a href={formik?.values?.photos?.imageUrl} className="w-full text-wrap break-words line-clamp-2 px-4">{formik?.values?.photos?.imageUrl}</a>
+                                                        </div>
                                                         :
-                                                        <>
-                                                            {
-                                                                logoUrl ?
-                                                                    <div className="flex flex-col items-center justify-center w-full">
-                                                                        <a href="" className="w-full text-wrap break-words px-4">{logoUrl?.imageUrl}</a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                                </svg>
-                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF</p>
-                                                            </div>
-                                                            <input
-                                                                id="logo-upload"
-                                                                name="logo-upload"
-                                                                type="file"
-                                                                className="hidden"
-                                                                onChange={(e: any) => {
-                                                                    setLogoUpload(e.target.files[0])
-                                                                }}
-                                                                multiple
-                                                            />
-                                                        </>
+                                                        null
                                                 }
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                    </svg>
+                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (Max 1050x350px)</p>
+                                                </div>
+                                                <input
+                                                    id="photos-upload"
+                                                    name="photos-upload"
+                                                    type="file"
+                                                    className="hidden"
+                                                    onChange={(e: any) => {
+                                                        setPhotosUpload(e.target.files[0])
+                                                    }}
+                                                    multiple
+                                                />
+                                            </>
+                                    }
+                                </label>
+                            </div>
 
-                                            </label>
-                                        </div>
-                                        {errorsMessage ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
-                                        ) : null}
-                                    </div>
+                            {errorMessagephoto ? (
+                                <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
+                            ) : null}
+                        </div>
 
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <div className="pb-2 flex justify-between">
-                                            <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
-                                            {
-                                                photosUrl ?
-                                                    <div onClick={() => handleRemoveUrl(2)} className="cursor-pointer place-items-end pr-4">
-                                                        <TiDelete className="w-6 h-6 hover:text-red-500" />
-                                                    </div>
-                                                    :
-                                                    null
-                                            }
-                                        </div>
-                                        <div className="flex items-center justify-center w-full">
-                                            <label
-                                                htmlFor="photos-upload"
-                                                className={`flex flex-col items-center justify-center w-full ${photosUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}
-                                            >
-                                                {
-                                                    Loading && photosUpload ?
-                                                        <Spinner />
-                                                        :
-                                                        <>
-                                                            {
-                                                                photosUrl ?
-                                                                    <div className="flex flex-col items-center justify-center w-full">
-                                                                        <a href={photosUrl} className="w-full text-wrap break-words px-4">{photosUrl?.imageUrl}</a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                                </svg>
-                                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Cliquez pour télécharger</span> ou glisser-déposer</p>
-                                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG ou GIF (Max 1050x350px)</p>
-                                                            </div>
-                                                            <input
-                                                                id="photos-upload"
-                                                                name="photos-upload"
-                                                                type="file"
-                                                                className="hidden"
-                                                                onChange={(e: any) => {
-                                                                    setPhotosUpload(e.target.files[0])
-                                                                }}
-                                                                multiple
-                                                            />
-                                                        </>
-                                                }
-                                            </label>
-                                        </div>
-                                        {errorMessagephoto ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
-                                        ) : null}
-                                    </div>
 
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="message" className='text-left pb-2'>Je souhaite référencer mon établissement</label>
-                                        <Field
-                                            name="message"
-                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
-                                        />
-                                        {errors.message && touched.message ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
-                                        ) : null}
-                                    </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
+                            <input
+                                type="text"
+                                name="websiteURL"
+                                value={formik.values.websiteURL}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                            />
+                            {formik.errors.websiteURL && formik.touched.websiteURL && typeof formik.errors.websiteURL === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.websiteURL}
+                                </div>
+                            )}
+                        </div>
 
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
-                                        <Field
-                                            name="websiteURL"
-                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
-                                        />
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                            <label htmlFor="message" className='text-left pb-2'>Description</label>
+                            <input
+                                type="text"
+                                name="message"
+                                value={formik.values.message}
+                                onChange={formik.handleChange}
+                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                            />
+                            {formik.errors.message && formik.touched.message && typeof formik.errors.message === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.message}
+                                </div>
+                            )}
+                        </div>
 
-                                    </div>
+                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                            <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Statut</label>
+                            <select
+                                name="status"
+                                id="status"
+                                value={formik.values.status}
+                                onChange={formik.handleChange}
+                                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
+                                <option selected>Choose a Statut</option>
+                                <option value="0">Brouillon</option>
+                                <option value="1">Publier</option>
 
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
-                                        <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Statut</label>
-                                        <Field
-                                            as="select"
-                                            name="status"
-                                            id="status"
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        >
-                                            <option selected>Choose a Statut</option>
-                                            <option value="0">Brouillon</option>
-                                            <option value="1">Publier</option>
+                            </select>
+                            {formik.errors.status && formik.touched.status && typeof formik.errors.status === 'string' && (
+                                <div className="text-red-500 flex text-left gap-1 py-2">
+                                    <PiWarningCircleBold className="w-5 h-5" />
+                                    {formik.errors.status}
+                                </div>
+                            )}
+                        </div>
 
-                                        </Field>
-                                        {errors.status && touched.status ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.status}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
-                                        <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn">
-                                            {
-                                                Loading ?
-                                                    <Spinner />
-                                                    : "Commencer la bannière"
-                                            }
-
-                                        </button>
-                                    </div>
-                                </Form>
-                            )
-                        }}
-                    </Formik>
+                        <div className="w-full lg:flex lg:justify-center pb-16 lg:pb-32 lg:pt-8 lg:px-16">
+                            <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 mb-5 lg:mb-3 search-btn">
+                                {
+                                    Loading ?
+                                        <Spinner />
+                                        : "Commencer la bannière"
+                                }
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </>

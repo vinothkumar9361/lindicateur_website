@@ -19,13 +19,13 @@ const Index = () => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const publicitesId:any = localStorage.getItem('publicites-webiste-auth-id');
+            const publicitesId: any = localStorage.getItem('publicites-webiste-auth-id');
             setId(publicitesId);
         }
     }, []);
 
     useEffect(() => {
-        if(id){
+        if (id) {
             dispatch(GetPublicitiesData({ id }));
         }
     }, [id])
@@ -34,8 +34,18 @@ const Index = () => {
 
     return (
         <>
-            <Banner data={CustomerPublicities?.data?.existingAds} />
-            <Details data={CustomerPublicities?.data?.existingAds} />
+            {
+                CustomerPublicities?.data?.existingAds ?
+                    <>
+                        <Banner data={CustomerPublicities?.data?.existingAds} />
+                        <Details data={CustomerPublicities?.data?.existingAds} />
+                    </>
+                    :
+                    <div className="py-20 text-center">
+                        <h3 className="text-gray-500 font bold">Aucune donnée trouvée</h3>
+                    </div>
+            }
+
         </>
     )
 }

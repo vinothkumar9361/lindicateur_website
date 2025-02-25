@@ -33,11 +33,30 @@ const DownloadEtablissementDetails = ({ viewDownload, handleCloseDownload }: any
 
     const [token, setToken] = useState<string | null>(null);
     const [companyName, setCompanyName] = useState<any | null>(null);
+    const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
 
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
         label: data.companyName,
     }));
+
+    useEffect(() => {
+        const companyfilteredOptions = companyNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        setSearchcompanyName(companyfilteredOptions);
+    }, [AdminCompanyProfilesName])
+
+    const handleInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = companyNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            setSearchcompanyName(filteredOptions);
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -189,12 +208,15 @@ const DownloadEtablissementDetails = ({ viewDownload, handleCloseDownload }: any
                                                 }
                                             </Field> */}
                                             <Select
-                                                options={companyNameOptions}
+                                                options={searchcompanyName}
                                                 name="company"
                                                 value={companyNameOptions?.find((option: any) => option.value === values.company)}
                                                 onChange={(selectedOption) => setCompanyName(selectedOption?.value)}
                                                 isClearable={true}
+                                                isSearchable
+                                                onInputChange={handleInputChange}
                                                 placeholder="Choose an Establishment"
+                                                noOptionsMessage={() => " Saisir..."}
                                                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
                                             />
                                         </div>

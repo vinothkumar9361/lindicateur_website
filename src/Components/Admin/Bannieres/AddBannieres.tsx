@@ -44,15 +44,11 @@ const AddBannieres = () => {
     const [token, setToken] = useState<string | null>(null);
 
     const [logoUpload, setLogoUpload] = useState<any | null>(null);
-    const [logoUrl, setLogoUrl] = useState<any | null>(null);
     const [photosUpload, setPhotosUpload] = useState<any | null>(null);
-    const [photosUrl, setPhotosUrl] = useState<any | null>(null);
 
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
 
-    const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
-    const [companyName, setCompanyName] = useState<any | null>(null);
     const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
 
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
@@ -85,15 +81,6 @@ const AddBannieres = () => {
             setToken(tokenString);
         }
     }, []);
-
-    // useEffect(() => {
-    //     if (AdminEtablise?.data?.existingCompanyProfile?.phoneNumber) {
-    //         setPhoneNumber(AdminEtablise?.data?.existingCompanyProfile?.phoneNumber)
-    //     }
-    //     if (AdminEtablise?.data?.existingCompanyProfile?.companyName) {
-    //         setCompanyName(AdminEtablise?.data?.existingCompanyProfile?.companyName)
-    //     }
-    // }, [AdminEtablise])
 
     useEffect(() => {
         if (token) {
@@ -172,7 +159,6 @@ const AddBannieres = () => {
         }
     })
 
-
     useEffect(() => {
         if (!formik?.values?.company) {
             dispatch(removeEtablishmentData(""));
@@ -180,7 +166,6 @@ const AddBannieres = () => {
         }
 
         let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == formik?.values?.company);
-        console.log(CompanyProfileId);
 
         if (token && CompanyProfileId[0]?.id) {
             dispatch(GetEtablissementForAdmin({ token, id: CompanyProfileId[0]?.id }))
@@ -200,7 +185,6 @@ const AddBannieres = () => {
         formik.setFieldValue("websiteURL", AdminEtablise?.data?.existingCompanyProfile?.websiteURL || '');
         formik.setFieldValue("phone", AdminEtablise?.data?.existingCompanyProfile?.phoneNumber || '');
     }, [AdminEtablise])
-
 
     useEffect(() => {
         if (logoUpload) {
@@ -287,7 +271,6 @@ const AddBannieres = () => {
                 setPhotosUpload(null);
             }
         }
-
     }, [logoUpload, photosUpload])
 
     useEffect(() => {
@@ -359,7 +342,6 @@ const AddBannieres = () => {
     }, [dispatch, success, errors]);
 
     const handleUploadImg = () => {
-
         let imageType;
         let imageUrl;
         if (logoUpload) {
@@ -381,12 +363,12 @@ const AddBannieres = () => {
 
     const handleRemoveUrl = (value: any) => {
         if (value === 1) {
-            dispatch(ImageDelete({ id: logoUrl?.id }))
+            dispatch(ImageDelete({ id: formik?.values?.logo?.id }))
             formik.setFieldValue("logo", '');
             setLogoUpload(null);
         }
         else if (value === 2) {
-            dispatch(ImageDelete({ id: photosUrl?.id }))
+            dispatch(ImageDelete({ id: formik?.values?.photos?.id }))
             formik.setFieldValue("photos", '');
             setPhotosUpload(null);
         }

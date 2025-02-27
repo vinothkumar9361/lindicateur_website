@@ -8,6 +8,8 @@ import { PiWarningCircleBold } from "react-icons/pi";
 import { TiDelete } from "react-icons/ti";
 
 import Swal from 'sweetalert2';
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -15,8 +17,6 @@ import { AddEtablissementForAdmin, GetAllCategoryListForAdmin } from '@/store/sl
 import { ImageUpload, ImageDelete } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
-import PhoneInput from "react-phone-input-2";
-import 'react-phone-input-2/lib/style.css';
 
 import Spinner from "@/Components/Common/Loading";
 

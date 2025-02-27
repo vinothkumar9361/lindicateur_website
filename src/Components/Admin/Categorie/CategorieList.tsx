@@ -70,7 +70,7 @@ const CategorieList = () => {
             if (result?.isConfirmed) {
                 dispatch(DeleteCategoryForAdmin({ token, id }));
                 if (token) {
-                    dispatch(GetAllCategoryListForAdmin({ token, type: 'admin', page:1 }));
+                    dispatch(GetAllCategoryListForAdmin({ token, type: 'admin', page: 1 }));
                 }
             }
         })
@@ -87,7 +87,7 @@ const CategorieList = () => {
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
-                dispatch(GetAllCategoryListForAdmin({ token, type: 'admin', page:1 }));
+                dispatch(GetAllCategoryListForAdmin({ token, type: 'admin', page: 1 }));
             })
         }
         else if (errors) {
@@ -108,9 +108,8 @@ const CategorieList = () => {
         const newOffset = Number(event.selected) + 1;
 
         dispatch(GetAllCategoryListForAdmin({ token, type: 'admin', page: newOffset }));
-
     }
-    
+
     return (
         <>
             {
@@ -142,7 +141,11 @@ const CategorieList = () => {
                             <div className="p-1 h-10 border-2 border-gray-500">
                                 <IoSearchOutline className="w-6 h-8" />
                             </div>
-                            <input className="h-10 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent" placeholder="Recherche" onChange={(e) => { handleSearch(e.target.value) }} />
+                            <input
+                                className="h-10 w-60 border-2 border-gray-500 pl-2 outline-none focus:ring-transparent"
+                                placeholder="Recherche"
+                                onChange={(e) => { handleSearch(e.target.value) }}
+                            />
                         </div>
                         <div
                             onClick={() => {
@@ -173,12 +176,6 @@ const CategorieList = () => {
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-100">
                                         <tr className="border-2">
-                                            <th scope="col" className="p-4 border-2">
-                                                <div className="flex items-center">
-                                                    <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                    <label className="sr-only">checkbox</label>
-                                                </div>
-                                            </th>
                                             <th scope="col" className="px-6 py-3 border-2">
                                                 No.
                                             </th>
@@ -199,15 +196,9 @@ const CategorieList = () => {
                                                 return (
                                                     <>
                                                         <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                            <td className="w-4 p-4 border-2">
-                                                                <div className="flex items-center">
-                                                                    <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                                    <label className="sr-only">checkbox</label>
-                                                                </div>
-                                                            </td>
-                                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
+                                                            <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-2">
                                                                 {i + 1}
-                                                            </th>
+                                                            </td>
                                                             <td className="px-6 py-4 border-2">
                                                                 {"I00" + data?.id}
                                                             </td>

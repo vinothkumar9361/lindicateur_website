@@ -16,7 +16,6 @@ import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
 import { Formik, Form, Field } from 'formik';
-
 import * as Yup from 'yup';
 
 const CategorySchema = Yup.object().shape({
@@ -26,7 +25,7 @@ const CategorySchema = Yup.object().shape({
 const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, Admin } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
 
@@ -68,9 +67,6 @@ const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
         }
     }, [dispatch, success, errors]);
 
-    console.log(success);
-    console.log(errors);
-
     return (
         <>
             <div
@@ -83,7 +79,7 @@ const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                            Modifier an categorie
+                                Modifier an categorie
                             </h3>
                             <button
                                 type="button"
@@ -107,9 +103,8 @@ const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
                                 onSubmit={values => {
                                     let updateData = {
                                         categoryName: values?.categoryname,
-                                        id :categoryName?.id
+                                        id: categoryName?.id
                                     }
-                                    console.log(updateData);
 
                                     dispatch(UpdateCategoryForAdmin({ token, updateData }))
                                 }}
@@ -118,7 +113,10 @@ const EditCategorie = ({ categoryName, showEdit, closeEdit }: any) => {
                                     <Form className="">
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="categoryname" className='text-left pb-2'>Nom</label>
-                                            <Field name="categoryname" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="categoryname"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.categoryname && touched.categoryname ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors?.categoryname}</div>
                                             ) : null}

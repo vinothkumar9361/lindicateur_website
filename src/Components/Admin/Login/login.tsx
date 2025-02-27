@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from "react";
 
 import Logo from '@/Images/Home/Logo.png';
-
 import { PiWarningCircleBold } from "react-icons/pi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -26,9 +25,7 @@ import { RootState, AppDispatch } from '@/store/store';
 import Spinner from "@/Components/Common/Loading";
 
 import { Formik, Form, Field } from 'formik';
-
 import * as Yup from 'yup';
-import { stringify } from "querystring";
 
 const LoginSchema = Yup.object().shape({
     userName: Yup.string().required('Enter a user name.').required('Enter an email address like example@mysite.com.'),
@@ -64,8 +61,6 @@ const LoginForm = () => {
         dispatch(GetIPAddress());
     }, []);
 
-    console.log(IpAddress);
-
     useEffect(() => {
         if (isDesktop) {
             if (isWindows) {
@@ -83,14 +78,9 @@ const LoginForm = () => {
                 setDeviceName(`IOS ${browserName} - Web Browser`)
             }
         }
-
     }, [isDesktop, isWindows, isMacOs, isMobile, isAndroid, isIOS, browserName])
 
-    console.log(deviceName);
-
-
     useEffect(() => {
-
         if (success) {
             if (success?.data?.isValidation) {
                 Swal.fire({
@@ -124,7 +114,6 @@ const LoginForm = () => {
                         // router.push(`/admin/liste-des-etablissements/`);
                     }
                     dispatch(successMessage(""))
-
                 })
             }
         }
@@ -141,9 +130,6 @@ const LoginForm = () => {
             })
         }
     }, [dispatch, success, errors]);
-
-    console.log(success);
-    console.log(errors);
 
     const resendOtp = () => {
         const tokenString: any = localStorage.getItem('admin-login-details');
@@ -179,11 +165,9 @@ const LoginForm = () => {
                                             device: deviceName,
                                             location: `${IpAddress?.city}, ${IpAddress?.region}, ${IpAddress?.country}`
                                         }
-                                        console.log(otp);
 
                                         let token = localStorage.getItem('admin-auth-token');
                                         token = token || success?.token;
-                                        console.log(token);
 
                                         dispatch(ValitateOtpForAdmin({ token, otp }))
                                     }}
@@ -249,7 +233,10 @@ const LoginForm = () => {
                                         <Form className="">
                                             <div className='flex flex-col pt-4'>
                                                 <label htmlFor="userName" className='text-left pb-2'>Nom d'utilisateur</label>
-                                                <Field name="userName" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                                <Field
+                                                    name="userName"
+                                                    className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                                />
                                                 {errors.userName && touched.userName ? (
                                                     <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.userName}</div>
                                                 ) : null}
@@ -260,7 +247,11 @@ const LoginForm = () => {
                                                     <p className="text-xs text-gray-400 text-right pt-1"><a href="/forgot-password-admin/" className="text-blue-500">Mot de passe oublié ?</a></p>
                                                 </div>
                                                 <div className="relative">
-                                                    <Field name="password" type={`${showPassword ? "text" : "password"}`} className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full' />
+                                                    <Field
+                                                        name="password"
+                                                        type={`${showPassword ? "text" : "password"}`}
+                                                        className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:border-gray-700 shadow pl-4 w-full'
+                                                    />
                                                     <span
                                                         className='login-eye-icon cursor-pointer'
                                                         onClick={() => setShowPassword(!showPassword)}

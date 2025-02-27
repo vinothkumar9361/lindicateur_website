@@ -34,7 +34,6 @@ const AddetablishmentSchema = Yup.object().shape({
 
 const ViewOrEditBanners = () => {
     const router = useRouter();
-
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, AdminBanners, AdminCompanyProfilesName } = useSelector((state: RootState) => state.lindicateur);
 
@@ -79,8 +78,6 @@ const ViewOrEditBanners = () => {
             option.value.toLowerCase().includes("a".toLowerCase())
         ).slice(0, 500);
 
-        console.log(companyfilteredOptions);
-
         setSearchcompanyName(companyfilteredOptions);
 
     }, [AdminCompanyProfilesName])
@@ -90,8 +87,6 @@ const ViewOrEditBanners = () => {
             const filteredOptions = companyNameOptions.filter((option: any) =>
                 option.value.toLowerCase().includes(inputValue.toLowerCase())
             ).slice(0, 500);
-
-            console.log(filteredOptions);
 
             setSearchcompanyName(filteredOptions);
         }
@@ -415,25 +410,6 @@ const ViewOrEditBanners = () => {
                             <Form className="md:flex md:flex-wrap md:w-full">
                                 <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                     <label htmlFor="company" className='text-left pb-2'>Société</label>
-                                    {/* <Field
-                                        as="select"
-                                        name="company"
-                                        id="company"
-                                        disabled={currentPathname.includes("/voir-un-bannieres/")}
-                                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                        <option selected>Choose a Etablissement</option>
-                                        {
-                                            AdminCompanyProfilesName?.data?.companyNames?.map((data: any, i: number) => {
-                                                return (
-                                                    <>
-                                                        <option value={data?.companyName}>{data?.companyName}</option>
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                    </Field> */}
-
                                     <Select
                                         options={searchcompanyName}
                                         name="company"
@@ -679,7 +655,7 @@ const ViewOrEditBanners = () => {
                                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                         <option selected>Choose a Statut</option>
-                                        <option value="0">Brouillon</option>
+                                        <option value="0">Non ligne</option>
                                         <option value="1">Publier</option>
 
                                     </Field>

@@ -50,8 +50,6 @@ const AdSlider = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, CustomerBannerList } = useSelector((state: RootState) => state.lindicateur);
 
-    console.log(CustomerBannerList);
-
     useEffect(() => {
         dispatch(GetAllBannerList(data));
     }, [dispatch])
@@ -83,9 +81,13 @@ const AdSlider = () => {
                                                     <div onClick={() => { item?.websiteURL ? router.push(`${item?.websiteURL}`) : null }} className="cursor-pointer relative bg-gray-100 text-center justify-items-center ad-card">
                                                         <img src={item?.photos} alt="img" className="w-full h-full" />
                                                         <div className="overlay-content flex flex-col pt-4 content-center items-center text-center place-items-center sm:justify-center sm:items-start sm:content-start sm:pl-20 md:pl-20 lg:pl-16">
-                                                            <div className="pb-2">
-                                                                <img src={item?.logo} alt="logo" className="h-10 lg:h-14" />
-                                                            </div>
+                                                            {
+                                                                item?.logo ?
+                                                                    <div className="pb-2">
+                                                                        <img src={item?.logo} alt="logo" className="h-10 lg:h-14" />
+                                                                    </div>
+                                                                    : null
+                                                            }
                                                             <h3 className="text-white text-center sm:text-left font-bold text-sm sm:text-xl lg:text-4xl w-52 sm:w-80 lg:w-2/3">{item?.companyName}</h3>
                                                             <p className="text-white text-center sm:text-left text-xs sm:text-sm w-52 sm:w-80 lg:w-2/3 pt-2">{item?.description}</p>
                                                         </div>

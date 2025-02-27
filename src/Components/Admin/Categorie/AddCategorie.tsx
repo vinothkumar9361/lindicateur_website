@@ -26,7 +26,7 @@ const CategorySchema = Yup.object().shape({
 const AddCategorie = ({ showAdd, closeAdd }: any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, Admin } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
 
@@ -105,8 +105,6 @@ const AddCategorie = ({ showAdd, closeAdd }: any) => {
                                     let category = {
                                         categoryName: values?.categoryname,
                                     }
-                                    console.log(category);
-
                                     dispatch(AddCategoryForAdmin({ token, category }))
                                 }}
                             >
@@ -114,7 +112,10 @@ const AddCategorie = ({ showAdd, closeAdd }: any) => {
                                     <Form className="">
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="categoryname" className='text-left pb-2'>Nom</label>
-                                            <Field name="categoryname" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="categoryname"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.categoryname && touched.categoryname ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors?.categoryname}</div>
                                             ) : null}

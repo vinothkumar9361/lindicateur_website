@@ -15,10 +15,7 @@ import { UpdatePassword } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
-import { Button, Modal } from "flowbite-react";
-
-import { Formik, Form, Field, useFormikContext } from 'formik';
-
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 
 const AdminSchema = Yup.object().shape({
@@ -29,7 +26,7 @@ const AdminSchema = Yup.object().shape({
 const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, Admin } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
 
@@ -68,9 +65,6 @@ const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) 
         }
     }, [dispatch, success, errors]);
 
-    console.log(success);
-    console.log(errors);
-
     return (
         <>
             <div
@@ -101,8 +95,8 @@ const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) 
                             <Formik
                                 enableReinitialize
                                 initialValues={{
-                                    oldPassword:  '',
-                                    newPassword:  '',
+                                    oldPassword: '',
+                                    newPassword: '',
                                 }}
                                 validationSchema={AdminSchema}
                                 onSubmit={values => {
@@ -110,7 +104,6 @@ const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) 
                                         oldpassword: values?.oldPassword,
                                         newpassword: values?.newPassword,
                                     }
-                                    console.log(updateData);
 
                                     dispatch(UpdatePassword({ token, updateData }))
                                 }}
@@ -119,19 +112,25 @@ const ChangePassword = ({ showChangePassword, handleCloseChangePassword }: any) 
                                     <Form className="">
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="oldPassword" className='text-left pb-2'>ancien mot de passe</label>
-                                            <Field name="oldPassword" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="oldPassword"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.oldPassword && touched.oldPassword ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors?.oldPassword}</div>
                                             ) : null}
                                         </div>
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="newPassword" className='text-left pb-2'>nouveau mot de passe</label>
-                                            <Field name="newPassword" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="newPassword"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.newPassword && touched.newPassword ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.newPassword}</div>
                                             ) : null}
                                         </div>
-                                        
+
                                         <button type="submit" className="text-black rounded-lg border-2 border-gray-300 hover:border-gray-700 p-3 w-full mt-6 lg:w-full mb-5 lg:mb-3 search-btn">
                                             {
                                                 Loading ?

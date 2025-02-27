@@ -151,7 +151,7 @@ const PublicitesList = () => {
                                                 No.
                                             </th>
                                             <th scope="col" className="px-6 py-3 border-2">
-                                                Société ID
+                                                Publicités ID
                                             </th>
                                             <th scope="col" className="px-6 py-3 border-2">
                                                 Nom de la société

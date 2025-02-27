@@ -135,10 +135,8 @@ const Addetablissement = () => {
             activities: '',
             partners: '',
             references: '',
-
         },
         onSubmit: async (values: any) => {
-            console.log(values);
             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
 
             let publicitesData = {
@@ -166,12 +164,7 @@ const Addetablissement = () => {
                 references: values?.references,
             }
 
-            console.log(publicitesData);
-
-
             dispatch(AddPublicitesForAdmin({ token, publicitesData }));
-
-
         },
         // validationSchema={}
         validate: (values: any) => {
@@ -329,14 +322,11 @@ const Addetablissement = () => {
 
             const removeItem = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
 
-            console.log("gallery", gallery);
-
             if (gallery?.length > 6) {
                 setErrorMessagegallery("élécharger seulement 6 images");
                 gallery?.map((image: any, i: any) => {
                     if (i > 5) {
                         const updatedGallery = removeItem(gallery, i);
-                        console.log(updatedGallery);
                         setGallery(updatedGallery === undefined ? [] : updatedGallery);
                     }
                 })
@@ -345,7 +335,6 @@ const Addetablissement = () => {
                 let validImages: any[] = [];
 
                 gallery?.map((image: any, i: any) => {
-                    console.log(image);
 
                     const fileType: any = image?.type;
                     const fileSize: any = image?.size;
@@ -353,13 +342,11 @@ const Addetablissement = () => {
                     if (!supportedFormats.includes(fileType)) {
                         setErrorMessagegallery("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                         const updatedGallery = removeItem(gallery, i);
-                        console.log(updatedGallery);
                         setGallery(updatedGallery === undefined ? [] : updatedGallery);
                     }
                     else if (fileSize > maxFileSize) {
                         setErrorMessagegallery('La taille du fichier doit être inférieure à 1 Mo.');
                         const updatedGallery = removeItem(gallery, i);
-                        console.log(updatedGallery);
                         setGallery(updatedGallery === undefined ? [] : updatedGallery);
                     }
                     else {
@@ -371,7 +358,6 @@ const Addetablissement = () => {
                             const img: any = new Image();
                             img.onload = () => {
                                 const { width, height } = img;
-                                console.log("testing");
                             };
                             img.src = e.target.result;
                         };
@@ -442,12 +428,6 @@ const Addetablissement = () => {
                     formData.append("photoTitle", "photo");
                     formData.append("adId", success?.data?.newAds?.id);
 
-                    let photosData = {
-                        photoUrl: gallery,
-                        photoTitle: "photo",
-                        adId: success?.data?.newAds?.id
-                    }
-
                     dispatch(MultipleImageUpload({ photosData: formData }))
                 }
                 else {
@@ -512,9 +492,6 @@ const Addetablissement = () => {
         }
     }, [dispatch, success, errors]);
 
-    console.log(success);
-
-
     const handleUploadImg = (e: any) => {
         let imageType;
         let imageUrl;
@@ -548,8 +525,6 @@ const Addetablissement = () => {
         }
     }
 
-    console.log("AdminEtablise", AdminEtablise);
-
     const handleFileChange = (event: any) => {
         const files = Array.from(event.target.files);
         const prevfiles = gallery;
@@ -560,15 +535,11 @@ const Addetablissement = () => {
     const handlePhotosRemove = (value: any) => {
         const removeItemArray = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
 
-        // gallery.splice(1, value);
-        // previewUrls.splice(1, value);
         const newGallery: any = removeItemArray(gallery, value);
         const newPreviewUrls: any = removeItemArray(previewUrls, value);
-        console.log(newGallery);
-        console.log(newPreviewUrls);
+        
         setGallery(newGallery);
         setPreviewUrls(newPreviewUrls);
-
     }
 
 
@@ -759,7 +730,7 @@ const Addetablissement = () => {
                             )}
                         </div>
 
-                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                        {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                             <div className="pb-2 flex justify-between">
                                 <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                 {
@@ -813,9 +784,9 @@ const Addetablissement = () => {
                             {errorsMessage ? (
                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
                             ) : null}
-                        </div>
+                        </div> */}
 
-                        <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                        <div className='flex flex-col pt-4 md:pt-8 w-full'>
                             <div className="pb-2 flex justify-between">
                                 <label htmlFor="photos-upload" className='text-left'>Ajouter des publicites</label>
                                 {
@@ -871,6 +842,7 @@ const Addetablissement = () => {
                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorMessagephoto}</div>
                             ) : null}
                         </div>
+
                         <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4 phone-input'>
                             <label htmlFor="phone" className='text-left pb-2'>Téléphone</label>
                             <PhoneInput
@@ -926,7 +898,7 @@ const Addetablissement = () => {
                                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                                 <option selected>Choose a Statut</option>
-                                <option value="0">Brouillon</option>
+                                <option value="0">Non ligne</option>
                                 <option value="1">Publier</option>
 
                             </select>

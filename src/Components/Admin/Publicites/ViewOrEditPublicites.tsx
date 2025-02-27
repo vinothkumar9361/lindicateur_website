@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 
 import { useRouter } from "next/router";
-import { useParams } from 'next/navigation';
 
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
@@ -184,13 +183,10 @@ const ViewOrEditPublicites = () => {
         }
     }, [AdminPublicites])
 
-    console.log(AdminPublicites);
-
-
     useEffect(() => {
         if (logoUpload) {
             const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
+            const maxFileSize = 1 * 1024 * 1024; // 1 MB in bytes
 
             if (logoUpload) {
                 const fileType: any = logoUpload?.type;
@@ -201,7 +197,7 @@ const ViewOrEditPublicites = () => {
                     setLogoUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage("La taille du fichier doit être inférieure à 2 Mo.");
+                    setErrorsMessage("La taille du fichier doit être inférieure à 1 Mo.");
                     setLogoUpload(null);
                 }
                 else {
@@ -230,7 +226,7 @@ const ViewOrEditPublicites = () => {
         }
         else if (photosUpload) {
             const supportedFormats = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            const maxFileSize = 2 * 1024 * 1024; // 2 MB in bytes
+            const maxFileSize = 1 * 1024 * 1024; // 1 MB in bytes
 
             if (photosUpload) {
                 const fileType: any = photosUpload?.type;
@@ -241,7 +237,7 @@ const ViewOrEditPublicites = () => {
                     setPhotosUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorMessagephoto("La taille du fichier doit être inférieure à 2 Mo.");
+                    setErrorMessagephoto("La taille du fichier doit être inférieure à 1 Mo.");
                     setPhotosUpload(null);
                 }
                 else {
@@ -276,23 +272,15 @@ const ViewOrEditPublicites = () => {
 
             const removeItem = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
 
-            console.log("gallery", gallery);
-
             let oldGalleryLength = Number(oldGallery?.length);
             let updateGalleryLength = Number(gallery?.length);
             let totalCount = oldGalleryLength + updateGalleryLength;
 
-            console.log("length", totalCount);
-
             if (totalCount > 6) {
                 setErrorMessagegallery("élécharger seulement 6 images");
                 gallery?.map((image: any, i: any) => {
-                    console.log("old", oldGalleryLength + i + 1);
-
                     if ((oldGalleryLength + i + 1) > 6) {
-
                         const updatedGallery = removeItem(gallery, i);
-                        console.log(updatedGallery);
                         setGallery(updatedGallery === undefined ? [] : updatedGallery);
                     }
                 })
@@ -301,21 +289,17 @@ const ViewOrEditPublicites = () => {
                 let validImages: any[] = [];
 
                 gallery?.map((image: any, i: any) => {
-                    console.log(image);
-
                     const fileType: any = image?.type;
                     const fileSize: any = image?.size;
 
                     if (!supportedFormats.includes(fileType)) {
                         setErrorMessagegallery("Format d'image non pris en charge. Veuillez télécharger un fichier JPG, JPEG, PNG, WEBP ou GIF.");
                         const updatedGallery = removeItem(gallery, i);
-                        console.log(updatedGallery);
                         setGallery(updatedGallery === undefined ? [] : updatedGallery);
                     }
                     else if (fileSize > maxFileSize) {
                         setErrorMessagegallery('La taille du fichier doit être inférieure à 1 Mo.');
                         const updatedGallery = removeItem(gallery, i);
-                        console.log(updatedGallery);
                         setGallery(updatedGallery === undefined ? [] : updatedGallery);
                     }
                     else {
@@ -327,7 +311,6 @@ const ViewOrEditPublicites = () => {
                             const img: any = new Image();
                             img.onload = () => {
                                 const { width, height } = img;
-                                console.log("testing");
                             };
                             img.src = e.target.result;
                         };
@@ -508,17 +491,13 @@ const ViewOrEditPublicites = () => {
             })
         }
     }, [dispatch, success, errors]);
-
-    console.log("success", success);
     
-
     useEffect(() => {
         const urls = gallery?.map((image: any) => URL.createObjectURL(image));
         setPreviewUrls(urls);
     }, [gallery])
 
     const handleUploadImg = () => {
-
         let imageType;
         let imageUrl;
         if (logoUpload) {
@@ -584,12 +563,8 @@ const ViewOrEditPublicites = () => {
     const handlePhotosRemove = (value: any) => {
         const removeItemArray = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
 
-        // gallery.splice(1, value);
-        // previewUrls.splice(1, value);
         const newGallery: any = removeItemArray(gallery, value);
         const newPreviewUrls: any = removeItemArray(previewUrls, value);
-        console.log(newGallery);
-        console.log(newPreviewUrls);
         setGallery(newGallery);
         setPreviewUrls(newPreviewUrls);
 
@@ -597,23 +572,15 @@ const ViewOrEditPublicites = () => {
 
     const handleOldPhotosRemove = (value: any) => {
         const removeItemArray = (arr: any, index: any) => [...arr.slice(0, index), ...arr.slice(index + 1)];
-
         const removeItemId = (arr: any, index: any) => [...arr.splice(0, index), ...arr.splice(index + 1)];
-
-        console.log(oldGallery[value]);
 
         const updateGallery: any = removeItemArray(oldGallery, value);
         const deleteGalleryId: any = oldGallery[value];
 
-        console.log("deleteGalleryId", deleteGalleryId);
-
         setRemoveGalleryId((prevValues): any => ([...prevValues, deleteGalleryId?.id]))
 
-        console.log(updateGallery);
         setOldGallery(updateGallery);
     }
-
-    console.log(removeGalleryId);
 
     return (
         <>
@@ -679,8 +646,6 @@ const ViewOrEditPublicites = () => {
                         }}
                     >
                         {({ errors, touched, values }: any) => {
-                            console.log(values?.category);
-
                             return (
                                 <Form className="md:flex md:flex-wrap md:w-full">
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
@@ -842,7 +807,7 @@ const ViewOrEditPublicites = () => {
                                     ) : null}
                                 </div> */}
 
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
+                                    {/* <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="logo-upload" className='text-left pb-2'>Ajouter un logo</label>
                                             {
@@ -896,9 +861,9 @@ const ViewOrEditPublicites = () => {
                                         {errorsMessage ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errorsMessage}</div>
                                         ) : null}
-                                    </div>
+                                    </div> */}
 
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
+                                    <div className='flex flex-col pt-4 md:pt-8 w-full'>
                                         <div className="pb-2 flex justify-between">
                                             <label htmlFor="photos-upload" className='text-left'>Ajouter des photos</label>
                                             {
@@ -996,7 +961,7 @@ const ViewOrEditPublicites = () => {
                                             className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
                                             <option selected>Choose a Statut</option>
-                                            <option value="0">Brouillon</option>
+                                            <option value="0">Non ligne</option>
                                             <option value="1">Publier</option>
 
                                         </Field>

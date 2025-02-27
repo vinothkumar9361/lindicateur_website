@@ -18,7 +18,7 @@ import { RootState, AppDispatch } from '@/store/store';
 const NavHeader = ({ showsidebar, changesidebar }: any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, Admin } = useSelector((state: RootState) => state.lindicateur);
+    const { Admin } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [show, setShow] = useState<boolean | null>(false);

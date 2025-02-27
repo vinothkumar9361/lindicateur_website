@@ -15,8 +15,6 @@ import { GetAdminProfile, UpdateAdminProfile } from '@/store/slices/adminAction'
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
-import { Button, Modal } from "flowbite-react";
-
 import { Formik, Form, Field, useFormikContext } from 'formik';
 
 import * as Yup from 'yup';
@@ -72,9 +70,6 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
         }
     }, [dispatch, success, errors]);
 
-    console.log(success);
-    console.log(errors);
-
     return (
         <>
             <div
@@ -116,7 +111,6 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                                         email: values?.email,
                                         phone: values?.phone,
                                     }
-                                    console.log(updateData);
 
                                     dispatch(UpdateAdminProfile({ token, updateData }))
                                 }}
@@ -125,21 +119,31 @@ const EditProfile = ({ showEdit, closeEdit }: any) => {
                                     <Form className="">
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="name" className='text-left pb-2'>Nom</label>
-                                            <Field name="name" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="name"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.name && touched.name ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors?.name}</div>
                                             ) : null}
                                         </div>
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="email" className='text-left pb-2'>Nom d'utilisateur</label>
-                                            <Field name="email" type="email" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="email"
+                                                type="email"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.email && touched.email ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.email}</div>
                                             ) : null}
                                         </div>
                                         <div className='flex flex-col pt-4'>
                                             <label htmlFor="phone" className='text-left pb-2'>Nom d'utilisateur</label>
-                                            <Field name="phone" className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4' />
+                                            <Field
+                                                name="phone"
+                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
+                                            />
                                             {errors.phone && touched.phone ? (
                                                 <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
                                             ) : null}

@@ -34,6 +34,11 @@ const SideBar = ({ showsidebar }: any) => {
             else if (currentUrl.pathname.includes('/liste-des-categorie/') || currentUrl.pathname.includes('/ajouter-une-categorie/')) {
                 setShowDropdown(4);
             }
+            else if (currentPathname.includes('/fond-de-banniere/') || currentPathname.includes('/voir-un-mentions-legales/') ||
+                currentPathname.includes('/modifier-un-mentions-legales/') || currentPathname.includes('/ajouter-les-cgv/') ||
+                currentPathname.includes('/liste-de-nos-secteurs/')) {
+                setShowDropdown(5);
+            }
         }
     }, []);
     return (
@@ -183,6 +188,56 @@ const SideBar = ({ showsidebar }: any) => {
                                         Ajouter une categorie
                                     </a>
                                 </li> */}
+                            </ul>
+                        </li>
+                        <li>
+                            <button
+                                type="button"
+                                onClick={() => { setShowDropdown(5) }}
+                                className={`${(currentPathname.includes('/fond-de-banniere/') || currentPathname.includes('/voir-un-mentions-legales/') || currentPathname.includes('/modifier-un-mentions-legales/') || currentPathname.includes('/ajouter-les-cgv/') || currentPathname.includes('/liste-de-nos-secteurs/')) && "bg_green"} flex items-center w-full p-2 px-4 text-base text-gray-900 transition duration-75 rounded-lg group search-btn`}
+                                aria-controls="dropdown-example"
+                                data-collapse-toggle="dropdown-example"
+                            >
+                                <Image src={Icon1} alt="icon" className="w-8 h-8" />
+
+                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Gestion de contenu</span>
+                                <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                                </svg>
+                            </button>
+                            <ul id="dropdown-example" className={`${showDropdown === 5 ? "" : "hidden"} py-2 space-y-2`}>
+                                <li>
+                                    <a
+                                        href="/admin/fond-de-banniere/"
+                                        className={`${currentPathname.includes('/fond-de-banniere/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
+                                    >
+                                        Fond de bannière
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/admin/liste-de-nos-secteurs/"
+                                        className={`${currentPathname.includes('/liste-de-nos-secteurs/') && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
+                                    >
+                                        Nos secteurs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/admin/voir-un-mentions-legales/"
+                                        className={`${(currentPathname.includes('/voir-un-mentions-legales/') || currentPathname.includes('/modifier-un-mentions-legales/')) && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
+                                    >
+                                        Mentions légales
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="/admin/voir-un-cgv/"
+                                        className={`${(currentPathname.includes('/voir-un-cgv/') || currentPathname.includes('/modifier-un-cgv/')) && "font-bold bg-gray-100"} flex items-center w-full p-2 text-gray-700 cursor-pointer transition duration-75 rounded-lg pl-11 group hover:bg-gray-100`}
+                                    >
+                                        CGV
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>

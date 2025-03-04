@@ -20,8 +20,10 @@ import { MultiSelect } from "react-multi-select-component";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllCategoryList, GetAllPublicitesList, GetAllCity } from '@/store/slices/customerAction';
+import { GetBannerImages } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
+import { log } from "console";
 
 const categoryType = [
     { value: 'item-1', label: 'Fabrication, location, vente de coffrages' },
@@ -32,7 +34,7 @@ const categoryType = [
 const Banner = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, CustomerCategoryList, CustomerCityList } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, CustomerCategoryList, CustomerCityList, BannerImage } = useSelector((state: RootState) => state.lindicateur);
     const [show, setShow] = useState<boolean | null>(false);
     const [select, setSelect] = useState<any | null>([]);
 
@@ -46,12 +48,12 @@ const Banner = () => {
     const [locationName, setLocationName] = useState<any | null>(null);
     const [serrorMessage, setSerrorMessage] = useState<any | null>(null);
 
-    console.log(CustomerCityList);
-
-
+    console.log(BannerImage);
+    
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));
         // dispatch(GetAllCity({ type: "website" }));
+        dispatch(GetBannerImages({ id: 1 }));
     }, [dispatch])
 
     const handleInputChange = (inputValue: any, { action }: any) => {
@@ -242,7 +244,7 @@ const Banner = () => {
                 </div>
             </div>
             <div className={`${scrollPositionY >= 800 ? "absolute" : "fixed"} banner-background`}>
-                <Image src={BannerBackground} alt="banner" />
+                <img src={BannerImage?.data?.existingBanner?.bannerURL ? BannerImage?.data?.existingBanner?.bannerURL : BannerBackground} alt="banner" />
             </div>
 
         </>

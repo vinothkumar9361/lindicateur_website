@@ -175,3 +175,37 @@ export const ContactUsForm = createAsyncThunk(
         }
     },
 );
+
+// Get Mentions legales or CGV content
+export const GetLegalesOrCGVContent = createAsyncThunk(
+    'astromind/GetLegalesOrCGVContent',
+    async (val: any, { rejectWithValue }) => {
+       
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getSinglePage/${val?.id}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error: any) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+// Get Banner Image
+export const GetBannerImages = createAsyncThunk(
+    'astromind/GetBannerImages',
+    async (val: any, { rejectWithValue }) => {
+       
+        try {
+            const response = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getSingleBannerSection/${val?.id}`);
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error: any) {
+            return rejectWithValue(error);
+        }
+    },
+);

@@ -683,6 +683,10 @@ li {
    height: 120px;
 }
 
+.quill-editor-2 .ql-container{
+  height: 500px;
+}
+
 /* Custom Pagination */
 .custom-pagination {
   display: flex;

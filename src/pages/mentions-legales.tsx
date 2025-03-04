@@ -1,3 +1,4 @@
+`use client`;
 
 import MentionsLegales from "@/Components/Common/MentionsLegales";
 

@@ -47,16 +47,20 @@ const ForgotPasswordForm = ({roleId}:any) => {
     useEffect(() => {
         if (success) {
             Swal.fire({
-                title: success?.message,
+                title: success?.data?.message,
                 icon: "success",
                 iconColor: "#36AA00",
                 confirmButtonColor: "#36AA00",
                 confirmButtonText: "D'accord",
                 timer: 5000,
             }).then(() => {
-                if (success?.token) {
                     dispatch(successMessage(""));
-                }
+                    if(roleId === 1){
+                        router.push(`/admin/login/`);
+                    }
+                    else{
+                        router.push(`/login/`);  
+                    }
             })
         }
         else if (errors) {
@@ -72,7 +76,7 @@ const ForgotPasswordForm = ({roleId}:any) => {
             })
         }
     }, [dispatch, success, errors]);
-
+    
     return (
         <>
             <div className="container mx-auto lg:pb-14">

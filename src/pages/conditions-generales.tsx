@@ -1,3 +1,4 @@
+`use client`;
 
 import ConditionsGenerales from "@/Components/Common/ConditionsGenerales";
 

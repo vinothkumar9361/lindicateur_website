@@ -11,12 +11,16 @@ import {
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
 import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, UpdateBannersForAdmin, DeleteBannersForAdmin, PublishBannersForAdmin } from '@/store/slices/adminAction';
+import { UpdateLegalsOrCGVContent, UpdateBannerImage, AddSecteursForAdmin, GetAllSecteursListForAdmin, UpdateSecteursForAdmin } from '@/store/slices/adminAction';
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
 import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity, GetPublicitiesData } from '@/store/slices/customerAction';
 
-import { GetIPAddress, ForgotPassword, ImageUpload, MultipleImageUpload, MultipleImageDelete, ImageDelete, UpdatePassword, ContactUsForm } from '@/store/slices/commonAction';
+import {
+    GetIPAddress, ForgotPassword, ImageUpload, MultipleImageUpload, MultipleImageDelete, ImageDelete, UpdatePassword,
+    ContactUsForm, GetLegalesOrCGVContent, GetBannerImages
+} from '@/store/slices/commonAction';
 
 interface Headers extends AxiosHeaders {
     authorization?: string;
@@ -50,6 +54,9 @@ interface InitialState {
     CustomerCategoryList: any | null;
     CustomerCityList: any | null;
     CustomerPublicities: any | null;
+    MentionsLegalsandCGV: any | null;
+    BannerImage: any | null;
+    SecteurList: any | null;
 }
 
 // Initial state
@@ -76,6 +83,9 @@ const initialState: InitialState = {
     CustomerCategoryList: null,
     CustomerCityList: null,
     CustomerPublicities: null,
+    MentionsLegalsandCGV: null,
+    BannerImage: null,
+    SecteurList: null,
 };
 
 // Create the slice
@@ -215,6 +225,36 @@ const ReduxSlice = createSlice({
                 state.errors = action.payload;
                 state.Loading = false;
                 state.success = null;
+            })
+
+            // Get Mentions legales or CGV content
+            .addCase(GetLegalesOrCGVContent.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetLegalesOrCGVContent.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.MentionsLegalsandCGV = action.payload;
+            })
+            .addCase(GetLegalesOrCGVContent.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.MentionsLegalsandCGV = null;
+            })
+
+            // Get Banner Image
+            .addCase(GetBannerImages.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetBannerImages.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.BannerImage = action.payload;
+            })
+            .addCase(GetBannerImages.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.BannerImage = null;
             })
 
             // Admin Module
@@ -663,6 +703,82 @@ const ReduxSlice = createSlice({
                 state.success = action.payload;
             })
             .addCase(PublishBannersForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // CMS
+            // Update the content
+            .addCase(UpdateLegalsOrCGVContent.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(UpdateLegalsOrCGVContent.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(UpdateLegalsOrCGVContent.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Update Banner image
+            .addCase(UpdateBannerImage.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(UpdateBannerImage.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(UpdateBannerImage.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+             // Add Secteurs
+             .addCase(AddSecteursForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(AddSecteursForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(AddSecteursForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+             // Get All Secteurs List for admin
+             .addCase(GetAllSecteursListForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllSecteursListForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.SecteurList = action.payload;
+            })
+            .addCase(GetAllSecteursListForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.SecteurList = null;
+            })
+
+            // Update Secteurs
+            .addCase(UpdateSecteursForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(UpdateSecteursForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(UpdateSecteursForAdmin.rejected, (state, action) => {
                 state.errors = action.payload;
                 state.Loading = false;
                 state.success = null;

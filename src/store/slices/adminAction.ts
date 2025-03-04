@@ -692,3 +692,141 @@ export const DeleteCategoryForAdmin = createAsyncThunk(
         }
     },
 );
+
+// CMS
+export const UpdateLegalsOrCGVContent = createAsyncThunk(
+    'lindicateur/UpdateLegalsOrCGVContent',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/updateLegalPage`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const UpdateBannerImage = createAsyncThunk(
+    'lindicateur/UpdateBannerImage',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'multipart/form-data',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/updateBannerSection`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+
+//Nos secteurs
+export const AddSecteursForAdmin = createAsyncThunk(
+    'lindicateur/AddSecteursForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'multipart/form-data',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/createServiceSection`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const GetAllSecteursListForAdmin = createAsyncThunk(
+    'lindicateur/GetAllSecteursListForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            // authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            if (val?.type === "admin") {
+                if (val?.search && val?.sort) {
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getAllServiceSection?page=${val?.page}&type=${val?.type}&sectorTitle=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
+                    if (response.status === 200 || response.status === 201) {
+                        return response;
+                    }
+                }
+                else if (val?.search) {
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getAllServiceSection?page=${val?.page}&type=${val?.type}&sectorTitle=${val?.search}`, { headers: headers });
+                    if (response.status === 200 || response.status === 201) {
+                        return response;
+                    }
+                }
+                else if (val?.sort) {
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getAllServiceSection?page=${val?.page}&type=${val?.type}&alphabetOrder=${val?.sort}`, { headers: headers });
+                    if (response.status === 200 || response.status === 201) {
+                        return response;
+                    }
+                }
+                else {
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getAllServiceSection?page=${val?.page}&type=${val?.type}`, { headers: headers });
+                    if (response.status === 200 || response.status === 201) {
+                        return response;
+                    }
+                }
+            }
+            else {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/getAllServiceSection?type=${val?.type}`, { headers: headers });
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+
+
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+
+export const UpdateSecteursForAdmin = createAsyncThunk(
+    'lindicateur/UpdateSecteursForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/updateServiceSection`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);

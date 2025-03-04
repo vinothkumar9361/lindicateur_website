@@ -1,13 +1,34 @@
+`use client`;
 
+import { useState, useEffect } from "react";
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { GetLegalesOrCGVContent } from '@/store/slices/commonAction';
+import { RootState, AppDispatch } from '@/store/store';
 
 const ConditionsGenerales = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { Loading, success, errors, MentionsLegalsandCGV } = useSelector((state: RootState) => state.lindicateur);
+
+    useEffect(() => {
+        dispatch(GetLegalesOrCGVContent({ id: 1 }))
+    }, [])
+
+    console.log(MentionsLegalsandCGV);
+
     return (
         <>
             <div>
                 <div className="container mx-auto">
                     <h3 className="py-4 mb-4 text-center" >Mentions légales</h3>
 
-                    <h5 className="font-medium mb-2">
+
+                    <div className="pt-4 px-2">
+                        <div dangerouslySetInnerHTML={{ __html: MentionsLegalsandCGV?.data?.existingPage?.pageDescription }} />
+                    </div>
+
+                    {/* <h5 className="font-medium mb-2">
                         Éditeur du site :
                     </h5>
                     <p className="mb-4">
@@ -100,7 +121,7 @@ const ConditionsGenerales = () => {
                     </h5>
                     <p className="mb-4">
                         Les présentes mentions légales sont régies par le droit français. Tout litige relatif à l'utilisation du site sera soumis à la compétence des tribunaux français.
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </>

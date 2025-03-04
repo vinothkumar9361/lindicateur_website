@@ -15,7 +15,7 @@ import { RootState, AppDispatch } from '@/store/store';
 const Layout = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, Customer } = useSelector((state: RootState) => state.lindicateur);
+    const { errors } = useSelector((state: RootState) => state.lindicateur);
 
     const [showSidebar, setShowSidebar] = useState<boolean | null>(true);
 
@@ -32,15 +32,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        console.log(errors);
-        
-
         if (errors?.response?.data?.message === "utilisateur non valide" || errors?.response?.data?.message === "Le jeton a expiré") {
             dispatch(errorMessage(""));
             localStorage.removeItem('user-auth-token');
             router.push('/login/')
         }
     }, [dispatch, errors]);
+    
     return (
         <>
             <div className="bg-gray-200 h-screen">

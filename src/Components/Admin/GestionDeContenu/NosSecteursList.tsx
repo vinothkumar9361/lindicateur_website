@@ -190,7 +190,7 @@ const NosSecteursList = () => {
                     </div>
                 </div>
 
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-28">
                     {
                         SecteurList?.data?.serviceList?.length > 0 ?
                             <>

@@ -34,9 +34,9 @@ const SideBar = ({ showsidebar }: any) => {
             else if (currentUrl.pathname.includes('/liste-des-categorie/') || currentUrl.pathname.includes('/ajouter-une-categorie/')) {
                 setShowDropdown(4);
             }
-            else if (currentPathname.includes('/fond-de-banniere/') || currentPathname.includes('/voir-un-mentions-legales/') ||
-                currentPathname.includes('/modifier-un-mentions-legales/') || currentPathname.includes('/ajouter-les-cgv/') ||
-                currentPathname.includes('/liste-de-nos-secteurs/')) {
+            else if (currentUrl.pathname.includes('/fond-de-banniere/') || currentUrl.pathname.includes('/voir-un-mentions-legales/') ||
+                currentUrl.pathname.includes('/modifier-un-mentions-legales/') || currentUrl.pathname.includes('/ajouter-les-cgv/') ||
+                currentUrl.pathname.includes('/liste-de-nos-secteurs/')) {
                 setShowDropdown(5);
             }
         }

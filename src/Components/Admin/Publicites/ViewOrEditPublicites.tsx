@@ -116,8 +116,9 @@ const ViewOrEditPublicites = () => {
             value: data.departmentcodeNumber,
             label: data.departmentcodeNumber,
         }));
-
-        setDepartCodeOption(departCode);
+        if (departCode?.length > 0) {
+            setDepartCodeOption(departCode);
+        }
     }, [CustomerDepartmentCodeList])
 
     useEffect(() => {

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import Select from "react-select";
+import { MultiSelect } from "react-multi-select-component";
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -21,7 +22,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { AddPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName, GetEtablissementForAdmin } from '@/store/slices/adminAction';
+import { AddPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName, GetEtablissementForAdmin, GetAllDepartmentCodeForAdmin } from '@/store/slices/adminAction';
 import { ImageUpload, MultipleImageUpload, ImageDelete } from '@/store/slices/commonAction';
 import { successMessage, errorMessage, removeEtablishmentData } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
@@ -35,11 +36,25 @@ const AddetablishmentSchema = Yup.object().shape({
         .max(3, 'rop longtemps !')
 });
 
+// const departCodeOption = [
+//     { value: '5', label: '5' },
+//     { value: '10', label: '10' },
+//     { value: '15', label: '15' },
+//     { value: '20', label: '20' },
+//     { value: '25', label: '25' },
+//     { value: '40', label: '40' },
+//     { value: '50', label: '50' },
+//     { value: '60', label: '60' },
+//     { value: '75', label: '75' },
+// ]
+
 const Addetablissement = () => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminCategoryList, AdminCompanyProfilesName, AdminEtablise } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminCategoryList, AdminCompanyProfilesName, AdminEtablise, CustomerDepartmentCodeList } = useSelector((state: RootState) => state.lindicateur);
 
+    console.log(CustomerDepartmentCodeList);
+    
     const [token, setToken] = useState<string | null>(null);
     const [searchcategoryName, setSearchcategoryName] = useState<any | null>([]);
     const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
@@ -48,6 +63,7 @@ const Addetablissement = () => {
     const [photosUpload, setPhotosUpload] = useState<any | null>(null);
     const [gallery, setGallery] = useState<any | null>([]);
     const [previewUrls, setPreviewUrls] = useState([]);
+    const [selected, setSelected] = useState([]);
 
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
@@ -61,6 +77,11 @@ const Addetablissement = () => {
     const categoryNameOptions = AdminCategoryList?.data?.category?.map((data: any) => ({
         value: data.categoryName,
         label: data.categoryName,
+    }));
+
+    const departCodeOption = CustomerDepartmentCodeList?.data?.departmentCode?.map((data: any) => ({
+        value: data.departmentcodeNumber,
+        label: data.departmentcodeNumber,
     }));
 
     useEffect(() => {
@@ -107,7 +128,8 @@ const Addetablissement = () => {
     useEffect(() => {
         if (token) {
             dispatch(GetAllCategoryListForAdmin({ token, type: 'website' }));
-            dispatch(GetAllEstablishmentProfileName({}))
+            dispatch(GetAllEstablishmentProfileName({}));
+            dispatch(GetAllDepartmentCodeForAdmin({ token }))
         }
     }, [dispatch, token])
 
@@ -139,6 +161,10 @@ const Addetablissement = () => {
         onSubmit: async (values: any) => {
             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
 
+            let departmentcodeSelected:any = selected.map((data: any) => ( data?.value));
+             departmentcodeSelected = departmentcodeSelected.join(", ")
+            console.log(departmentcodeSelected);
+
             let publicitesData = {
                 companyprofileId: CompanyProfileId[0]?.id,
                 companyName: values?.company,
@@ -146,7 +172,7 @@ const Addetablissement = () => {
                 startDate: values?.startdate,
                 endDate: values?.enddate,
                 address: values?.address,
-                departmentCode: values?.departmentcode,
+                departmentCode: departmentcodeSelected,
                 postalCode: values?.postcode,
                 city: values?.city,
                 email: values?.email,
@@ -170,15 +196,21 @@ const Addetablissement = () => {
         validate: (values: any) => {
             const errors: any = {};
 
-            if (!values?.departmentcode) {
+            // if (!values?.departmentcode) {
+            //     errors.departmentcode = "Entrez un code départemental";
+            // }
+            if (selected?.length <= 0) {
                 errors.departmentcode = "Entrez un code départemental";
             }
-            else if (values.departmentcode.toString().length < 2) {
-                errors.departmentcode = "Trop court !";
+            else if (selected?.length >= 1) {
+
             }
-            else if (values.departmentcode.toString().length > 3) {
-                errors.departmentcode = "Trop long !";
-            }
+            // else if (values.departmentcode.toString().length < 2) {
+            //     errors.departmentcode = "Trop court !";
+            // }
+            // else if (values.departmentcode.toString().length > 3) {
+            //     errors.departmentcode = "Trop long !";
+            // }
 
             if (!values?.startdate) {
                 errors.startdate = "Entrez un Date de début";
@@ -537,7 +569,7 @@ const Addetablissement = () => {
 
         const newGallery: any = removeItemArray(gallery, value);
         const newPreviewUrls: any = removeItemArray(previewUrls, value);
-        
+
         setGallery(newGallery);
         setPreviewUrls(newPreviewUrls);
     }
@@ -646,13 +678,21 @@ const Addetablissement = () => {
 
                         <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                             <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
-                            <input
+                            {/* <input
                                 name="departmentcode"
                                 type="number"
                                 value={formik.values.departmentcode}
                                 onChange={formik.handleChange}
-                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4 '
+                            /> */}
+                            <MultiSelect
+                                options={departCodeOption}
+                                value={selected}
+                                onChange={setSelected}
+                                className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4 multi-select'
+                                labelledBy="Select Options"
                             />
+
                             {formik.errors.departmentcode && formik.touched.departmentcode && typeof formik.errors.departmentcode === 'string' && (
                                 <div className="text-red-500 flex text-left gap-1 py-2">
                                     <PiWarningCircleBold className="w-5 h-5" />

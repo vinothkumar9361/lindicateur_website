@@ -679,11 +679,11 @@ li {
   border-bottom-left-radius: 10pc !important;
 }
 
-.quill-editor .ql-container{
-   height: 120px;
+.quill-editor .ql-container {
+  height: 120px;
 }
 
-.quill-editor-2 .ql-container{
+.quill-editor-2 .ql-container {
   height: 500px;
 }
 
@@ -724,4 +724,12 @@ li {
     height: 25px;
     font-size: 12px;
   }
+}
+
+.multi-select {
+  padding-left: 0 !important;
+}
+.multi-select .dropdown-heading {
+  height: 2rem !important;
+  background-color: transparent;
 }

@@ -9,6 +9,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc";
 
 import ReactPaginate from 'react-paginate';
+import { MultiSelect } from "react-multi-select-component";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';

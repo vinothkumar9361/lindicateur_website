@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import Select from "react-select";
+import { MultiSelect } from "react-multi-select-component";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
@@ -16,7 +17,7 @@ import { TiDelete } from "react-icons/ti";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetPublicitesForAdmin, UpdatePublicitesForAdmin, PublishPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName } from '@/store/slices/adminAction';
+import { GetPublicitesForAdmin, UpdatePublicitesForAdmin, PublishPublicitesForAdmin, GetAllCategoryListForAdmin, GetAllEstablishmentProfileName, GetAllDepartmentCodeForAdmin } from '@/store/slices/adminAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 import { ImageUpload, MultipleImageUpload, ImageDelete, MultipleImageDelete } from '@/store/slices/commonAction';
@@ -25,7 +26,6 @@ import Spinner from "@/Components/Common/Loading";
 
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import { log } from "util";
 
 const AddetablishmentSchema = Yup.object().shape({
     departmentcode: Yup.string()
@@ -34,11 +34,23 @@ const AddetablishmentSchema = Yup.object().shape({
         .max(3, 'rop longtemps !')
 });
 
+// const departCodeOption = [
+//     { value: '5', label: '5' },
+//     { value: '10', label: '10' },
+//     { value: '15', label: '15' },
+//     { value: '20', label: '20' },
+//     { value: '25', label: '25' },
+//     { value: '40', label: '40' },
+//     { value: '50', label: '50' },
+//     { value: '60', label: '60' },
+//     { value: '75', label: '75' },
+// ]
+
 const ViewOrEditPublicites = () => {
     const router = useRouter();
 
     const dispatch = useDispatch<AppDispatch>();
-    const { Loading, success, errors, AdminPublicites, AdminCategoryList, AdminCompanyProfilesName } = useSelector((state: RootState) => state.lindicateur);
+    const { Loading, success, errors, AdminPublicites, AdminCategoryList, AdminCompanyProfilesName, CustomerDepartmentCodeList } = useSelector((state: RootState) => state.lindicateur);
 
     const [token, setToken] = useState<string | null>(null);
     const [id, setId] = useState<string | null>(null);
@@ -59,6 +71,8 @@ const ViewOrEditPublicites = () => {
     const [activities, setActivities] = useState<any | null>(null);
     const [partners, setPartners] = useState<any | null>(null);
     const [references, setReferences] = useState<any | null>(null);
+
+    const [selected, setSelected] = useState([]);
 
     const [initialValue, setInitialValue] = useState<any | null>({
         category: AdminPublicites?.data?.existingAds?.categoryName || '',
@@ -84,6 +98,8 @@ const ViewOrEditPublicites = () => {
     const [searchcategoryName, setSearchcategoryName] = useState<any | null>([]);
     const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
 
+    const [departCodeOption, setDepartCodeOption] = useState<any | null>([]);
+
     const categoryNameOptions = AdminCategoryList?.data?.category?.map((data: any) => ({
         value: data.categoryName,
         label: data.categoryName,
@@ -93,6 +109,16 @@ const ViewOrEditPublicites = () => {
         value: data.companyName,
         label: data.companyName,
     }));
+
+
+    useEffect(() => {
+        const departCode = CustomerDepartmentCodeList?.data?.departmentCode?.map((data: any) => ({
+            value: data.departmentcodeNumber,
+            label: data.departmentcodeNumber,
+        }));
+
+        setDepartCodeOption(departCode);
+    }, [])
 
     useEffect(() => {
         const companyfilteredOptions = companyNameOptions?.filter((option: any) =>
@@ -142,7 +168,8 @@ const ViewOrEditPublicites = () => {
     useEffect(() => {
         if (token) {
             dispatch(GetAllCategoryListForAdmin({ token, type: 'website' }));
-            dispatch(GetAllEstablishmentProfileName({}))
+            dispatch(GetAllEstablishmentProfileName({}));
+            dispatch(GetAllDepartmentCodeForAdmin({ token }));
         }
     }, [dispatch, token])
 
@@ -173,6 +200,16 @@ const ViewOrEditPublicites = () => {
                 status: AdminPublicites?.data?.existingAds?.isPublished ? "1" : "0",
                 websiteURL: AdminPublicites?.data?.existingAds?.websiteURL || '',
             })
+
+            const departmentCodeArray = AdminPublicites?.data?.existingAds?.departmentCode?.split(",");
+
+            const departmentCodeSelect = departmentCodeArray?.map((data: any) => ({
+                value: data,
+                label: data,
+            }));
+
+            setSelected(departmentCodeSelect);
+
             setCategoryName(AdminPublicites?.data?.existingAds?.categoryName);
             setCompanyName(AdminPublicites?.data?.existingAds?.companyName);
             setPresentation(AdminPublicites?.data?.existingAds?.presentation || '');
@@ -385,7 +422,7 @@ const ViewOrEditPublicites = () => {
                 if (gallery?.length > 0) {
                     dispatch(successMessage(""));
                     const formData = new FormData();
-                    let id:any = localStorage.getItem("admin-publicite-id");
+                    let id: any = localStorage.getItem("admin-publicite-id");
 
                     gallery.forEach((image: any) => {
                         formData.append("photoUrl", image);
@@ -416,7 +453,7 @@ const ViewOrEditPublicites = () => {
                 if (gallery?.length > 0) {
                     dispatch(successMessage(""));
                     const formData = new FormData();
-                    let id:any = localStorage.getItem("admin-publicite-id");
+                    let id: any = localStorage.getItem("admin-publicite-id");
 
                     gallery.forEach((image: any) => {
                         formData.append("photoUrl", image);
@@ -491,7 +528,7 @@ const ViewOrEditPublicites = () => {
             })
         }
     }, [dispatch, success, errors]);
-    
+
     useEffect(() => {
         const urls = gallery?.map((image: any) => URL.createObjectURL(image));
         setPreviewUrls(urls);
@@ -617,6 +654,9 @@ const ViewOrEditPublicites = () => {
                         onSubmit={values => {
                             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
 
+                            let departmentcodeSelected: any = selected.map((data: any) => (data?.value));
+                            departmentcodeSelected = departmentcodeSelected.join(", ")
+
                             let updateData = {
                                 companyprofileId: CompanyProfileId[0]?.id,
                                 companyName: companyName || values?.company,
@@ -624,7 +664,7 @@ const ViewOrEditPublicites = () => {
                                 startDate: values?.startdate,
                                 endDate: values?.enddate,
                                 address: values?.address,
-                                departmentCode: values?.departmentcode,
+                                departmentCode: departmentcodeSelected,
                                 postalCode: values?.postcode,
                                 city: values?.city,
                                 email: values?.email,
@@ -729,11 +769,19 @@ const ViewOrEditPublicites = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="departmentcode" className='text-left pb-2'>Code départemental</label>
-                                        <Field
+                                        {/* <Field
                                             name="departmentcode"
                                             type="number"
                                             disabled={currentPathname.includes("/voir-un-publicite/")}
                                             className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4'
+                                        /> */}
+                                        <MultiSelect
+                                            options={departCodeOption}
+                                            value={selected}
+                                            onChange={setSelected}
+                                            className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4 multi-select'
+                                            labelledBy="Select Options"
+                                            disabled={currentPathname.includes("/voir-un-publicite/")}
                                         />
                                         {errors.departmentcode && touched.departmentcode ? (
                                             <div className="text-red-500 flex text-left gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.departmentcode}</div>

@@ -51,12 +51,9 @@ function SampleNextArrow(props: any) {
 const ResultData = ({ handlePlace }: any) => {
     const { Loading, success, errors, CustomerResearchData, CustomerPublicitesList } = useSelector((state: RootState) => state.lindicateur);
 
-    console.log(CustomerPublicitesList);
-
     const [fullEcranData, setFullEcranData] = useState<any | null>(null);
     const [halfEcranData, setHalfEcranData] = useState<any | null>(null);
     const [quarterEcranData, setQuarterEcranData] = useState<any | null>(null);
-
 
     const handleSelectPlace = (value: any) => {
         handlePlace(value);
@@ -126,191 +123,208 @@ const ResultData = ({ handlePlace }: any) => {
                     CustomerPublicitesList?.data?.data?.length > 0 || CustomerResearchData?.data?.data?.length > 0 ?
                         <>
                             {
-                                fullEcranData?.length <= 1 ?
+                                fullEcranData != null ?
                                     <>
                                         {
-                                            fullEcranData?.map((item: any, i: number) => {
-                                                let slug = formatString(item?.companyName)
-                                                return (
-                                                    <>
-                                                        {
-                                                            item?.adBgType == "poster" ?
-                                                                <div
-                                                                    onClick={() => {
-                                                                        handleSelectPlace(item?.address)
-                                                                        localStorage.setItem("publicites-webiste-auth-id", item?.id)
-                                                                    }}
-                                                                    className="ad-card-search cursor-pointer"
-                                                                >
-                                                                    <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
-                                                                        <img src={item?.photos} alt="img" className="" />
-                                                                    </a>
-                                                                </div>
-                                                                :
-                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="cursor-pointer ad-banner cursor-pointer">
-                                                                    <div className="ad-text">
-                                                                        <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
-                                                                            <div className="pb-4">
-                                                                                <img src={item?.logo ? item?.logo : Logo} alt="" />
+                                            fullEcranData?.length <= 1 ?
+                                                <>
+                                                    {
+                                                        fullEcranData?.map((item: any, i: number) => {
+                                                            let slug = formatString(item?.companyName)
+                                                            return (
+                                                                <>
+                                                                    {
+                                                                        item?.adBgType == "poster" ?
+                                                                            <div
+                                                                                onClick={() => {
+                                                                                    handleSelectPlace(item?.address)
+                                                                                    localStorage.setItem("publicites-webiste-auth-id", item?.id)
+                                                                                }}
+                                                                                className="ad-card-search cursor-pointer"
+                                                                            >
+                                                                                <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
+                                                                                    <img src={item?.photos} alt="img" className="" />
+                                                                                </a>
                                                                             </div>
-                                                                            <div className="text-center">
-                                                                                <h3 className="pb-3">{item?.companyName}</h3>
-                                                                                <h6 className="text-lg pb-3">{item?.categoryName}</h6>
-                                                                                <p className="text-sm">{item?.description}</p>
-                                                                            </div>
+                                                                            :
+                                                                            <div onClick={() => { handleSelectPlace(item?.address) }} className="cursor-pointer ad-banner cursor-pointer">
+                                                                                <div className="ad-text">
+                                                                                    <div className="ad-left-box ml-14 py-10 px-4 pt-20 ">
+                                                                                        <div className="pb-4">
+                                                                                            <img src={item?.logo ? item?.logo : Logo} alt="" />
+                                                                                        </div>
+                                                                                        <div className="text-center">
+                                                                                            <h3 className="pb-3">{item?.companyName}</h3>
+                                                                                            <h6 className="text-lg pb-3">{item?.categoryName}</h6>
+                                                                                            <p className="text-sm">{item?.description}</p>
+                                                                                        </div>
 
-                                                                        </div>
-                                                                        <div className="ad-address p-2 px-6 text-xs">
-                                                                            <p className="mb-2">{item?.email}</p>
-                                                                            <p className="mb-2">{item?.phoneNumber}</p>
-                                                                            <p className="mb-2">{item?.city}</p>
-                                                                            <p className="mb-2">{item?.city}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className={`ad-background`}>
-                                                                        <Image src={item?.photos ? item?.photos : BannerBackground} alt="banner" width={900} height={580} />
-                                                                    </div>
-                                                                </div>
+                                                                                    </div>
+                                                                                    <div className="ad-address p-2 px-6 text-xs">
+                                                                                        <p className="mb-2">{item?.email}</p>
+                                                                                        <p className="mb-2">{item?.phoneNumber}</p>
+                                                                                        <p className="mb-2">{item?.city}</p>
+                                                                                        <p className="mb-2">{item?.city}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className={`ad-background`}>
+                                                                                    <Image src={item?.photos ? item?.photos : BannerBackground} alt="banner" width={900} height={580} />
+                                                                                </div>
+                                                                            </div>
+                                                                    }
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+                                                </>
+                                                :
+                                                <>
+                                                    <Slider {...settings} className="">
+                                                        {
+                                                            fullEcranData?.map((item: any, i: number) => {
+                                                                let slug = formatString(item?.companyName)
+
+                                                                return (
+                                                                    <>
+                                                                        {
+                                                                            item?.adBgType == "poster" ?
+                                                                                <div
+                                                                                    onClick={() => {
+                                                                                        handleSelectPlace(item?.address)
+                                                                                        localStorage.setItem("publicites-webiste-auth-id", item?.id)
+                                                                                    }}
+                                                                                    className="ad-card-search cursor-pointer"
+                                                                                >
+                                                                                    <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
+                                                                                        <img src={item?.photos} alt="img" className="" />
+                                                                                    </a>
+                                                                                </div>
+                                                                                :
+                                                                                null
+                                                                        }
+                                                                    </>
+                                                                )
+                                                            })
                                                         }
-                                                    </>
-                                                )
-                                            })
+                                                    </Slider>
+                                                </>
                                         }
                                     </>
                                     :
-                                    <>
-                                        <Slider {...settings} className="">
-                                            {
-                                                fullEcranData?.map((item: any, i: number) => {
-                                                    let slug = formatString(item?.companyName)
-
-                                                    return (
-                                                        <>
-                                                            {
-                                                                item?.adBgType == "poster" ?
-                                                                    <div
-                                                                        onClick={() => {
-                                                                            handleSelectPlace(item?.address)
-                                                                            localStorage.setItem("publicites-webiste-auth-id", item?.id)
-                                                                        }}
-                                                                        className="ad-card-search cursor-pointer"
-                                                                    >
-                                                                        <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
-                                                                            <img src={item?.photos} alt="img" className="" />
-                                                                        </a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </Slider>
-                                    </>
+                                    null
                             }
-
                             {
-                                halfEcranData?.length <= 1 ?
+                                halfEcranData != null ?
                                     <>
                                         {
-                                            halfEcranData?.map((item: any, i: number) => {
-                                                let slug = formatString(item?.companyName)
+                                            halfEcranData?.length <= 1 ?
+                                                <>
+                                                    {
+                                                        halfEcranData?.map((item: any, i: number) => {
+                                                            let slug = formatString(item?.companyName)
 
-                                                return (
-                                                    <>
+                                                            return (
+                                                                <>
+                                                                    {
+                                                                        item?.adBgType == "poster" ?
+                                                                            <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 w-4/5 flex justify-center cursor-pointer mt-6">
+                                                                                <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
+                                                                                    <img src={item?.photos} alt="img" className="" />
+                                                                                </a>
+                                                                            </div>
+                                                                            :
+                                                                            null
+                                                                    }
+                                                                </>
+                                                            )
+                                                        })
+                                                    }
+                                                </>
+                                                :
+                                                <>
+                                                    <Slider {...settingstwo} className="">
                                                         {
-                                                            item?.adBgType == "poster" ?
-                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 w-4/5 flex justify-center cursor-pointer mt-6">
-                                                                    <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
-                                                                        <img src={item?.photos} alt="img" className="" />
-                                                                    </a>
-                                                                </div>
-                                                                :
-                                                                null
+                                                            halfEcranData?.map((item: any, i: number) => {
+                                                                let slug = formatString(item?.companyName);
+                                                                return (
+                                                                    <>
+                                                                        {
+                                                                            item?.adBgType == "poster" ?
+                                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 cursor-pointer md:mt-6">
+                                                                                    <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
+                                                                                        <img src={item?.photos} alt="img" className="" />
+                                                                                    </a>
+                                                                                </div>
+                                                                                :
+                                                                                null
+                                                                        }
+                                                                    </>
+                                                                )
+                                                            })
                                                         }
-                                                    </>
-                                                )
-                                            })
+                                                    </Slider>
+                                                </>
                                         }
                                     </>
-                                    :
-                                    <>
-                                        <Slider {...settingstwo} className="">
-                                            {
-                                                halfEcranData?.map((item: any, i: number) => {
-                                                    let slug = formatString(item?.companyName);
-                                                    return (
-                                                        <>
-                                                            {
-                                                                item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-2 cursor-pointer md:mt-6">
-                                                                        <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
-                                                                            <img src={item?.photos} alt="img" className="" />
-                                                                        </a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </Slider>
-                                    </>
+                                    : null
                             }
-
                             {
-                                quarterEcranData?.length <= 1 ?
+                                quarterEcranData != null ?
                                     <>
-                                        <div className="">
-                                            {
-                                                quarterEcranData?.map((item: any, i: number) => {
-                                                    let slug = formatString(item?.companyName);
+                                        {
+                                            quarterEcranData?.length <= 1 ?
+                                                <>
+                                                    <div className="">
+                                                        {
+                                                            quarterEcranData?.map((item: any, i: number) => {
+                                                                let slug = formatString(item?.companyName);
 
-                                                    return (
-                                                        <>
-                                                            {
-                                                                item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 flex justify-center cursor-pointer mt-6">
-                                                                        <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
-                                                                            <img src={item?.photos} alt="img" className="" />
-                                                                        </a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </>
-                                    :
-                                    <>
-                                        <Slider {...settingsthree} className="md:mt-6">
-                                            {
-                                                quarterEcranData?.map((item: any, i: number) => {
-                                                    let slug = formatString(item?.companyName);
+                                                                return (
+                                                                    <>
+                                                                        {
+                                                                            item?.adBgType == "poster" ?
+                                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 flex justify-center cursor-pointer mt-6">
+                                                                                    <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
+                                                                                        <img src={item?.photos} alt="img" className="" />
+                                                                                    </a>
+                                                                                </div>
+                                                                                :
+                                                                                null
+                                                                        }
+                                                                    </>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
+                                                </>
+                                                :
+                                                <>
+                                                    <Slider {...settingsthree} className="md:mt-6">
+                                                        {
+                                                            quarterEcranData?.map((item: any, i: number) => {
+                                                                let slug = formatString(item?.companyName);
 
-                                                    return (
-                                                        <>
-                                                            {
-                                                                item?.adBgType == "poster" ?
-                                                                    <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 cursor-pointer">
-                                                                        <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
-                                                                            <img src={item?.photos} alt="img" className="" />
-                                                                        </a>
-                                                                    </div>
-                                                                    :
-                                                                    null
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </Slider>
+                                                                return (
+                                                                    <>
+                                                                        {
+                                                                            item?.adBgType == "poster" ?
+                                                                                <div onClick={() => { handleSelectPlace(item?.address) }} className="ad-card-search ad-card-search-3 cursor-pointer">
+                                                                                    <a href={`/entreprises/`} rel="noopener noreferrer" className="" target="_blank">
+                                                                                        <img src={item?.photos} alt="img" className="" />
+                                                                                    </a>
+                                                                                </div>
+                                                                                :
+                                                                                null
+                                                                        }
+                                                                    </>
+                                                                )
+                                                            })
+                                                        }
+                                                    </Slider>
+                                                </>
+                                        }
                                     </>
+                                    : null
                             }
 
                             <div className="flex flex-wrap lg:justify-center xl:justify-between gap-3 p-4 mt-6">

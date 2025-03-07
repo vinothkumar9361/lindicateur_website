@@ -11,7 +11,7 @@ import {
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
 import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, UpdateBannersForAdmin, DeleteBannersForAdmin, PublishBannersForAdmin } from '@/store/slices/adminAction';
-import { UpdateLegalsOrCGVContent, UpdateBannerImage, AddSecteursForAdmin, GetAllSecteursListForAdmin, UpdateSecteursForAdmin, DeleteSecteursForAdmin } from '@/store/slices/adminAction';
+import { UpdateLegalsOrCGVContent, UpdateBannerImage, AddSecteursForAdmin, GetAllSecteursListForAdmin, UpdateSecteursForAdmin, DeleteSecteursForAdmin, GetAllDepartmentCodeForAdmin } from '@/store/slices/adminAction';
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
 import { GetAllEtablissementListForCustomer, GetAllPublicitesListForCustomer } from '@/store/slices/customerAction';
@@ -57,6 +57,7 @@ interface InitialState {
     MentionsLegalsandCGV: any | null;
     BannerImage: any | null;
     SecteurList: any | null;
+    CustomerDepartmentCodeList: any | null;
 }
 
 // Initial state
@@ -86,6 +87,8 @@ const initialState: InitialState = {
     MentionsLegalsandCGV: null,
     BannerImage: null,
     SecteurList: null,
+    CustomerDepartmentCodeList: null,
+
 };
 
 // Create the slice
@@ -813,6 +816,22 @@ const ReduxSlice = createSlice({
                 state.Loading = false;
                 state.success = null;
             })
+
+            // DepartmentCode 
+            .addCase(GetAllDepartmentCodeForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllDepartmentCodeForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.CustomerDepartmentCodeList = action.payload;
+            })
+            .addCase(GetAllDepartmentCodeForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.CustomerDepartmentCodeList = null;
+            })
+
 
             // Customer Module
             // SignUp for Customer

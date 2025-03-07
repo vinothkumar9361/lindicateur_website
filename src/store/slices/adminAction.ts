@@ -850,3 +850,25 @@ export const DeleteSecteursForAdmin = createAsyncThunk(
         }
     },
 );
+
+
+// Department Code
+export const GetAllDepartmentCodeForAdmin = createAsyncThunk(
+    'lindicateur/GetAllDepartmentCodeForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/departmentcode/getAllDepartmentCode?type=website`, { headers: headers });
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);

@@ -651,7 +651,7 @@ const ViewOrEditPublicites = () => {
                     <Formik
                         enableReinitialize
                         initialValues={initialValue}
-                        validationSchema={AddetablishmentSchema}
+                        // validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
 

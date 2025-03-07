@@ -54,7 +54,7 @@ const Addetablissement = () => {
     const { Loading, success, errors, AdminCategoryList, AdminCompanyProfilesName, AdminEtablise, CustomerDepartmentCodeList } = useSelector((state: RootState) => state.lindicateur);
 
     console.log(CustomerDepartmentCodeList);
-    
+
     const [token, setToken] = useState<string | null>(null);
     const [searchcategoryName, setSearchcategoryName] = useState<any | null>([]);
     const [searchcompanyName, setSearchcompanyName] = useState<any | null>([]);
@@ -69,6 +69,8 @@ const Addetablissement = () => {
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [errorMessagegallery, setErrorMessagegallery] = useState<string | null>(null);
 
+    const [departCodeOption, setDepartCodeOption] = useState<any | null>([]);
+
     const companyNameOptions = AdminCompanyProfilesName?.data?.companyNames?.map((data: any) => ({
         value: data.companyName,
         label: data.companyName,
@@ -79,10 +81,22 @@ const Addetablissement = () => {
         label: data.categoryName,
     }));
 
-    const departCodeOption = CustomerDepartmentCodeList?.data?.departmentCode?.map((data: any) => ({
-        value: data.departmentcodeNumber,
-        label: data.departmentcodeNumber,
-    }));
+    // const departCodeOption = CustomerDepartmentCodeList?.data?.departmentCode?.map((data: any) => ({
+    //     value: data.departmentcodeNumber,
+    //     label: data.departmentcodeNumber,
+    // }));
+
+    useEffect(() => {
+        const departCode = CustomerDepartmentCodeList?.data?.departmentCode?.map((data: any) => ({
+            value: data.departmentcodeNumber,
+            label: data.departmentcodeNumber,
+        }));
+        console.log(departCode);
+
+        if (departCode?.length > 0) {
+            setDepartCodeOption(departCode);
+        }
+    }, [CustomerDepartmentCodeList?.data?.departmentCode])
 
     useEffect(() => {
         const companyfilteredOptions = companyNameOptions?.filter((option: any) =>
@@ -161,8 +175,8 @@ const Addetablissement = () => {
         onSubmit: async (values: any) => {
             let CompanyProfileId = AdminCompanyProfilesName?.data?.companyNames?.filter((data: any) => data?.companyName == values?.company);
 
-            let departmentcodeSelected:any = selected.map((data: any) => ( data?.value));
-             departmentcodeSelected = departmentcodeSelected.join(", ")
+            let departmentcodeSelected: any = selected.map((data: any) => (data?.value));
+            departmentcodeSelected = departmentcodeSelected.join(", ")
             console.log(departmentcodeSelected);
 
             let publicitesData = {

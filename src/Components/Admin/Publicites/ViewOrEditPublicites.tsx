@@ -118,7 +118,7 @@ const ViewOrEditPublicites = () => {
         }));
 
         setDepartCodeOption(departCode);
-    }, [])
+    }, [CustomerDepartmentCodeList])
 
     useEffect(() => {
         const companyfilteredOptions = companyNameOptions?.filter((option: any) =>

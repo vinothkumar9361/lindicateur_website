@@ -9,10 +9,11 @@ import { FcAlphabeticalSortingAz, FcAlphabeticalSortingZa } from "react-icons/fc
 import ReactPaginate from 'react-paginate';
 
 import AddSecteur from "./AddSecteur";
+import EditSecteur from './EditSecteur'
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllSecteursListForAdmin } from '@/store/slices/adminAction';
+import { GetAllSecteursListForAdmin, DeleteSecteursForAdmin } from '@/store/slices/adminAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -45,6 +46,7 @@ const NosSecteursList = () => {
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [showAdd, setShowAdd] = useState<boolean | null>(false);
     const [showEdit, setShowEdit] = useState<boolean | null>(false);
+    const [secteurData, setSecteurData] = useState<boolean | null>(false);
 
     const handleCloseAdd = () => {
         setShowAdd(false);
@@ -54,11 +56,81 @@ const NosSecteursList = () => {
     }
 
     useEffect(() => {
-       dispatch(GetAllSecteursListForAdmin({ type : "admin" }))
-    },[])
+        if (typeof window !== 'undefined') {
+            const tokenString = localStorage.getItem('admin-auth-token');
+            setToken(tokenString);
+        }
+    }, []);
+
+    useEffect(() => {
+        dispatch(GetAllSecteursListForAdmin({ type: "admin" }))
+    }, [])
 
     console.log(SecteurList?.data?.serviceList);
-    
+
+    useEffect(() => {
+        if (success) {
+            Swal.fire({
+                title: success?.data.message,
+                icon: "success",
+                iconColor: "#36AA00",
+                confirmButtonColor: "#36AA00",
+                confirmButtonText: "D'accord",
+                timer: 5000,
+            }).then(() => {
+                dispatch(successMessage(""));
+                if (token) {
+                    dispatch(GetAllSecteursListForAdmin({ type: 'admin' }));
+                }
+            })
+        }
+        else if (errors) {
+            Swal.fire({
+                title: errors?.response?.data?.message,
+                icon: "error",
+                iconColor: "#CA0505",
+                confirmButtonColor: "#CA0505",
+                confirmButtonText: "D'accord",
+                timer: 5000,
+            }).then(() => {
+                dispatch(errorMessage(""));
+            })
+        }
+    }, [dispatch, success, errors]);
+
+    const editDetails = (data: any) => {
+        Swal.fire({
+            title: "Êtes-vous sûr de vouloir modifier vos données ?",
+            icon: "warning",
+            iconColor: "#CA0505",
+            showCancelButton: true,
+            cancelButtonColor: "#025BFD",
+            confirmButtonColor: "#CA0505",
+            confirmButtonText: "Modifier"
+        }).then((result) => {
+            if (result?.isConfirmed) {
+                setShowEdit(true);
+                setSecteurData(data);
+            }
+        })
+    }
+
+    const deleteDetails = (id: any) => {
+        Swal.fire({
+            title: "Etes-vous sûr de vouloir supprimer vos données ?",
+            icon: "warning",
+            iconColor: "#CA0505",
+            showCancelButton: true,
+            cancelButtonColor: "#025BFD",
+            confirmButtonColor: "#CA0505",
+            confirmButtonText: "Supprimer"
+        }).then((result) => {
+            if (result?.isConfirmed) {
+                dispatch(DeleteSecteursForAdmin({ token, id }))
+            }
+        })
+    }
+
     return (
         <>
             {
@@ -69,6 +141,16 @@ const NosSecteursList = () => {
                     />
                     : null
             }
+            {
+                showEdit ?
+                    <EditSecteur
+                        showEdit={showEdit}
+                        closeEdit={handleCloseEdit}
+                        data={secteurData}
+                    />
+                    : null
+            }
+
             <div className="w-full lg:w-auto">
                 <div>
                     <h3 className="pb-4" >Liste des nos secteurs</h3>
@@ -148,25 +230,30 @@ const NosSecteursList = () => {
                                                                 {"I00" + data?.id}
                                                             </td>
                                                             <td className="px-6 py-4 border-2">
-                                                                {data?.name}
+                                                                {data?.sectorTitle}
                                                             </td>
                                                             <td className="px-6 py-4 border-2">
-                                                                {data?.imageUrl}
+                                                                <a
+                                                                    href={data?.sectorURL}
+                                                                    target="_blank"
+                                                                    className="cursor-pointer font-medium text-blue-600 hover:underline"
+                                                                >
+                                                                    View
+                                                                </a>
                                                             </td>
                                                             <td className="px-6 py-4 border-2">
                                                                 {data?.isPublished ? "publié" : "inédite"}
                                                             </td>
                                                             <td className="flex items-center px-6 py-4 ">
                                                                 <a onClick={() => {
-                                                                    // localStorage.setItem('admin-banner-id', data?.id)
-                                                                    // router.push(`/admin/voir-un-bannieres/`)
+                                                                    editDetails(data)
                                                                 }}
                                                                     className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                                 >
-                                                                    Voir
+                                                                    Modifier
                                                                 </a>
                                                                 <a
-                                                                    // onClick={() => { deleteDetails(data?.id) }}
+                                                                    onClick={() => { deleteDetails(data?.id) }}
                                                                     className="cursor-pointer font-medium text-red-600 hover:underline ms-3"
                                                                 >Supprimer
                                                                 </a>

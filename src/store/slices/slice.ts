@@ -11,10 +11,10 @@ import {
 import { AddCategoryForAdmin, GetAllCategoryListForAdmin, UpdateCategoryForAdmin, DeleteCategoryForAdmin } from '@/store/slices/adminAction';
 import { AddPublicitesForAdmin, GetAllPublicitesListForAdmin, GetPublicitesForAdmin, UpdatePublicitesForAdmin, DeletePublicitesForAdmin, PublishPublicitesForAdmin } from '@/store/slices/adminAction';
 import { AddBannersForAdmin, GetAllBannerListForAdmin, GetBannersForAdmin, UpdateBannersForAdmin, DeleteBannersForAdmin, PublishBannersForAdmin } from '@/store/slices/adminAction';
-import { UpdateLegalsOrCGVContent, UpdateBannerImage, AddSecteursForAdmin, GetAllSecteursListForAdmin, UpdateSecteursForAdmin } from '@/store/slices/adminAction';
+import { UpdateLegalsOrCGVContent, UpdateBannerImage, AddSecteursForAdmin, GetAllSecteursListForAdmin, UpdateSecteursForAdmin, DeleteSecteursForAdmin } from '@/store/slices/adminAction';
 
 import { SignUpForCustomer, LoginForCustomer, GetCustomerProfile, UpdateCustomerProfile } from '@/store/slices/customerAction';
-import { GetAllEtablissementListForCustomer } from '@/store/slices/customerAction';
+import { GetAllEtablissementListForCustomer, GetAllPublicitesListForCustomer } from '@/store/slices/customerAction';
 import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch, GetAllPublicitesList, GetAllPublicitesPhoneNumberSearch, GetAllBannerList, GetAllCategoryList, GetAllCity, GetPublicitiesData } from '@/store/slices/customerAction';
 
 import {
@@ -558,6 +558,21 @@ const ReduxSlice = createSlice({
                 state.AdminPublicitesList = null;
             })
 
+             // Get All Publicites List for customer
+             .addCase(GetAllPublicitesListForCustomer.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(GetAllPublicitesListForCustomer.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.AdminPublicitesList = action.payload;
+            })
+            .addCase(GetAllPublicitesListForCustomer.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.AdminPublicitesList = null;
+            })
+
             // Get Publicites for admin
             .addCase(GetPublicitesForAdmin.pending, (state) => {
                 state.Loading = true;
@@ -779,6 +794,21 @@ const ReduxSlice = createSlice({
                 state.success = action.payload;
             })
             .addCase(UpdateSecteursForAdmin.rejected, (state, action) => {
+                state.errors = action.payload;
+                state.Loading = false;
+                state.success = null;
+            })
+
+            // Delete Secteurs
+            .addCase(DeleteSecteursForAdmin.pending, (state) => {
+                state.Loading = true;
+            })
+            .addCase(DeleteSecteursForAdmin.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.errors = null;
+                state.success = action.payload;
+            })
+            .addCase(DeleteSecteursForAdmin.rejected, (state, action) => {
                 state.errors = action.payload;
                 state.Loading = false;
                 state.success = null;

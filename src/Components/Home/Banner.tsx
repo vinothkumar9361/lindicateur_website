@@ -23,7 +23,6 @@ import { GetAllEstablishmentProfileSearch, GetAllEstablishmentPhoneNumberSearch,
 import { GetBannerImages } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
-import { log } from "console";
 
 const categoryType = [
     { value: 'item-1', label: 'Fabrication, location, vente de coffrages' },
@@ -47,8 +46,6 @@ const Banner = () => {
     const [companyName, setCompanyName] = useState<any | null>(null);
     const [locationName, setLocationName] = useState<any | null>(null);
     const [serrorMessage, setSerrorMessage] = useState<any | null>(null);
-
-    console.log(BannerImage);
     
     useEffect(() => {
         dispatch(GetAllCategoryList({ type: "website" }));

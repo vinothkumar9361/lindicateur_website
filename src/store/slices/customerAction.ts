@@ -203,6 +203,46 @@ export const GetAllEstablishmentProfileSearch = createAsyncThunk(
     },
 );
 
+// Admin Publicites Module
+export const GetAllPublicitesListForCustomer = createAsyncThunk(
+    'lindicateur/GetAllPublicitesListForCustomer',
+    async (val: any, { rejectWithValue }) => {
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            if (val?.search && val?.sort) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getConnectedUserAdsOnly?search=${val?.search}&alphabetOrder=${val?.sort}`, { headers: headers });
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+            else if (val?.search) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getConnectedUserAdsOnly?search=${val?.search}`, { headers: headers });
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+            else if (val?.sort) {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getConnectedUserAdsOnly?alphabetOrder=${val?.sort}`, { headers: headers });
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+            else {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getConnectedUserAdsOnly`, { headers: headers });
+                if (response.status === 200 || response.status === 201) {
+                    return response;
+                }
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+
 export const GetAllEstablishmentPhoneNumberSearch = createAsyncThunk(
     'lindicateur/GetAllEstablishmentPhoneNumberSearch',
     async (val: any, { rejectWithValue }) => {
@@ -235,7 +275,7 @@ export const GetAllPublicitesList = createAsyncThunk(
                     return response;
                 }
             }
-            else if(val?.search != "companyName" && val?.search != null) {
+            else if (val?.search != "companyName" && val?.search != null) {
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admin/getAllAdsCustomer?companyName=${val?.search}`);
                 if (response.status === 200 || response.status === 201) {
                     return response;

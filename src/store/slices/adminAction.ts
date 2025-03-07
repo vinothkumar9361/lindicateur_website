@@ -809,7 +809,6 @@ export const GetAllSecteursListForAdmin = createAsyncThunk(
     },
 );
 
-
 export const UpdateSecteursForAdmin = createAsyncThunk(
     'lindicateur/UpdateSecteursForAdmin',
     async (val: any, { rejectWithValue }) => {
@@ -821,6 +820,27 @@ export const UpdateSecteursForAdmin = createAsyncThunk(
         })
         try {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/updateServiceSection`, val?.updateData
+                , { headers: headers });
+            if (response.status === 200 || response.status === 201) {
+                return response;
+            }
+        } catch (error) {
+            return rejectWithValue(error);
+        }
+    },
+);
+
+export const DeleteSecteursForAdmin = createAsyncThunk(
+    'lindicateur/DeleteSecteursForAdmin',
+    async (val: any, { rejectWithValue }) => {
+        console.log(val);
+
+        const headers = new AxiosHeaders({
+            authorization: 'Bearer ' + val?.token,
+            'Content-Type': 'application/json',
+        })
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/cms/deleteServiceSection/${val?.id}`
                 , { headers: headers });
             if (response.status === 200 || response.status === 201) {
                 return response;

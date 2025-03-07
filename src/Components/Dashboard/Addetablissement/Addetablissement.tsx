@@ -1,4 +1,4 @@
-'use client';
+`use client`;
 
 import { useRouter } from "next/router";
 
@@ -10,6 +10,8 @@ import { TiDelete } from "react-icons/ti";
 import Swal from 'sweetalert2';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -43,12 +45,49 @@ const Addetablissement = () => {
     const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
     const [errorMessagephoto, setErrorMessagephoto] = useState<string | null>(null);
     const [phoneNumber, setPhoneNumber] = useState<any | null>(null);
-    const [otherValue, setOtherValue] = useState("");
 
-    const handleChange = (selected: any) => {
-        if (selected.value === "other") {
-            setOtherValue("");
+    const [categoryNameOptions, setCategoryNameOptions] = useState<any | null>(null);
+    const [categoryName, setCategoryName] = useState<any | null>(null);
+    const [searchcategoryName, setSearchcategoryName] = useState<any | null>([]);
+
+
+
+    useEffect(() => {
+        const categoryOptions = AdminCategoryList?.data?.category?.map((data: any) => ({
+            value: data.categoryName,
+            label: data.categoryName,
+        }));
+
+        setCategoryNameOptions(categoryOptions);
+
+    }, [AdminCategoryList])
+
+    useEffect(() => {
+        const categoryfilteredOptions = categoryNameOptions?.filter((option: any) =>
+            option.value.toLowerCase().includes("a".toLowerCase())
+        ).slice(0, 500);
+
+        console.log(categoryfilteredOptions);
+
+        setSearchcategoryName(categoryfilteredOptions);
+    }, [categoryNameOptions])
+
+    const handlecategoryInputChange = (inputValue: any, { action }: any) => {
+        if (action === "input-change") {
+            const filteredOptions = categoryNameOptions.filter((option: any) =>
+                option.value.toLowerCase().includes(inputValue.toLowerCase())
+            ).slice(0, 500);
+
+            console.log(filteredOptions);
+
+            setSearchcategoryName(filteredOptions);
         }
+    };
+
+    const handleCreateOption = (inputValue: any) => {
+        const newOption = { value: inputValue.toLowerCase(), label: inputValue };
+        setCategoryNameOptions((prev: any) => [...prev, newOption]);
+        setCategoryName(newOption.value);
     };
 
     useEffect(() => {
@@ -78,7 +117,7 @@ const Addetablissement = () => {
                     setLogoUpload(null);
                 }
                 else if (fileSize > maxFileSize) {
-                    setErrorsMessage('La taille du fichier doit être inférieure à 1 Mo.');
+                    setErrorsMessage("La taille du fichier doit être inférieure à 1 Mo.");
                     setLogoUpload(null);
                 }
                 else {
@@ -207,10 +246,10 @@ const Addetablissement = () => {
                 timer: 5000,
             }).then(() => {
                 if (logoUpload) {
-                    setLogoUpload(null)
+                    setLogoUrl(success?.data?.imageUrl);
                 }
                 else if (photosUpload) {
-                    setPhotosUpload(null)
+                    setPhotosUrl(success?.data?.imageUrl);
                 }
                 dispatch(errorMessage(""));
             })
@@ -233,7 +272,6 @@ const Addetablissement = () => {
             imageUrl: imageUrl,
             imageType: imageType
         }
-
         dispatch(ImageUpload({ imageData }));
     }
 
@@ -262,7 +300,6 @@ const Addetablissement = () => {
                         initialValues={{
                             name: '',
                             category: '',
-                            other_category: '',
                             company: '',
                             address: '',
                             departmentcode: '',
@@ -272,32 +309,31 @@ const Addetablissement = () => {
                             logo: logoUrl?.imageUrl || '',
                             photos: photosUrl?.imageUrl || '',
                             phone: '',
-                            message: '',
                             websiteURL: ''
+                            // message: '',
                         }}
                         validationSchema={AddetablishmentSchema}
                         onSubmit={values => {
                             let data = {
                                 fullName: values?.name,
-                                categoryName: values?.category === 'Other' ? values?.other_category : values?.category,
+                                categoryName: categoryName || values?.category,
                                 companyName: values?.company,
+                                address: values?.address,
+                                departmentCode: values?.departmentcode,
                                 postalCode: values?.postcode,
                                 email: values?.email,
-                                logo: logoUrl?.imageUrl || '',
-                                photos: photosUrl?.imageUrl || '',
+                                logo: logoUrl?.imageUrl,
+                                photos: photosUrl?.imageUrl,
                                 phoneNumber: phoneNumber,
                                 type: "website",
                                 city: values?.city,
-                                message: values?.message,
                                 websiteURL: (values?.websiteURL.includes("https") || values?.websiteURL.includes("http")) ? values?.websiteURL : `https://${values?.websiteURL}`,
-                                address: values?.address,
-                                departmentCode: values?.departmentcode,
                             }
 
                             dispatch(AddEtablissementForAdmin({ token, data }))
                         }}
                     >
-                        {({ errors, touched, values }) => {
+                        {({ errors, touched }) => {
                             return (
                                 <Form className="md:flex md:flex-wrap md:w-full">
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
@@ -313,34 +349,20 @@ const Addetablissement = () => {
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
                                         <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Catégorie</label>
-                                        <Field
-                                            as="select"
+                                        <CreatableSelect
+                                            options={searchcategoryName}
                                             name="category"
-                                            id="category"
-                                            // onChange={handleChange}
-                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        >
-                                            <option selected>Choose a Catégorie</option>
-                                            {
-                                                AdminCategoryList?.data?.category?.map((data: any, i: number) => {
-                                                    return (
-                                                        <>
-                                                            <option value={data?.categoryName}>{data?.categoryName}</option>
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                            <option value="Other">Autre</option>
-                                        </Field>
-                                        {values?.category == "Other" && (
-                                            <Field
-                                                type="text"
-                                                name="other_category"
-                                                id="other_category"
-                                                placeholder="Entrez le nom de votre catégorie"
-                                                className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4 mt-4'
-                                            />
-                                        )}
+                                            value={categoryNameOptions?.find((option: any) => option.value === categoryName?.toLowerCase())}
+                                            onChange={(selectedOption: any) => setCategoryName(selectedOption?.value)}
+                                            isClearable={true}
+                                            isSearchable
+                                            onInputChange={handlecategoryInputChange}
+                                            placeholder="Choose a Catégorie"
+                                            noOptionsMessage={() => " Saisir..."}
+                                            onCreateOption={handleCreateOption}
+                                            className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-0.5 serarch-input"
+                                        />
+
                                         {errors.category && touched.category ? (
                                             <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.category}</div>
                                         ) : null}
@@ -431,7 +453,6 @@ const Addetablissement = () => {
                                             <label
                                                 htmlFor="logo-upload"
                                                 className={`flex flex-col items-center justify-center w-full ${logoUrl ? "h-60 md:h-80" : "h-32 md:h-40"} border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100`}>
-
                                                 {
                                                     Loading && logoUpload ?
                                                         <Spinner />
@@ -535,23 +556,9 @@ const Addetablissement = () => {
                                             value={phoneNumber}
                                             onChange={(value) => { setPhoneNumber(value) }}
                                         />
-                                        {errors.phone && touched.phone ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.phone}</div>
-                                        ) : null}
                                     </div>
 
                                     <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pl-4'>
-                                        <label htmlFor="message" className='text-left pb-2'>Je souhaite référencer mon établissement</label>
-                                        <Field
-                                            name="message"
-                                            className='h-10 rounded-lg border-2 border-gray-300 t outline-none focus:border-gray-700 shadow pl-4'
-                                        />
-                                        {errors.message && touched.message ? (
-                                            <div className="text-red-500 flex items-center gap-1 py-2"><span><PiWarningCircleBold className="w-5 h-5" /></span>{errors.message}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className='flex flex-col pt-4 md:pt-8 md:w-1/2 md:pr-4'>
                                         <label htmlFor="websiteURL" className='text-left pb-2'>URL du site Web</label>
                                         <Field
                                             name="websiteURL"

@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import { useRouter } from "next/router";
 
@@ -12,7 +12,9 @@ import ReactPaginate from 'react-paginate';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { GetAllPublicitesListForAdmin, DeletePublicitesForAdmin } from '@/store/slices/adminAction';
+import {  DeletePublicitesForAdmin } from '@/store/slices/adminAction';
+import { GetAllPublicitesListForCustomer } from '@/store/slices/customerAction';
+
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
 
@@ -21,30 +23,32 @@ const PublicitesList = () => {
     const router = useRouter();
     const { Loading, success, errors, AdminPublicitesList } = useSelector((state: RootState) => state.lindicateur);
 
+    console.log("AdminPublicitesList", AdminPublicitesList);
+    
     const [token, setToken] = useState<string | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [sortAsc, setSortAsc] = useState<boolean>(true);
 
     const handleSearch = (value: any) => {
-        dispatch(GetAllPublicitesListForAdmin({ token, page: 1, search: value }));
+        dispatch(GetAllPublicitesListForCustomer({ token, page: 1, search: value }));
     }
 
     useEffect(() => {
         if (token) {
-            dispatch(GetAllPublicitesListForAdmin({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
+            dispatch(GetAllPublicitesListForCustomer({ token, page: 1, sort: sortAsc ? "ASC" : "DESC" }));
         }
     }, [sortAsc, token]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const tokenString = localStorage.getItem('admin-auth-token');
+            const tokenString = localStorage.getItem('user-auth-token');
             setToken(tokenString);
         }
     }, []);
 
     useEffect(() => {
         if (token) {
-            dispatch(GetAllPublicitesListForAdmin({ token, page: 1 }));
+            dispatch(GetAllPublicitesListForCustomer({ token, page: 1 }));
         }
     }, [dispatch, token])
 
@@ -59,7 +63,7 @@ const PublicitesList = () => {
                 timer: 5000,
             }).then(() => {
                 dispatch(successMessage(""));
-                dispatch(GetAllPublicitesListForAdmin({ token, page: 1 }));
+                dispatch(GetAllPublicitesListForCustomer({ token, page: 1 }));
             })
         }
         else if (errors) {
@@ -95,7 +99,7 @@ const PublicitesList = () => {
     const handlePageClick = (event: any) => {
         const newOffset = Number(event.selected) + 1;
 
-        dispatch(GetAllPublicitesListForAdmin({ token, page: newOffset }));
+        dispatch(GetAllPublicitesListForCustomer({ token, page: newOffset }));
     }
 
     return (
@@ -129,7 +133,7 @@ const PublicitesList = () => {
                             <p>Trier</p>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <button
                             className="text-black font-medium p-3 w-full w-64 bg_green rounded-lg"
                         >
@@ -137,12 +141,12 @@ const PublicitesList = () => {
                                 Ajouter un Publicité
                             </a>
                         </button>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4 w-full pb-20">
                     {
-                        AdminPublicitesList?.data?.data?.length > 0 ?
+                        AdminPublicitesList?.data?.allAds?.length > 0 ?
                             <>
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 border-2">
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -172,7 +176,7 @@ const PublicitesList = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            AdminPublicitesList?.data?.data?.map((data: any, i: number) => {
+                                            AdminPublicitesList?.data?.allAds?.map((data: any, i: number) => {
                                                 return (
                                                     <>
                                                         <tr className="bg-white border-2 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -198,11 +202,11 @@ const PublicitesList = () => {
                                                                 <a
                                                                     onClick={() => {
                                                                         localStorage.setItem('admin-publicite-id', data?.id)
-                                                                        router.push(`/admin/voir-un-publicite/`)
+                                                                        router.push(`/dashboard/voir-un-publicite/`)
                                                                     }}
                                                                     className="cursor-pointer font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                                 >Voir</a>
-                                                                <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a>
+                                                                {/* <a onClick={() => { deleteDetails(data?.id) }} className="cursor-pointer font-medium text-red-600 hover:underline ms-3">Supprimer</a> */}
                                                             </td>
                                                         </tr>
                                                     </>

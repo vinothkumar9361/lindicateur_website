@@ -12,7 +12,7 @@ import Spinner from "@/Components/Common/Loading";
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { AddSecteursForAdmin, GetAllSecteursListForAdmin } from '@/store/slices/adminAction';
+import { UpdateSecteursForAdmin, GetAllSecteursListForAdmin } from '@/store/slices/adminAction';
 import { ImageUpload, ImageDelete } from '@/store/slices/commonAction';
 import { successMessage, errorMessage } from '@/store/slices/slice';
 import { RootState, AppDispatch } from '@/store/store';
@@ -26,14 +26,14 @@ const CategorySchema = Yup.object().shape({
     secteurname: Yup.string().required('Entrez un nom de secteur'),
 });
 
-const AddSecteur = ({ showAdd, closeAdd }: any) => {
+const EditSecteur = ({ showEdit, closeEdit, data }: any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors } = useSelector((state: RootState) => state.lindicateur);
 
+    console.log(data);
+    
     const [token, setToken] = useState<string | null>(null);
-    const [imageUpload, setImageUpload] = useState<any | null>(null);
-    const [errorsMessage, setErrorsMessage] = useState<string | null>(null);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -44,9 +44,9 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
 
     const formik = useFormik({
         initialValues: {
-            secteurname: '',
-            image: null,
-            status: '0',
+            secteurname: data?.sectorTitle || '',
+            image: data?.sectorURL || null,
+            status: data?.isPublished ? '1' : '0',
         },
         onSubmit: async (values: any) => {
             console.log(values);
@@ -54,12 +54,13 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
             let updateData = {
                 sectorTitle: values?.secteurname,
                 sectorURL: values?.image,
-                isPublished: values?.status === "1" ? true : false
+                isPublished: values?.status === "1" ? true : false,
+                id: data?.id
             }
 
             console.log(updateData);
 
-            dispatch(AddSecteursForAdmin({ token, updateData }));
+            dispatch(UpdateSecteursForAdmin({ token, updateData }));
 
         },
         // validationSchema={}
@@ -75,7 +76,7 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
             if (!values?.image) {
                 errors.image = "Veuillez télécharger l'image";
             }
-            else if (values?.image) {
+            else if (values?.image?.name) {
                 const fileType: any = values?.image?.type;
                 const fileSize: any = values?.image?.size;
 
@@ -127,7 +128,7 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
                 if (token) {
                     dispatch(GetAllSecteursListForAdmin({ type: 'admin' }));
                 }
-                closeAdd();
+                closeEdit();
             })
         }
         else if (errors) {
@@ -161,13 +162,13 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                Ajouter une secteur
+                            Modifier une secteur
                             </h3>
                             <button
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                 data-modal-hide="static-modal"
-                                onClick={() => { closeAdd() }}
+                                onClick={() => { closeEdit() }}
                             >
                                 <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
@@ -214,7 +215,7 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
                                                 {
                                                     formik?.values?.image ?
                                                         <div className="text-center w-full">
-                                                            <a href={formik?.values?.image?.name} className="w-full text-wrap break-words px-4">{formik?.values?.image?.name}</a>
+                                                            <a href={formik?.values?.image?.name} className="w-full text-wrap break-words px-4">{formik?.values?.image?.name || formik?.values?.image}</a>
                                                         </div>
                                                         :
                                                         null
@@ -256,7 +257,7 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
                                         onChange={formik.handleChange}
                                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     >
-                                        <option selected>Choose a Statut</option>
+                                        <option >Choose a Statut</option>
                                         <option value="0">Non ligne</option>
                                         <option value="1">Publier</option>
 
@@ -287,4 +288,4 @@ const AddSecteur = ({ showAdd, closeAdd }: any) => {
     )
 }
 
-export default AddSecteur;
+export default EditSecteur;

@@ -20,8 +20,6 @@ const NavHeader = ({ showsidebar, changesidebar }: any) => {
     const router = useRouter();
     const dispatch = useDispatch<AppDispatch>();
     const { Loading, success, errors, Customer } = useSelector((state: RootState) => state.lindicateur);
-
-    console.log(Customer);
     
     const [token, setToken] = useState<string | null>(null);
     const [userId, setUserId] = useState<number | null>(null);

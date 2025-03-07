@@ -117,7 +117,7 @@ const AddHomeBanniere = () => {
     const handleUpload = () => {
         let updateData = {
             bannerURL: imageUpload,
-            id: 1
+            id: BannerImage?.data?.existingBanner?.id
         }
 
         dispatch(UpdateBannerImage({ token, updateData }));
@@ -127,6 +127,8 @@ const AddHomeBanniere = () => {
         setImageUpload(null);
     }
 
+    console.log(BannerImage);
+    
     return (
         <>
             <div className="w-full lg:w-auto">

@@ -12,6 +12,8 @@ export async function getStaticProps() {
 
 import Banner from "@/Components/Home/Banner";
 import Service from "@/Components/Home/service";
+import NewService from "@/Components/Home/ServiceNew";
+
 import Visitors from "@/Components/Home/Visitors";
 import Strengths from "@/Components/Home/Strengths";
 import NewsSlider from "@/Components/Home/NewsSlider";
@@ -23,7 +25,8 @@ export default function Home() {
       <div className="">
         <Banner />
         <AdSlider />
-        <Service />
+        {/* <Service /> */}
+        <NewService />
         <Visitors />
         <Strengths />
         <NewsSlider />

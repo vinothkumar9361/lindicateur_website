@@ -705,6 +705,14 @@ const Addetablissement = () => {
                                 onChange={setSelected}
                                 className='h-10 rounded-lg border-2 border-gray-300 outline-none focus:ring-transparent focus:border-gray-700 pl-4 multi-select'
                                 labelledBy="Select Options"
+                                overrideStrings={{
+                                    "selectSomeItems": "Choisissez vos options...",
+                                    "allItemsAreSelected": "Tous sélectionnés",
+                                    "clearSearch": "Claire",
+                                    "search": "Tapez pour rechercher...",
+                                    "selectAll": "Sélectionner tout",
+                                    "noOptions": "Aucune option disponible",
+                                }}
                             />
 
                             {formik.errors.departmentcode && formik.touched.departmentcode && typeof formik.errors.departmentcode === 'string' && (
